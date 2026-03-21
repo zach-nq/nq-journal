@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NQ Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f0e;
+    --bg2: #131615;
+    --bg3: #181c1a;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8ebe9;
+    --text2: #8a9490;
+    --text3: #4a5450;
+    --accent: #3ddc97;
+    --accent-dim: rgba(61,220,151,0.12);
+    --accent-dim2: rgba(61,220,151,0.06);
+    --warn: #e8a94a;
+    --warn-dim: rgba(232,169,74,0.12);
+    --danger: #e05c5c;
+    --danger-dim: rgba(224,92,92,0.1);
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+  body { min-height: 100vh; }
+
+  /* Layout */
+  .app { max-width: 560px; margin: 0 auto; padding: 0 0 80px; }
+
+  /* Header */
+  .header { padding: 28px 20px 0; border-bottom: 1px solid var(--border); }
+  .header-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+  .logo { font-family: var(--mono); font-size: 13px; color: var(--text2); letter-spacing: 0.1em; }
+  .logo span { color: var(--accent); }
+  .date-badge { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+  .nav { display: flex; gap: 0; }
+  .nav-btn { flex: 1; padding: 10px 0; font-family: var(--sans); font-size: 13px; color: var(--text3); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.02em; }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Main */
+  .main { padding: 24px 20px 0; }
+
+  /* Affirmation */
+  .affirmation {
+    border-left: 2px solid var(--accent);
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    background: var(--accent-dim2);
+    border-radius: 0 8px 8px 0;
+  }
+  .affirmation p { font-size: 13px; color: var(--text2); line-height: 1.7; font-style: italic; }
+
+  /* Sections */
+  .section { margin-bottom: 24px; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Fields */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; display: block; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  input[type=text], input[type=number], select, textarea {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--border2); }
+  input::placeholder, textarea::placeholder { color: var(--text3); }
+  textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+  select { cursor: pointer; }
+  select option { background: var(--bg3); }
+
+  /* Chip selectors */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    padding: 6px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    transition: all 0.15s;
+    user-select: none;
+    font-family: var(--sans);
+  }
+  .chip:hover { border-color: var(--border2); }
+  .chip.on-good { background: var(--accent-dim); color: var(--accent); border-color: rgba(61,220,151,0.3); }
+  .chip.on-bad { background: var(--warn-dim); color: var(--warn); border-color: rgba(232,169,74,0.3); }
+
+  /* Toggle buttons */
+  .toggle-row { display: flex; gap: 8px; }
+  .toggle-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    transition: all 0.15s;
+    text-align: center;
+    font-family: var(--sans);
+  }
+  .toggle-btn:hover { border-color: var(--border2); }
+  .toggle-btn.sel-green { background: var(--accent-dim); color: var(--accent); border-color: rgba(61,220,151,0.3); }
+  .toggle-btn.sel-amber { background: var(--warn-dim); color: var(--warn); border-color: rgba(232,169,74,0.3); }
+  .toggle-btn.sel-red { background: var(--danger-dim); color: var(--danger); border-color: rgba(224,92,92,0.3); }
+
+  /* Save button */
+  .save-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #0a1a12;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    margin-top: 8px;
+  }
+  .save-btn:hover { opacity: 0.9; }
+  .save-btn:active { transform: scale(0.99); }
+
+  /* Stats */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 24px; }
+  .stat-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; text-align: center; }
+  .stat-n { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--text); }
+  .stat-n.green { color: var(--accent); }
+  .stat-n.amber { color: var(--warn); }
+  .stat-n.red { color: var(--danger); }
+  .stat-l { font-size: 10px; color: var(--text3); margin-top: 3px; letter-spacing: 0.04em; }
+
+  /* Entry cards */
+  .entry-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  .entry-card:hover { border-color: var(--border2); }
+  .entry-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .entry-meta { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+  .entry-badges { display: flex; gap: 6px; align-items: center; }
+  .pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+  .pill-bracket { background: rgba(61,220,151,0.1); color: var(--accent); }
+  .pill-checkpoint { background: rgba(232,169,74,0.1); color: var(--warn); }
+  .pill-scalp { background: rgba(255,255,255,0.05); color: var(--text2); }
+  .pill-strat { background: rgba(61,220,151,0.08); color: var(--accent); }
+  .pill-long { background: rgba(61,220,151,0.06); color: var(--accent); }
+  .pill-short { background: rgba(224,92,92,0.08); color: var(--danger); }
+  .outcome-row { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 8px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  .dot-g { background: var(--accent); }
+  .dot-a { background: var(--warn); }
+  .dot-r { background: var(--danger); }
+  .entry-setup { font-size: 13px; color: var(--text2); margin-bottom: 8px; line-height: 1.5; }
+  .entry-nums { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+  .entry-num { font-family: var(--mono); font-size: 11px; }
+  .entry-num .k { color: var(--text3); display: block; }
+  .entry-num .v { color: var(--text); }
+  .entry-emotions { font-size: 11px; color: var(--text3); margin-top: 8px; }
+  .entry-mistake { font-size: 12px; color: var(--danger); margin-top: 6px; }
+  .entry-obs { font-size: 12px; color: var(--text2); font-style: italic; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); line-height: 1.6; }
+
+  .strat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .strat-btn {
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    transition: all 0.15s;
+    text-align: left;
+    font-family: var(--sans);
+    line-height: 1.3;
+  }
+  .strat-btn:hover { border-color: var(--border2); color: var(--text); }
+  .strat-btn.sel { background: var(--accent-dim); color: var(--accent); border-color: rgba(61,220,151,0.3); }
+  .empty { text-align: center; padding: 48px 20px; color: var(--text3); font-size: 13px; font-family: var(--mono); }
+
+  .hidden { display: none !important; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--accent); color: #0a1a12;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+    padding: 10px 20px; border-radius: 20px;
+    opacity: 0; transition: all 0.3s; pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="logo"><span>//</span> NQ JOURNAL</div>
+      <div class="date-badge" id="today-date"></div>
+    </div>
+    <div class="nav">
+      <button class="nav-btn active" onclick="showTab('log')" id="nav-log">Log trade</button>
+      <button class="nav-btn" onclick="showTab('review')" id="nav-review">Review</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- LOG TAB -->
+    <div id="tab-log">
+
+      <div class="affirmation">
+        <p>Every day is perfect. There are always at least two great setups. The ocean is not going anywhere. I trade my plan — not my history.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Before the trade</div>
+
+        <div class="row2" style="margin-bottom:14px;">
+          <div class="field">
+            <span class="field-label">Date</span>
+            <input type="text" id="f-date" placeholder="Mar 20">
+          </div>
+          <div class="field">
+            <span class="field-label">Time</span>
+            <input type="text" id="f-time" placeholder="09:45">
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Trade type</span>
+          <div class="toggle-row">
+            <div class="toggle-btn" id="tt-bracket" onclick="setTT('bracket')">Bracket</div>
+            <div class="toggle-btn" id="tt-checkpoint" onclick="setTT('checkpoint')">Checkpoint</div>
+            <div class="toggle-btn" id="tt-scalp" onclick="setTT('scalp')">Scalp</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Direction</span>
+          <div class="toggle-row">
+            <div class="toggle-btn" id="dir-long" onclick="setDir('Long')">Long</div>
+            <div class="toggle-btn" id="dir-short" onclick="setDir('Short')">Short</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Strategy</span>
+          <div class="strat-grid" id="strat-grid">
+            <div class="strat-btn" onclick="setStrat(this)">Inter Day S/R Retest</div>
+            <div class="strat-btn" onclick="setStrat(this)">Inter Day Outer Range</div>
+            <div class="strat-btn" onclick="setStrat(this)">3rd Hit Expansion</div>
+            <div class="strat-btn" onclick="setStrat(this)">Channel Edge</div>
+            <div class="strat-btn" onclick="setStrat(this)">Channel Sweep</div>
+            <div class="strat-btn" onclick="setStrat(this)">Channel Retest</div>
+            <div class="strat-btn" onclick="setStrat(this)">Intra Day Retest Run</div>
+            <div class="strat-btn" onclick="setStrat(this)">Valley Over Peak</div>
+            <div class="strat-btn" onclick="setStrat(this)">2 Over 2 Scalp</div>
+            <div class="strat-btn" onclick="setStrat(this)">15 Min Close Retest</div>
+            <div class="strat-btn" onclick="setStrat(this)">Sweep + Reclaim</div>
+            <div class="strat-btn" onclick="setStrat(this)">Broken Line Retest Scalp</div>
+            <div class="strat-btn" onclick="setStrat(this)" style="grid-column: span 2;">2nd Move</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Notes on this setup (optional)</span>
+          <textarea id="f-setup" placeholder="Anything specific about this entry — level, context, what made it clear..."></textarea>
+        </div>
+
+        <div class="field">
+          <span class="field-label">R:R target</span>
+          <div class="toggle-row">
+            <div class="toggle-btn" id="rr-1" onclick="setRR('1:1')">1:1</div>
+            <div class="toggle-btn" id="rr-15" onclick="setRR('1:1.5')">1:1.5</div>
+            <div class="toggle-btn" id="rr-2" onclick="setRR('1:2')">1:2</div>
+            <div class="toggle-btn" id="rr-3" onclick="setRR('1:3')">1:3</div>
+          </div>
+        </div>
+
+        <div class="row3">
+          <div class="field">
+            <span class="field-label">Entry</span>
+            <input type="number" id="f-entry" placeholder="21450">
+          </div>
+          <div class="field">
+            <span class="field-label">Stop</span>
+            <input type="number" id="f-stop" placeholder="21420">
+          </div>
+          <div class="field">
+            <span class="field-label">Max risk $</span>
+            <input type="number" id="f-risk" placeholder="250">
+          </div>
+        </div>
+
+        <div class="row2" style="margin-top:0;">
+          <div class="field">
+            <span class="field-label">Target (planned)</span>
+            <input type="number" id="f-target" placeholder="21480" oninput="calcLeft()">
+          </div>
+          <div class="field">
+            <span class="field-label">Full leg target</span>
+            <input type="number" id="f-leg-full" placeholder="21530" oninput="calcLeft()">
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Leg 1 — reference points</span>
+          <div class="row2">
+            <div>
+              <span class="field-label" style="font-size:11px;margin-bottom:4px;">Leg low</span>
+              <input type="number" id="f-leg-low" placeholder="21400" oninput="calcLeft()">
+            </div>
+            <div>
+              <span class="field-label" style="font-size:11px;margin-bottom:4px;">Leg high</span>
+              <input type="number" id="f-leg-high" placeholder="21550" oninput="calcLeft()">
+            </div>
+          </div>
+          <div id="leg-calc" style="margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--text3);line-height:1.8;"></div>
+        </div>
+
+        <div id="cp-fields" class="hidden">
+          <div class="row2" style="margin-top:14px;">
+            <div class="field">
+              <span class="field-label">Checkpoint 1</span>
+              <input type="number" id="f-cp1" placeholder="First exit">
+            </div>
+            <div class="field">
+              <span class="field-label">Reentry level</span>
+              <input type="number" id="f-re" placeholder="Pullback">
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:14px;">
+          <span class="field-label">Emotion before entry</span>
+          <div class="chip-row" id="chips-pre">
+            <div class="chip" data-good="1" onclick="toggleChip(this,'pre')">Calm</div>
+            <div class="chip" data-good="1" onclick="toggleChip(this,'pre')">Confident</div>
+            <div class="chip" data-good="1" onclick="toggleChip(this,'pre')">Patient</div>
+            <div class="chip" onclick="toggleChip(this,'pre')">Anxious</div>
+            <div class="chip" onclick="toggleChip(this,'pre')">FOMO</div>
+            <div class="chip" onclick="toggleChip(this,'pre')">Doubtful</div>
+            <div class="chip" onclick="toggleChip(this,'pre')">Rushed</div>
+            <div class="chip" onclick="toggleChip(this,'pre')">Revenge</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Pre-trade declaration</span>
+          <textarea id="f-declare" placeholder="I am proud of this entry. I know what trade I am in. My risk is defined and it is not an account breaker. I will let my edge play out."></textarea>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">After the trade</div>
+
+        <div class="field">
+          <span class="field-label">Executed to plan?</span>
+          <div class="toggle-row">
+            <div class="toggle-btn" id="res-yes" onclick="setRes('yes')">Full target</div>
+            <div class="toggle-btn" id="res-partial" onclick="setRes('partial')">Checkpoint</div>
+            <div class="toggle-btn" id="res-no" onclick="setRes('no')">Exited early</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <span class="field-label">Actual exit</span>
+            <input type="number" id="f-exit" placeholder="21590" oninput="calcLeft()">
+          </div>
+          <div class="field">
+            <span class="field-label">Mistake</span>
+            <select id="f-mistake">
+              <option value="">None</option>
+              <option>Took profit early</option>
+              <option>Moved stop too tight</option>
+              <option>Forced prior week pattern</option>
+              <option>Entered without clear setup</option>
+              <option>Sized too large</option>
+              <option>Ignored checkpoint plan</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">What caused it? (be honest)</span>
+          <textarea id="f-cause" placeholder="Was it the old wound? The relief reflex? Doubt? Noise from the market?"></textarea>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Emotion during trade</span>
+          <div class="chip-row" id="chips-during">
+            <div class="chip" data-good="1" onclick="toggleChip(this,'during')">Ease</div>
+            <div class="chip" data-good="1" onclick="toggleChip(this,'during')">Trust</div>
+            <div class="chip" data-good="1" onclick="toggleChip(this,'during')">Proud</div>
+            <div class="chip" onclick="toggleChip(this,'during')">Tension</div>
+            <div class="chip" onclick="toggleChip(this,'during')">Relief-seeking</div>
+            <div class="chip" onclick="toggleChip(this,'during')">Scarcity</div>
+            <div class="chip" onclick="toggleChip(this,'during')">Fear</div>
+            <div class="chip" onclick="toggleChip(this,'during')">Impatient</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">One observation for next time</span>
+          <textarea id="f-obs" placeholder="What did this trade teach you?"></textarea>
+        </div>
+      </div>
+
+      <button class="save-btn" onclick="saveTrade()">SAVE ENTRY</button>
+    </div>
+
+    <!-- REVIEW TAB -->
+    <div id="tab-review" class="hidden">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div id="entries-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">Entry saved</div>
+
+<script>
+const STORAGE_KEY = 'nq_journal_v1';
+let entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+let tt = '', dir = '', res = '', strat = '', rr = '';
+let ePre = [], eDuring = [];
+
+document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}).toUpperCase();
+
+function showTab(t) {
+  document.getElementById('tab-log').classList.toggle('hidden', t !== 'log');
+  document.getElementById('tab-review').classList.toggle('hidden', t !== 'review');
+  document.getElementById('nav-log').classList.toggle('active', t === 'log');
+  document.getElementById('nav-review').classList.toggle('active', t === 'review');
+  if (t === 'review') renderReview();
+}
+
+function setTT(v) {
+  tt = v;
+  ['bracket','checkpoint','scalp'].forEach(x => {
+    const el = document.getElementById('tt-'+x);
+    el.className = 'toggle-btn' + (x===v ? ' sel-green' : '');
+  });
+  document.getElementById('cp-fields').classList.toggle('hidden', v !== 'checkpoint');
+}
+
+function setDir(v) {
+  dir = v;
+  ['Long','Short'].forEach(x => {
+    const el = document.getElementById('dir-'+x.toLowerCase());
+    el.className = 'toggle-btn' + (x===v ? (v==='Long' ? ' sel-green' : ' sel-red') : '');
+  });
+}
+
+function setRes(v) {
+  res = v;
+  const map = { yes: 'sel-green', partial: 'sel-amber', no: 'sel-red' };
+  ['yes','partial','no'].forEach(x => {
+    document.getElementById('res-'+x).className = 'toggle-btn' + (x===v ? ' '+map[x] : '');
+  });
+}
+
+function setStrat(el) {
+  strat = strat === el.textContent.trim() ? '' : el.textContent.trim();
+  document.querySelectorAll('.strat-btn').forEach(b => b.classList.toggle('sel', b.textContent.trim() === strat));
+}
+
+function setRR(v) {
+  rr = rr === v ? '' : v;
+  const map = {'1:1':'rr-1','1:1.5':'rr-15','1:2':'rr-2','1:3':'rr-3'};
+  Object.entries(map).forEach(([k,id]) => {
+    document.getElementById(id).className = 'toggle-btn' + (k===rr ? ' sel-green' : '');
+  });
+}
+
+function calcLeft() {
+  const legLow  = parseFloat(document.getElementById('f-leg-low').value);
+  const legHigh = parseFloat(document.getElementById('f-leg-high').value);
+  const target  = parseFloat(document.getElementById('f-target').value);
+  const legFull = parseFloat(document.getElementById('f-leg-full').value);
+  const exit    = parseFloat(document.getElementById('f-exit').value);
+  const el = document.getElementById('leg-calc');
+  let lines = [];
+  if (!isNaN(legLow) && !isNaN(legHigh)) {
+    const legSize = Math.abs(legHigh - legLow);
+    lines.push(`leg size: ${legSize.toFixed(1)} pts`);
+    if (!isNaN(target)) lines.push(`planned target: ${Math.abs(target - legLow).toFixed(1)} pts from leg low`);
+    if (!isNaN(legFull)) lines.push(`full leg: ${Math.abs(legFull - legLow).toFixed(1)} pts from leg low`);
+    if (!isNaN(exit) && !isNaN(legFull)) {
+      const left = Math.abs(legFull - exit);
+      lines.push(`left on table: ${left.toFixed(1)} pts`);
+    }
+    if (!isNaN(exit) && !isNaN(target)) {
+      const vsTarget = exit - target;
+      const sign = vsTarget >= 0 ? '+' : '';
+      lines.push(`vs planned target: ${sign}${vsTarget.toFixed(1)} pts`);
+    }
+  }
+  el.innerHTML = lines.join('<br>');
+}
+
+function toggleChip(el, group) {
+  const good = el.dataset.good === '1';
+  const arr = group === 'pre' ? ePre : eDuring;
+  const val = el.textContent.trim();
+  const idx = arr.indexOf(val);
+  if (idx > -1) {
+    arr.splice(idx, 1);
+    el.className = 'chip';
+  } else {
+    arr.push(val);
+    el.className = 'chip ' + (good ? 'on-good' : 'on-bad');
+  }
+}
+
+function saveTrade() {
+  const e = {
+    id: Date.now(),
+    date: document.getElementById('f-date').value || new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}),
+    time: document.getElementById('f-time').value,
+    type: tt, dir, strat, rr,
+    setup: document.getElementById('f-setup').value,
+    entry: document.getElementById('f-entry').value,
+    stop: document.getElementById('f-stop').value,
+    target: document.getElementById('f-target').value,
+    legFull: document.getElementById('f-leg-full').value,
+    legLow: document.getElementById('f-leg-low').value,
+    legHigh: document.getElementById('f-leg-high').value,
+    risk: document.getElementById('f-risk').value,
+    cp1: document.getElementById('f-cp1').value,
+    reentry: document.getElementById('f-re').value,
+    declare: document.getElementById('f-declare').value,
+    ePre: [...ePre], res,
+    exit: document.getElementById('f-exit').value,
+    mistake: document.getElementById('f-mistake').value,
+    cause: document.getElementById('f-cause').value,
+    eDuring: [...eDuring],
+    obs: document.getElementById('f-obs').value
+  };
+  entries.unshift(e);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  resetForm();
+  showToast();
+  setTimeout(() => showTab('review'), 600);
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function resetForm() {
+  ['f-date','f-time','f-setup','f-entry','f-stop','f-target','f-leg-full','f-leg-low','f-leg-high','f-risk','f-cp1','f-re','f-declare','f-exit','f-cause','f-obs'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('leg-calc').innerHTML = '';
+  document.getElementById('f-mistake').value = '';
+  tt = ''; dir = ''; res = ''; strat = ''; rr = '';
+  ePre = []; eDuring = [];
+  document.querySelectorAll('.strat-btn').forEach(b => b.classList.remove('sel'));
+  document.querySelectorAll('.chip').forEach(c => c.className = 'chip');
+  ['bracket','checkpoint','scalp'].forEach(x => document.getElementById('tt-'+x).className = 'toggle-btn');
+  ['long','short'].forEach(x => document.getElementById('dir-'+x).className = 'toggle-btn');
+  ['yes','partial','no'].forEach(x => document.getElementById('res-'+x).className = 'toggle-btn');
+  ['rr-1','rr-15','rr-2','rr-3'].forEach(x => document.getElementById(x).className = 'toggle-btn');
+  document.getElementById('cp-fields').classList.add('hidden');
+}
+
+function renderReview() {
+  const total = entries.length;
+  const toTarget = entries.filter(e => e.res === 'yes').length;
+  const calmCount = entries.filter(e => e.ePre.some(x => ['Calm','Confident','Patient'].includes(x))).length;
+  const earlyCount = entries.filter(e => e.mistake === 'Took profit early').length;
+  const pct = n => total ? Math.round(n/total*100)+'%' : '—';
+
+  const leftVals = entries.map(e => {
+    const ex = parseFloat(e.exit), lf = parseFloat(e.legFull);
+    return (!isNaN(ex) && !isNaN(lf)) ? Math.abs(lf - ex) : null;
+  }).filter(v => v !== null);
+  const avgLeft = leftVals.length ? (leftVals.reduce((a,b)=>a+b,0)/leftVals.length).toFixed(1) : '—';
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-n">${total}</div><div class="stat-l">Trades</div></div>
+    <div class="stat-card"><div class="stat-n ${total?'green':''}">${pct(toTarget)}</div><div class="stat-l">To plan</div></div>
+    <div class="stat-card"><div class="stat-n ${earlyCount>0?'amber':''}">${earlyCount}</div><div class="stat-l">Early exits</div></div>
+    <div class="stat-card"><div class="stat-n ${leftVals.length?'amber':''}">${avgLeft}${leftVals.length?' pts':''}</div><div class="stat-l">Avg left</div></div>
+  `;
+
+  if (!entries.length) {
+    document.getElementById('entries-list').innerHTML = '<div class="empty">// no entries yet<br>your patterns will emerge here</div>';
+    return;
+  }
+
+  document.getElementById('entries-list').innerHTML = entries.map(e => {
+    const dotClass = e.res==='yes'?'dot-g':e.res==='partial'?'dot-a':e.res==='no'?'dot-r':'';
+    const resLabel = e.res==='yes'?'Executed to plan':e.res==='partial'?'Checkpoint hit':e.res==='no'?'Exited early':'';
+    const typePill = e.type ? `<span class="pill pill-${e.type}">${e.type}</span>` : '';
+    const dirPill = e.dir ? `<span class="pill pill-${e.dir.toLowerCase()}">${e.dir}</span>` : '';
+    const stratPill = e.strat ? `<span class="pill pill-strat">${e.strat}</span>` : '';
+    return `<div class="entry-card">
+      <div class="entry-top">
+        <span class="entry-meta">${e.date}${e.time?' · '+e.time:''}</span>
+        <div class="entry-badges">${dirPill}${typePill}</div>
+      </div>
+      ${stratPill ? `<div style="margin-bottom:8px;">${stratPill}</div>` : ''}
+      ${e.setup?`<div class="entry-setup">${e.setup}</div>`:''}
+      <div class="entry-nums">
+        ${e.entry?`<div class="entry-num"><span class="k">entry</span><span class="v">${e.entry}</span></div>`:''}
+        ${e.stop?`<div class="entry-num"><span class="k">stop</span><span class="v">${e.stop}</span></div>`:''}
+        ${e.target?`<div class="entry-num"><span class="k">target</span><span class="v">${e.target}</span></div>`:''}
+        ${e.exit?`<div class="entry-num"><span class="k">exit</span><span class="v">${e.exit}</span></div>`:''}
+        ${e.legFull?`<div class="entry-num"><span class="k">full leg</span><span class="v">${e.legFull}</span></div>`:''}
+        ${e.risk?`<div class="entry-num"><span class="k">risk $</span><span class="v">${e.risk}</span></div>`:''}
+        ${e.cp1?`<div class="entry-num"><span class="k">cp1</span><span class="v">${e.cp1}</span></div>`:''}
+        ${e.reentry?`<div class="entry-num"><span class="k">reentry</span><span class="v">${e.reentry}</span></div>`:''}
+      </div>
+      ${(() => {
+        const lines = [];
+        const ll = parseFloat(e.legLow), lh = parseFloat(e.legHigh), ex = parseFloat(e.exit), lf = parseFloat(e.legFull), tgt = parseFloat(e.target);
+        if (!isNaN(ll) && !isNaN(lh)) lines.push(`leg: ${Math.abs(lh-ll).toFixed(1)} pts`);
+        if (!isNaN(ex) && !isNaN(lf)) lines.push(`left on table: ${Math.abs(lf-ex).toFixed(1)} pts`);
+        if (!isNaN(ex) && !isNaN(tgt)) { const d=ex-tgt; lines.push(`vs target: ${d>=0?'+':''}${d.toFixed(1)} pts`); }
+        if (e.rr) lines.push(`R:R ${e.rr}`);
+        return lines.length ? `<div class="entry-emotions" style="margin-top:6px;">${lines.join(' · ')}</div>` : '';
+      })()}
+      ${resLabel?`<div class="outcome-row"><span class="dot ${dotClass}"></span><span style="color:var(--text2)">${resLabel}</span></div>`:''}
+      ${e.ePre.length?`<div class="entry-emotions">Before: ${e.ePre.join(' · ')}</div>`:''}
+      ${e.eDuring.length?`<div class="entry-emotions">During: ${e.eDuring.join(' · ')}</div>`:''}
+      ${e.mistake?`<div class="entry-mistake">Mistake: ${e.mistake}${e.cause?' — '+e.cause:''}</div>`:''}
+      ${e.obs?`<div class="entry-obs">"${e.obs}"</div>`:''}
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
