@@ -949,13 +949,13 @@ function render() {
       <td style="font-variant-numeric:tabular-nums">${d(t.stop)}</td>
       <td style="font-variant-numeric:tabular-nums">${d(t.target)}</td>
       <td style="font-variant-numeric:tabular-nums">${d(t.exit)}</td>
-      <td style="font-variant-numeric:tabular-nums;color:${t.drawdown?'var(--warn)':'var(--muted2)'}">
-        ${t.drawdown ? t.drawdown+'pt' : '<span class="dash">—</span>'}
-      </td>
       <td>${pnlStr}</td>
       <td style="color:var(--muted)">${d(t.rr)}</td>
       <td>${res}</td>
       <td style="font-size:11px;color:var(--muted)">${d(t.exitType)}</td>
+      <td style="font-variant-numeric:tabular-nums;color:${t.drawdown?'var(--warn)':'var(--muted2)'}">
+        ${t.drawdown ? t.drawdown+'pt' : '<span class="dash">—</span>'}
+      </td>
       <td>${mist}</td>
       <td>${t.ifStopped ? `<span style="display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500;background:${t.ifStopped==='Reverse'?'var(--loss-light)':t.ifStopped==='Plan B'?'var(--accent-light)':'var(--surface2)'};color:${t.ifStopped==='Reverse'?'var(--loss)':t.ifStopped==='Plan B'?'var(--accent)':'var(--muted)'};border:1px solid ${t.ifStopped==='Reverse'?'rgba(255,59,48,.2)':t.ifStopped==='Plan B'?'rgba(0,113,227,.2)':'var(--border-strong)'}">${t.ifStopped}</span>` : '<span class="dash">—</span>'}</td>
       <td>${dots(t.conviction)}</td>
