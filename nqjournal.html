@@ -272,6 +272,13 @@ tbody tr:hover .ra{opacity:1}
 
 <script>
 // ── STATE ──
+// Migrate from older storage keys automatically
+(function migrate(){
+  if (!localStorage.getItem('nq-v3')) {
+    const old = localStorage.getItem('nq-v2') || localStorage.getItem('nq-trades') || localStorage.getItem('nq-trades-v2');
+    if (old) { localStorage.setItem('nq-v3', old); console.log('Migrated trades from older key'); }
+  }
+})();
 let trades = JSON.parse(localStorage.getItem('nq-v3') || '[]');
 let editingId = null;
 let entryRowActive = false;
