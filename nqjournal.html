@@ -5,645 +5,998 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NQ Journal</title>
 <style>
-  :root {
-    --bg:#f5f5f7;--surface:#fff;--surface2:#f5f5f7;--surface3:#fafafa;
-    --border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.13);
-    --text:#1d1d1f;--text2:#3d3d3f;--muted:#86868b;--muted2:#aeaeb2;
-    --accent:#0071e3;--accent-hover:#0077ed;--accent-light:rgba(0,113,227,0.08);
-    --win:#34c759;--win-light:rgba(52,199,89,0.1);
-    --loss:#ff3b30;--loss-light:rgba(255,59,48,0.1);
-    --warn:#ff9500;--warn-light:rgba(255,149,0,0.1);
-    --radius:12px;--radius-sm:8px;--radius-xs:6px;
-    --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);
-    --shadow-modal:0 24px 80px rgba(0,0,0,0.18),0 8px 24px rgba(0,0,0,0.1);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
-  body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+:root{
+  --bg:#f5f5f7;--surface:#fff;--surface2:#f5f5f7;--surface3:#fafafa;
+  --border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.13);
+  --text:#1d1d1f;--text2:#3d3d3f;--muted:#86868b;--muted2:#aeaeb2;
+  --accent:#0071e3;--accent-hover:#0077ed;--accent-light:rgba(0,113,227,0.09);
+  --win:#34c759;--win-light:rgba(52,199,89,0.1);
+  --loss:#ff3b30;--loss-light:rgba(255,59,48,0.1);
+  --warn:#ff9500;--warn-light:rgba(255,149,0,0.1);
+  --r:12px;--rs:8px;--rx:6px;
+  --sh:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);
+  --shm:0 24px 80px rgba(0,0,0,0.18),0 8px 24px rgba(0,0,0,0.1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-  /* HEADER */
-  .header{display:flex;align-items:center;padding:0 28px;height:52px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20}
-  .logo{font-size:15px;font-weight:600;letter-spacing:-0.02em}
-  .logo-dot{color:var(--accent)}
-  .header-mantra{flex:1;text-align:center;font-size:11.5px;color:var(--muted);font-style:italic}
-  .stats-strip{display:flex;gap:28px}
-  .stat{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-  .stat-label{font-size:9.5px;color:var(--muted2);letter-spacing:0.06em;text-transform:uppercase;font-weight:500}
-  .stat-val{font-size:15px;font-weight:600;letter-spacing:-0.02em}
-  .stat-val.green{color:var(--win)}.stat-val.red{color:var(--loss)}
+/* HEADER */
+.hdr{display:flex;align-items:center;padding:0 24px;height:50px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20}
+.logo{font-size:15px;font-weight:600;letter-spacing:-0.02em}
+.logo span{color:var(--accent)}
+.mantra{flex:1;text-align:center;font-size:11px;color:var(--muted);font-style:italic}
+.stats{display:flex;gap:24px}
+.st{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.st-l{font-size:9px;color:var(--muted2);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.st-v{font-size:14px;font-weight:600;letter-spacing:-0.02em}
+.st-v.g{color:var(--win)}.st-v.r{color:var(--loss)}
 
-  /* NAV */
-  .nav-tabs{display:flex;padding:0 28px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);flex-shrink:0}
-  .nav-tab{padding:11px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;font-family:inherit;display:flex;align-items:center;gap:6px}
-  .nav-tab:hover{color:var(--text)}
-  .nav-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+/* NAV */
+.nav{display:flex;padding:0 24px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);flex-shrink:0}
+.ntab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;font-family:inherit;display:flex;align-items:center;gap:5px}
+.ntab:hover{color:var(--text)}.ntab.on{color:var(--accent);border-bottom-color:var(--accent)}
 
-  /* TOOLBAR */
-  .toolbar{display:flex;align-items:center;gap:8px;padding:10px 28px;background:rgba(255,255,255,0.75);border-bottom:1px solid var(--border);flex-shrink:0}
-  .btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:20px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s,transform .1s}
-  .btn-primary:hover{background:var(--accent-hover)}.btn-primary:active{transform:scale(0.97)}
-  .btn-secondary{background:var(--surface);color:var(--text2);border:1px solid var(--border-strong);padding:6px 14px;border-radius:20px;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s}
-  .btn-secondary:hover{background:var(--surface2)}
-  .spacer{flex:1}
+/* TOOLBAR */
+.tb{display:flex;align-items:center;gap:8px;padding:9px 24px;background:rgba(255,255,255,0.75);border-bottom:1px solid var(--border);flex-shrink:0}
+.btn-p{display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:#fff;border:none;padding:7px 15px;border-radius:20px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s,transform .1s}
+.btn-p:hover{background:var(--accent-hover)}.btn-p:active{transform:scale(.97)}
+.btn-s{background:var(--surface);color:var(--text2);border:1px solid var(--border-strong);padding:6px 13px;border-radius:20px;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s}
+.btn-s:hover{background:var(--surface2)}
+.sp{flex:1}
 
-  /* PAGES */
-  .page{display:none;flex:1;overflow:hidden;flex-direction:column}
-  .page.active{display:flex}
+/* PAGES */
+.pg{display:none;flex:1;overflow:hidden;flex-direction:column}.pg.on{display:flex}
 
-  /* LEDGER */
-  .ledger-wrap{flex:1;overflow:auto;padding:20px 28px 32px}
-  .ledger-wrap::-webkit-scrollbar{width:5px;height:5px}
-  .ledger-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
-  .ledger-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
-  table{width:100%;min-width:1360px;border-collapse:collapse}
-  thead th{background:var(--surface3);color:var(--muted);font-size:10.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
-  tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
-  tbody tr:last-child{border-bottom:none}
-  tbody tr:hover{background:#f9f9fb}
-  td{padding:11px 14px;color:var(--text2);white-space:nowrap;font-size:13px}
-  .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:500}
-  .b-long{background:var(--win-light);color:var(--win)}.b-short{background:var(--loss-light);color:var(--loss)}
-  .b-win{background:var(--win-light);color:var(--win)}.b-loss{background:var(--loss-light);color:var(--loss)}
-  .b-type{background:var(--accent-light);color:var(--accent)}.b-scalp{background:var(--warn-light);color:var(--warn)}
-  .pnl-pos{color:var(--win);font-weight:600}.pnl-neg{color:var(--loss);font-weight:600}.dash{color:var(--muted2)}
-  .dots{display:flex;gap:3px}.dot{width:6px;height:6px;border-radius:50%;background:var(--border-strong)}.dot.on{background:var(--accent)}
-  .row-actions{display:flex;gap:5px;opacity:0;transition:opacity .15s}
-  tbody tr:hover .row-actions{opacity:1}
-  .icon-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:26px;height:26px;border-radius:var(--radius-xs);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s}
-  .icon-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
-  .icon-btn.del:hover{background:var(--loss-light);border-color:var(--loss);color:var(--loss)}
-  .truncate{max-width:150px;overflow:hidden;text-overflow:ellipsis;display:block}
-  .empty-state{padding:80px 20px;text-align:center}
-  .empty-icon{width:52px;height:52px;background:var(--surface2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;border:1px solid var(--border)}
-  .empty-state h3{font-size:15px;font-weight:600;margin-bottom:6px}.empty-state p{font-size:13px;color:var(--muted);line-height:1.7}
+/* LEDGER */
+.ledger-wrap{flex:1;overflow-x:auto;overflow-y:auto;padding:18px 24px 32px}
+.ledger-wrap::-webkit-scrollbar{width:6px;height:6px}
+.ledger-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}.ledger-wrap::-webkit-scrollbar-corner{background:transparent}
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);overflow:hidden;min-width:0}
+table{width:100%;min-width:1680px;border-collapse:collapse}
+thead th{background:var(--surface3);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:5}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#f9f9fb}
+td{padding:9px 10px;color:var(--text2);white-space:nowrap;font-size:12.5px;vertical-align:middle}
 
-  /* INSIGHTS */
-  .insights-wrap{flex:1;overflow-y:auto;padding:24px 28px 48px}
-  .insights-wrap::-webkit-scrollbar{width:5px}
-  .insights-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
-  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-  .kpi-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:18px 20px}
-  .kpi-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
-  .kpi-val{font-size:28px;font-weight:700;letter-spacing:-0.04em;line-height:1}
-  .kpi-val.green{color:var(--win)}.kpi-val.red{color:var(--loss)}
-  .kpi-sub{font-size:11.5px;color:var(--muted);margin-top:5px}
-  .irow{display:grid;gap:14px;margin-bottom:14px}
-  .irow-2{grid-template-columns:1fr 1fr}
-  .irow-3{grid-template-columns:1fr 1fr 1fr}
-  .irow-1{grid-template-columns:1fr}
-  .chart-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:20px 22px}
-  .chart-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;letter-spacing:-0.01em}
-  .chart-sub{font-size:11.5px;color:var(--muted);margin-bottom:16px}
-  .bar-chart{display:flex;flex-direction:column;gap:9px}
-  .bar-row{display:flex;align-items:center;gap:10px}
-  .bar-label{font-size:11.5px;color:var(--text2);width:145px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bar-track{flex:1;height:6px;background:var(--surface2);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
-  .bar-fill{height:100%;border-radius:10px;transition:width .5s ease}
-  .bar-fill.green{background:var(--win)}.bar-fill.blue{background:var(--accent)}.bar-fill.red{background:var(--loss)}.bar-fill.warn{background:var(--warn)}
-  .bar-meta{font-size:11px;color:var(--muted);width:65px;text-align:right;flex-shrink:0}
-  .emo-grid{display:flex;flex-wrap:wrap;gap:7px}
-  .emo-pill{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:11.5px}
-  .emo-pill .emo-count{font-weight:600;color:var(--text)}.emo-pill .emo-name{color:var(--muted)}
-  .emo-pill.w-emo{background:var(--win-light);border:1px solid rgba(52,199,89,0.25)}
-  .emo-pill.l-emo{background:var(--loss-light);border:1px solid rgba(255,59,48,0.25)}
-  .pnl-timeline{display:flex;flex-direction:column;gap:7px}
-  .pnl-row{display:flex;align-items:center;gap:10px;font-size:12px}
-  .pnl-date{color:var(--muted);width:76px;flex-shrink:0}
-  .pnl-bar-wrap{flex:1;display:flex;align-items:center;height:20px;position:relative}
-  .pnl-bar{height:8px;border-radius:4px;position:absolute}
-  .pnl-bar.pos{background:var(--win);left:50%}.pnl-bar.neg{background:var(--loss);right:50%}
-  .pnl-center{position:absolute;left:50%;width:1px;height:18px;background:var(--border-strong);top:1px}
-  .pnl-amt{width:65px;text-align:right;font-weight:500;flex-shrink:0}
-  .pnl-amt.pos{color:var(--win)}.pnl-amt.neg{color:var(--loss)}
-  .callout{display:flex;align-items:flex-start;gap:11px;padding:12px 15px;border-radius:var(--radius-sm);margin-bottom:9px}
-  .callout:last-child{margin-bottom:0}
-  .callout-default{background:var(--accent-light);border:1px solid rgba(0,113,227,0.15)}
-  .callout-warn{background:var(--warn-light);border:1px solid rgba(255,149,0,0.2)}
-  .callout-good{background:var(--win-light);border:1px solid rgba(52,199,89,0.2)}
-  .callout-bad{background:var(--loss-light);border:1px solid rgba(255,59,48,0.2)}
-  .callout-icon{font-size:15px;flex-shrink:0;margin-top:1px}
-  .callout-text{font-size:12.5px;color:var(--text2);line-height:1.55}
-  .callout-text strong{color:var(--text);font-weight:600}
-  .no-data{text-align:center;padding:28px 0;color:var(--muted);font-size:13px}
+/* ENTRY ROW */
+.entry-row td{padding:5px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top}
+.er-label{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
 
-  /* MODAL */
-  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center}
-  .modal-bg.open{display:flex;animation:bgIn .2s ease}
-  @keyframes bgIn{from{opacity:0}to{opacity:1}}
-  .modal{background:var(--surface);border-radius:18px;box-shadow:var(--shadow-modal);width:640px;max-width:95vw;max-height:90vh;overflow-y:auto;border:1px solid var(--border);animation:modalIn .25s cubic-bezier(0.34,1.25,0.64,1)}
-  .modal::-webkit-scrollbar{width:4px}
-  .modal::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
-  @keyframes modalIn{from{opacity:0;transform:scale(0.95) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-  .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;position:sticky;top:0;background:var(--surface);z-index:1}
-  .modal-title{font-size:17px;font-weight:600;letter-spacing:-0.02em}
-  .modal-close{background:var(--surface2);border:none;color:var(--muted);width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s}
-  .modal-close:hover{background:var(--loss-light);color:var(--loss)}
-  .seg{display:flex;gap:2px;margin:16px 24px 0;background:var(--surface2);border-radius:10px;padding:3px;border:1px solid var(--border)}
-  .seg-btn{flex:1;padding:7px 0;text-align:center;font-family:inherit;font-size:13px;font-weight:500;background:transparent;border:none;color:var(--muted);cursor:pointer;border-radius:8px;transition:all .18s}
-  .seg-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
-  .modal-body{padding:20px 24px}
-  .tab-panel{display:none}.tab-panel.active{display:block}
-  .mantra{background:var(--accent-light);border-radius:var(--radius-sm);padding:11px 16px;margin-bottom:20px;font-size:12.5px;color:var(--accent);text-align:center;line-height:1.65;font-style:italic}
-  .fs{margin-bottom:20px}
-  .fs-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:9px}
-  .fs-label span{font-weight:400;text-transform:none;letter-spacing:0;font-size:10px}
-  .fg{display:grid;gap:10px}
-  .fg-2{grid-template-columns:repeat(2,1fr)}.fg-3{grid-template-columns:repeat(3,1fr)}.fg-4{grid-template-columns:repeat(4,1fr)}
-  .field{display:flex;flex-direction:column;gap:5px}
-  .field label{font-size:11.5px;font-weight:500;color:var(--muted)}
-  .field input,.field textarea{background:var(--surface2);border:1px solid var(--border-strong);color:var(--text);border-radius:var(--radius-sm);padding:8px 11px;font-family:inherit;font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none}
-  .field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
-  .field textarea{resize:vertical;min-height:64px;line-height:1.5}
-  .btn-grp{display:flex;flex-wrap:wrap;gap:6px}
-  .tog{background:var(--surface2);border:1px solid var(--border-strong);color:var(--text2);padding:6px 13px;border-radius:20px;font-family:inherit;font-size:12.5px;cursor:pointer;transition:all .12s;user-select:none}
-  .tog:hover{border-color:var(--accent);color:var(--accent)}
-  .tog.a{background:var(--accent);border-color:var(--accent);color:#fff}
-  .tog.a-long{background:var(--win-light);border-color:var(--win);color:var(--win)}
-  .tog.a-short{background:var(--loss-light);border-color:var(--loss);color:var(--loss)}
-  .tog.a-win{background:var(--win-light);border-color:var(--win);color:var(--win)}
-  .tog.a-loss{background:var(--loss-light);border-color:var(--loss);color:var(--loss)}
-  .tog.a-warn{background:var(--warn-light);border-color:var(--warn);color:var(--warn)}
-  .scale{display:flex;gap:6px}
-  .scl{flex:1;padding:8px 0;border-radius:var(--radius-xs);font-family:inherit;font-size:13px;font-weight:500;background:var(--surface2);border:1px solid var(--border-strong);color:var(--muted);cursor:pointer;text-align:center;transition:all .12s}
-  .scl:hover{border-color:var(--accent);color:var(--accent)}
-  .scl.a{background:var(--accent);border-color:var(--accent);color:#fff}
-  .decl{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-top:4px}
-  .decl-lbl{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
-  .decl p{font-size:12.5px;color:var(--muted);line-height:1.65;font-style:italic}
-  .modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 24px;border-top:1px solid var(--border);background:var(--surface3);border-radius:0 0 18px 18px;position:sticky;bottom:0}
+/* inline inputs */
+.ei{width:100%;background:#fff;border:1px solid var(--border-strong);color:var(--text);border-radius:5px;padding:5px 7px;font-family:inherit;font-size:12px;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;min-width:0}
+.ei:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-light)}
+
+/* pill groups */
+.pg2{display:flex;flex-wrap:wrap;gap:3px}
+.ep{padding:3px 8px;border-radius:20px;font-size:11px;cursor:pointer;background:var(--surface2);border:1px solid var(--border-strong);color:var(--text2);white-space:nowrap;transition:all .12s;user-select:none;line-height:1.3}
+.ep:hover{border-color:var(--accent);color:var(--accent)}
+.ep.a{background:var(--accent);border-color:var(--accent);color:#fff}
+.ep.a-long{background:var(--win-light);border-color:var(--win);color:var(--win)}
+.ep.a-short{background:var(--loss-light);border-color:var(--loss);color:var(--loss)}
+.ep.a-win{background:var(--win-light);border-color:var(--win);color:var(--win)}
+.ep.a-loss{background:var(--loss-light);border-color:var(--loss);color:var(--loss)}
+.ep.a-warn{background:var(--warn-light);border-color:var(--warn);color:var(--warn)}
+
+/* scale buttons */
+.sc-row{display:flex;gap:3px}
+.sc{flex:1;padding:4px 0;border-radius:4px;font-size:11px;font-weight:600;background:var(--surface2);border:1px solid var(--border-strong);color:var(--muted);cursor:pointer;text-align:center;transition:all .12s;min-width:18px}
+.sc:hover{border-color:var(--accent);color:var(--accent)}.sc.a{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* auto-calc pnl display */
+.pnl-calc{display:inline-block;padding:4px 8px;border-radius:5px;font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border);color:var(--muted);min-width:72px;text-align:center;transition:all .2s}
+.pnl-calc.pos{background:var(--win-light);border-color:rgba(52,199,89,.3);color:var(--win)}
+.pnl-calc.neg{background:var(--loss-light);border-color:rgba(255,59,48,.3);color:var(--loss)}
+
+/* stop quick-set */
+.stop-wrap{display:flex;flex-direction:column;gap:3px}
+.stop-quick{display:flex;gap:3px;flex-wrap:wrap}
+.sq{padding:2px 6px;border-radius:4px;font-size:10px;cursor:pointer;background:var(--surface2);border:1px solid var(--border-strong);color:var(--muted);transition:all .12s}
+.sq:hover{border-color:var(--warn);color:var(--warn);background:var(--warn-light)}
+
+/* save / cancel */
+.save-btn{background:var(--accent);color:#fff;border:none;padding:6px 14px;border-radius:20px;font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .15s}
+.save-btn:hover{background:var(--accent-hover)}
+.cancel-btn{background:transparent;color:var(--muted);border:1px solid var(--border-strong);padding:5px 10px;border-radius:20px;font-family:inherit;font-size:12px;cursor:pointer}
+.cancel-btn:hover{color:var(--loss);border-color:var(--loss)}
+
+/* display row */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.b-long{background:var(--win-light);color:var(--win)}.b-short{background:var(--loss-light);color:var(--loss)}
+.b-win{background:var(--win-light);color:var(--win)}.b-loss{background:var(--loss-light);color:var(--loss)}
+.b-type{background:var(--accent-light);color:var(--accent)}.b-scalp{background:var(--warn-light);color:var(--warn)}
+.pnl-p{color:var(--win);font-weight:600}.pnl-n{color:var(--loss);font-weight:600}
+.dash{color:var(--muted2)}
+.dots{display:flex;gap:3px}.dot{width:6px;height:6px;border-radius:50%;background:var(--border-strong)}.dot.on{background:var(--accent)}
+.ra{display:flex;gap:4px;opacity:0;transition:opacity .15s}
+tbody tr:hover .ra{opacity:1}
+.ib{background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:25px;height:25px;border-radius:var(--rx);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;font-size:11px}
+.ib:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.ib.del:hover{background:var(--loss-light);border-color:var(--loss);color:var(--loss)}
+.trunc{max-width:120px;overflow:hidden;text-overflow:ellipsis;display:block}
+
+/* empty */
+.empty-state{padding:72px 20px;text-align:center}
+.ei2{width:50px;height:50px;background:var(--surface2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 12px;border:1px solid var(--border)}
+.empty-state h3{font-size:15px;font-weight:600;margin-bottom:5px}
+.empty-state p{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* INSIGHTS */
+.ins-wrap{flex:1;overflow-y:auto;padding:20px 24px 40px}
+.ins-wrap::-webkit-scrollbar{width:5px}
+.ins-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.kpi{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:16px 18px}
+.kpi-l{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
+.kpi-v{font-size:26px;font-weight:700;letter-spacing:-0.04em;line-height:1}
+.kpi-v.g{color:var(--win)}.kpi-v.r{color:var(--loss)}
+.kpi-s{font-size:11px;color:var(--muted);margin-top:4px}
+.irow{display:grid;gap:12px;margin-bottom:12px}
+.ir2{grid-template-columns:1fr 1fr}.ir3{grid-template-columns:1fr 1fr 1fr}.ir1{grid-template-columns:1fr}
+.cc{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:18px 20px}
+.ct{font-size:13px;font-weight:600;letter-spacing:-0.01em;margin-bottom:3px}
+.cs{font-size:11px;color:var(--muted);margin-bottom:14px}
+.bch{display:flex;flex-direction:column;gap:8px}
+.br{display:flex;align-items:center;gap:9px}
+.bl{font-size:11px;color:var(--text2);width:140px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt{flex:1;height:6px;background:var(--surface2);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.bf{height:100%;border-radius:10px;transition:width .5s}
+.bf.g{background:var(--win)}.bf.b{background:var(--accent)}.bf.r{background:var(--loss)}.bf.w{background:var(--warn)}
+.bm{font-size:11px;color:var(--muted);width:60px;text-align:right;flex-shrink:0}
+.eg2{display:flex;flex-wrap:wrap;gap:6px}
+.ep3{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px}
+.ep3 .en{color:var(--muted)}.ep3 .ec{font-weight:600;color:var(--text)}
+.ep3.we{background:var(--win-light);border:1px solid rgba(52,199,89,.2)}
+.ep3.le{background:var(--loss-light);border:1px solid rgba(255,59,48,.2)}
+.pnl-tl{display:flex;flex-direction:column;gap:6px}
+.ptr{display:flex;align-items:center;gap:9px;font-size:12px}
+.pd{color:var(--muted);width:72px;flex-shrink:0}
+.pw{flex:1;display:flex;align-items:center;height:18px;position:relative}
+.pb{height:8px;border-radius:4px;position:absolute}
+.pb.pp{background:var(--win);left:50%}.pb.pn{background:var(--loss);right:50%}
+.pc{position:absolute;left:50%;width:1px;height:16px;background:var(--border-strong);top:1px}
+.pa{width:62px;text-align:right;font-weight:500;flex-shrink:0}
+.pa.pp{color:var(--win)}.pa.pn{color:var(--loss)}
+.cal{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:var(--rs);margin-bottom:8px}
+.cal:last-child{margin-bottom:0}
+.cal-d{background:var(--accent-light);border:1px solid rgba(0,113,227,.15)}
+.cal-w{background:var(--warn-light);border:1px solid rgba(255,149,0,.2)}
+.cal-g{background:var(--win-light);border:1px solid rgba(52,199,89,.2)}
+.cal-b{background:var(--loss-light);border:1px solid rgba(255,59,48,.2)}
+.ci{font-size:14px;flex-shrink:0}
+.ct2{font-size:12px;color:var(--text2);line-height:1.55}
+.ct2 strong{color:var(--text);font-weight:600}
+.nodata{text-align:center;padding:24px 0;color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">NQ<span class="logo-dot">.</span>Journal</div>
-  <div class="header-mantra">Every day is perfect. There are always at least two great setups. The ocean is not going anywhere.</div>
-  <div class="stats-strip">
-    <div class="stat"><span class="stat-label">Trades</span><span class="stat-val" id="stat-count">&#8212;</span></div>
-    <div class="stat"><span class="stat-label">Win Rate</span><span class="stat-val" id="stat-wr">&#8212;</span></div>
-    <div class="stat"><span class="stat-label">Net P&amp;L</span><span class="stat-val" id="stat-pnl">&#8212;</span></div>
+<!-- HEADER -->
+<div class="hdr">
+  <div class="logo">NQ<span>.</span>Journal</div>
+  <div class="mantra">Every day is perfect. There are always at least two great setups. The ocean is not going anywhere.</div>
+  <div class="stats">
+    <div class="st"><span class="st-l">Trades</span><span class="st-v" id="s-count">—</span></div>
+    <div class="st"><span class="st-l">Win Rate</span><span class="st-v" id="s-wr">—</span></div>
+    <div class="st"><span class="st-l">Net P&amp;L</span><span class="st-v" id="s-pnl">—</span></div>
   </div>
 </div>
 
-<div class="nav-tabs">
-  <button class="nav-tab active" onclick="showPage('ledger',this)">
-    <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="2.5" rx="1" fill="currentColor"/><rect x="1" y="5.5" width="12" height="2.5" rx="1" fill="currentColor"/><rect x="1" y="10" width="12" height="2.5" rx="1" fill="currentColor"/></svg>
+<!-- NAV -->
+<div class="nav">
+  <button class="ntab on" onclick="showPage('ledger',this)">
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="2.5" rx="1" fill="currentColor"/><rect x="1" y="5.5" width="12" height="2.5" rx="1" fill="currentColor"/><rect x="1" y="10" width="12" height="2.5" rx="1" fill="currentColor"/></svg>
     Ledger
   </button>
-  <button class="nav-tab" onclick="showPage('insights',this)">
-    <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 10l3-4 3 2 3-5 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <button class="ntab" onclick="showPage('insights',this)">
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 10l3-4 3 2 3-5 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Insights
   </button>
 </div>
 
-<div class="toolbar" id="toolbar">
-  <button class="btn-primary" onclick="openModal()">
+<!-- TOOLBAR -->
+<div class="tb" id="toolbar">
+  <button class="btn-p" onclick="addRow()">
     <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-    Log Trade
+    New Trade
   </button>
-  <div class="spacer"></div>
-  <button class="btn-secondary" onclick="exportCSV()">Export CSV</button>
-  <button class="btn-secondary" onclick="clearAll()">Clear All</button>
+  <div class="sp"></div>
+  <button class="btn-s" onclick="exportCSV()">Export CSV</button>
+  <button class="btn-s" onclick="clearAll()">Clear All</button>
 </div>
 
 <!-- LEDGER PAGE -->
-<div class="page active" id="page-ledger">
+<div class="pg on" id="page-ledger">
   <div class="ledger-wrap">
-    <div class="ledger-card">
-      <table>
-        <thead><tr>
-          <th>#</th><th>Date</th><th>Time</th><th>Type</th><th>Dir</th>
-          <th>Strategy</th><th>Entry</th><th>Stop</th><th>Target</th><th>Exit</th>
-          <th>R:R</th><th>Result</th><th>P&amp;L</th><th>Mistake</th>
-          <th>Conv</th><th>Urgency</th><th>Pre-Emotion</th><th>Mid-Emotion</th>
-          <th>Observation</th><th></th>
-        </tr></thead>
-        <tbody id="ledger-body"></tbody>
+    <div class="card">
+      <table id="main-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th><th>Entry Time</th><th>Exit Time</th>
+            <th>Line Type</th><th>Dir</th><th>Setup Attributes</th><th>Entry</th><th>Stop</th><th>Target</th><th>Exit</th>
+            <th>P&amp;L ($)</th><th>R:R</th><th>Result</th>
+            <th>Exit Type</th><th>Drawdown (pts)</th><th>Mistake</th><th>If Stopped</th>
+            <th>Conv</th><th>Urgency</th>
+            <th>Pre-Emotion</th><th>Mid-Emotion</th>
+            <th>Observation</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
       </table>
       <div id="empty-state" class="empty-state">
-        <div class="empty-icon">&#x1F4CB;</div>
+        <div class="ei2">📋</div>
         <h3>No trades yet</h3>
-        <p>Press <strong>Log Trade</strong> to record your first entry.</p>
+        <p>Press <strong>New Trade</strong> to log your first entry inline.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- INSIGHTS PAGE -->
-<div class="page" id="page-insights">
-  <div class="insights-wrap">
-    <div id="ins-empty" class="empty-state" style="padding:80px 0">
-      <div class="empty-icon">&#x1F4CA;</div>
-      <h3>No data yet</h3>
+<div class="pg" id="page-insights">
+  <div class="ins-wrap">
+    <div id="ins-empty" class="empty-state" style="padding:72px 0">
+      <div class="ei2">📊</div><h3>No data yet</h3>
       <p>Log at least one trade to unlock insights.</p>
     </div>
     <div id="ins-content" style="display:none">
-      <div class="kpi-grid" id="kpi-grid"></div>
-      <div class="irow irow-2">
-        <div class="chart-card"><div class="chart-title">P&amp;L Per Trade</div><div class="chart-sub">Win / loss across your recent trades</div><div class="pnl-timeline" id="pnl-tl"></div></div>
-        <div class="chart-card"><div class="chart-title">Key Insights</div><div class="chart-sub">Patterns detected from your data</div><div id="callouts"></div></div>
+      <div class="kpi-row" id="kpis"></div>
+      <div class="irow ir2">
+        <div class="cc"><div class="ct">P&amp;L Per Trade</div><div class="cs">Win/loss across recent trades</div><div class="pnl-tl" id="pnl-tl"></div></div>
+        <div class="cc"><div class="ct">Key Insights</div><div class="cs">Patterns detected from your data</div><div id="callouts"></div></div>
       </div>
-      <div class="irow irow-3">
-        <div class="chart-card"><div class="chart-title">Strategy Win Rate</div><div class="chart-sub">W/L by setup type</div><div class="bar-chart" id="strat-bars"></div></div>
-        <div class="chart-card"><div class="chart-title">Direction Performance</div><div class="chart-sub">Long vs Short</div><div class="bar-chart" id="dir-bars"></div></div>
-        <div class="chart-card"><div class="chart-title">Trade Type Split</div><div class="chart-sub">Bracket / Checkpoint / Scalp</div><div class="bar-chart" id="type-bars"></div></div>
+      <div class="irow ir3">
+        <div class="cc"><div class="ct">Strategy Win Rate</div><div class="cs">W/L by setup type</div><div class="bch" id="strat-b"></div></div>
+        <div class="cc"><div class="ct">Direction Performance</div><div class="cs">Long vs Short</div><div class="bch" id="dir-b"></div></div>
+        <div class="cc"><div class="ct">Trade Type Split</div><div class="cs">Bracket / Checkpoint / Scalp</div><div class="bch" id="type-b"></div></div>
       </div>
-      <div class="irow irow-2">
-        <div class="chart-card"><div class="chart-title">Conviction vs Outcome</div><div class="chart-sub">Does higher conviction lead to better results?</div><div class="bar-chart" id="conv-bars"></div></div>
-        <div class="chart-card"><div class="chart-title">Urgency vs Outcome</div><div class="chart-sub">Do rushed entries perform worse?</div><div class="bar-chart" id="urg-bars"></div></div>
+      <div class="irow ir2">
+        <div class="cc"><div class="ct">Conviction vs Outcome</div><div class="cs">Does conviction level predict results?</div><div class="bch" id="conv-b"></div></div>
+        <div class="cc"><div class="ct">Urgency vs Outcome</div><div class="cs">Do rushed entries perform worse?</div><div class="bch" id="urg-b"></div></div>
       </div>
-      <div class="irow irow-2">
-        <div class="chart-card"><div class="chart-title">Pre-Trade Emotions: Winners</div><div class="chart-sub">States that correlate with winning</div><div class="emo-grid" id="emo-win"></div></div>
-        <div class="chart-card"><div class="chart-title">Pre-Trade Emotions: Losers</div><div class="chart-sub">States that correlate with losing</div><div class="emo-grid" id="emo-loss"></div></div>
+      <div class="irow ir2">
+        <div class="cc"><div class="ct">Pre-Trade Emotions: Winners</div><div class="cs">States that correlate with winning</div><div class="eg2" id="emo-win"></div></div>
+        <div class="cc"><div class="ct">Pre-Trade Emotions: Losers</div><div class="cs">States that correlate with losing</div><div class="eg2" id="emo-loss"></div></div>
       </div>
-      <div class="irow irow-2">
-        <div class="chart-card"><div class="chart-title">Mistake Frequency</div><div class="chart-sub">What's costing you most</div><div class="bar-chart" id="mistake-bars"></div></div>
-        <div class="chart-card"><div class="chart-title">Exit Behaviour</div><div class="chart-sub">How you're getting out of trades</div><div class="bar-chart" id="exit-bars"></div></div>
+      <div class="irow ir2">
+        <div class="cc"><div class="ct">Mistake Frequency</div><div class="cs">What's costing you most</div><div class="bch" id="mist-b"></div></div>
+        <div class="cc"><div class="ct">Exit Behaviour</div><div class="cs">How you're getting out</div><div class="bch" id="exit-b"></div></div>
       </div>
-      <div class="irow irow-1">
-        <div class="chart-card"><div class="chart-title">Mid-Trade Emotions: Winners vs Losers</div><div class="chart-sub">How you felt during the trade — split by outcome</div><div id="mid-emo"></div></div>
+      <div class="irow ir1">
+        <div class="cc"><div class="ct">Mid-Trade Emotions: Winners vs Losers</div><div class="cs">How you felt during the trade by outcome</div><div id="mid-emo"></div></div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL -->
-<div class="modal-bg" id="modal-bg" onclick="bgClick(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title">Log Trade</span>
-      <button class="modal-close" onclick="closeModal()">&#x2715;</button>
-    </div>
-    <div class="seg">
-      <button class="seg-btn active" onclick="switchTab('before')">Before Trade</button>
-      <button class="seg-btn" onclick="switchTab('after')">After Trade</button>
-    </div>
-    <div class="modal-body">
-      <div class="tab-panel active" id="tab-before">
-        <div class="mantra">I trade my plan &#8212; not my history.<br>The ocean is not going anywhere.</div>
-        <div class="fs"><div class="fs-label">Session</div>
-          <div class="fg fg-3">
-            <div class="field"><label>Date</label><input type="date" id="f-date"></div>
-            <div class="field"><label>Time</label><input type="time" id="f-time"></div>
-            <div class="field"><label>Trade Type</label>
-              <div class="btn-grp" id="g-type">
-                <button class="tog" onclick="tog1('g-type',this,'a')">Bracket</button>
-                <button class="tog" onclick="tog1('g-type',this,'a')">Checkpoint</button>
-                <button class="tog" onclick="tog1('g-type',this,'a')">Scalp</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Direction</div>
-          <div class="btn-grp" id="g-dir">
-            <button class="tog" onclick="togDir(this,'Long')">Long</button>
-            <button class="tog" onclick="togDir(this,'Short')">Short</button>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Strategy</div>
-          <div class="btn-grp" id="g-strat">
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Inter Day S/R Retest</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Inter Day Outer Range</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">3rd Hit Expansion</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Channel Edge</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Channel Sweep</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Channel Retest</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Intra Day Retest Run</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Valley Over Peak</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">2 Over 2 Scalp</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">15 Min Close Retest</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Sweep + Reclaim</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">Broken Line Retest Scalp</button>
-            <button class="tog" onclick="tog1('g-strat',this,'a')">2nd Move</button>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Levels</div>
-          <div class="fg fg-4">
-            <div class="field"><label>Entry</label><input type="number" step="0.25" id="f-entry" placeholder="&#8212;"></div>
-            <div class="field"><label>Stop</label><input type="number" step="0.25" id="f-stop" placeholder="&#8212;"></div>
-            <div class="field"><label>Target</label><input type="number" step="0.25" id="f-target" placeholder="&#8212;"></div>
-            <div class="field"><label>Max Risk ($)</label><input type="number" id="f-maxrisk" placeholder="&#8212;"></div>
-          </div>
-          <div class="fg fg-4" style="margin-top:10px">
-            <div class="field"><label>Leg Low</label><input type="number" step="0.25" id="f-leglow" placeholder="&#8212;"></div>
-            <div class="field"><label>Leg High</label><input type="number" step="0.25" id="f-leghigh" placeholder="&#8212;"></div>
-            <div class="field"><label>Checkpoint 1</label><input type="number" step="0.25" id="f-cp1" placeholder="&#8212;"></div>
-            <div class="field"><label>Re-entry</label><input type="number" step="0.25" id="f-reentry" placeholder="&#8212;"></div>
-          </div>
-        </div>
-        <div class="fg fg-2" style="margin-bottom:20px">
-          <div class="fs" style="margin:0"><div class="fs-label">R:R Target</div>
-            <div class="btn-grp" id="g-rr">
-              <button class="tog" onclick="tog1('g-rr',this,'a')">1:1</button>
-              <button class="tog" onclick="tog1('g-rr',this,'a')">1:1.5</button>
-              <button class="tog" onclick="tog1('g-rr',this,'a')">1:2</button>
-              <button class="tog" onclick="tog1('g-rr',this,'a')">1:3</button>
-            </div>
-          </div>
-          <div class="field"><label>Setup Notes</label><textarea id="f-notes" placeholder="What do you see? Why this setup?" style="min-height:52px"></textarea></div>
-        </div>
-        <div class="fs"><div class="fs-label">Conviction <span>1 = low &middot; 5 = high</span></div>
-          <div class="scale" id="g-conv">
-            <button class="scl" onclick="scl('g-conv',this)">1</button><button class="scl" onclick="scl('g-conv',this)">2</button>
-            <button class="scl" onclick="scl('g-conv',this)">3</button><button class="scl" onclick="scl('g-conv',this)">4</button>
-            <button class="scl" onclick="scl('g-conv',this)">5</button>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Urgency <span>1 = patient &middot; 5 = must enter</span></div>
-          <div class="scale" id="g-urg">
-            <button class="scl" onclick="scl('g-urg',this)">1</button><button class="scl" onclick="scl('g-urg',this)">2</button>
-            <button class="scl" onclick="scl('g-urg',this)">3</button><button class="scl" onclick="scl('g-urg',this)">4</button>
-            <button class="scl" onclick="scl('g-urg',this)">5</button>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Emotion Before Entry</div>
-          <div class="btn-grp" id="g-emo-pre">
-            <button class="tog" onclick="togM('g-emo-pre',this)">Calm</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">Confident</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">Patient</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">Anxious</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">FOMO</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">Doubtful</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">Rushed</button>
-            <button class="tog" onclick="togM('g-emo-pre',this)">Revenge</button>
-          </div>
-        </div>
-        <div class="decl"><div class="decl-lbl">Pre-Trade Declaration</div><p>I have a clear setup. My risk is defined. I will trade my plan and accept the result.</p></div>
-      </div>
-
-      <div class="tab-panel" id="tab-after">
-        <div class="fs"><div class="fs-label">Result</div>
-          <div class="btn-grp" id="g-result">
-            <button class="tog" onclick="togResult(this,'Won')">Won</button>
-            <button class="tog" onclick="togResult(this,'Lost')">Lost</button>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Exit</div>
-          <div class="fg fg-2">
-            <div class="field"><label>Actual Exit Price</label><input type="number" step="0.25" id="f-exit" placeholder="&#8212;"></div>
-            <div class="field"><label>Actual P&amp;L ($)</label><input type="number" id="f-pnl" placeholder="&#8212;"></div>
-          </div>
-          <div style="margin-top:12px"><div class="fs-label">Exit Type</div>
-            <div class="btn-grp" id="g-exit-type">
-              <button class="tog" onclick="tog1('g-exit-type',this,'a')">TP Hit</button>
-              <button class="tog" onclick="tog1('g-exit-type',this,'a')">Partial Exit</button>
-              <button class="tog" onclick="tog1('g-exit-type',this,'a')">Early Exit</button>
-              <button class="tog" onclick="tog1('g-exit-type',this,'a')">SL Hit</button>
-            </div>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Mistake</div>
-          <div class="btn-grp" id="g-mistake">
-            <button class="tog" onclick="tog1('g-mistake',this,'a')">None</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Took profit early</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Moved stop too tight</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Forced prior week pattern</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Entered without clear setup</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Sized too large</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Ignored checkpoint plan</button>
-            <button class="tog" onclick="tog1('g-mistake',this,'a-warn')">Other</button>
-          </div>
-        </div>
-        <div class="fs"><div class="fs-label">Emotion During Trade</div>
-          <div class="btn-grp" id="g-emo-mid">
-            <button class="tog" onclick="togM('g-emo-mid',this)">Ease</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Trust</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Proud</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Tension</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Relief-seeking</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Scarcity</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Fear</button>
-            <button class="tog" onclick="togM('g-emo-mid',this)">Impatient</button>
-          </div>
-        </div>
-        <div class="fg fg-2">
-          <div class="field"><label>What caused any mistake?</label><textarea id="f-cause" placeholder="Be honest with yourself&#8230;"></textarea></div>
-          <div class="field"><label>One observation for next time</label><textarea id="f-obs" placeholder="What will you carry forward?"></textarea></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveEntry()">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5 5.5-5.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Save Entry
-      </button>
     </div>
   </div>
 </div>
 
 <script>
-let trades=JSON.parse(localStorage.getItem('nq-v2')||'[]');
-let editId=null,currentPage='ledger';
-const ALL_CLS=['a','a-long','a-short','a-win','a-loss','a-warn'];
-const $=id=>document.getElementById(id);
-const uid=()=>Date.now()+Math.random().toString(36).slice(2,7);
-function clr(g){$(g)?.querySelectorAll('.tog').forEach(b=>ALL_CLS.forEach(c=>b.classList.remove(c)))}
-function clrS(g){$(g)?.querySelectorAll('.scl').forEach(b=>b.classList.remove('a'))}
-function tog1(g,b,c){clr(g);b.classList.add(c)}
-function togM(g,b){b.classList.toggle('a')}
-function togDir(b,d){clr('g-dir');b.classList.add(d==='Long'?'a-long':'a-short')}
-function togResult(b,r){clr('g-result');b.classList.add(r==='Won'?'a-win':'a-loss')}
-function scl(g,b){clrS(g);b.classList.add('a')}
-function getA(g){return $(g)?.querySelector(ALL_CLS.map(c=>'.'+c).join(','))?.textContent.trim()||''}
-function getM(g){return [...($(g)?.querySelectorAll('.a')||[])].map(b=>b.textContent.trim()).join(', ')}
-function getSc(g){return $(g)?.querySelector('.scl.a')?.textContent.trim()||''}
-function val(id){return $(id)?.value||''}
-function setv(id,v){const el=$(id);if(el)el.value=v||''}
-function readForm(){return{id:editId||uid(),date:val('f-date'),time:val('f-time'),type:getA('g-type'),direction:getA('g-dir'),strategy:getA('g-strat'),entry:val('f-entry'),stop:val('f-stop'),target:val('f-target'),maxrisk:val('f-maxrisk'),leglow:val('f-leglow'),leghigh:val('f-leghigh'),cp1:val('f-cp1'),reentry:val('f-reentry'),rr:getA('g-rr'),conviction:getSc('g-conv'),urgency:getSc('g-urg'),emoPre:getM('g-emo-pre'),notes:val('f-notes'),result:getA('g-result'),exit:val('f-exit'),pnl:val('f-pnl'),exitType:getA('g-exit-type'),mistake:getA('g-mistake'),emoMid:getM('g-emo-mid'),cause:val('f-cause'),observation:val('f-obs')}}
-function findBtn(g,txt){return[...($(g)?.querySelectorAll('.tog')||[])].find(b=>b.textContent.trim()===txt)}
-function setTog(g,v,c){if(!v)return;clr(g);const b=findBtn(g,v);if(b)b.classList.add(c)}
-function setMT(g,v){if(!v)return;v.split(', ').forEach(x=>{const b=findBtn(g,x.trim());if(b)b.classList.add('a')})}
-function setSc(g,v){if(!v)return;clrS(g);$(g)?.querySelectorAll('.scl').forEach(b=>{if(b.textContent.trim()===v)b.classList.add('a')})}
-function fillForm(t){
-  ['date','time','entry','stop','target','maxrisk','leglow','leghigh','cp1','reentry','notes','exit','pnl','cause','observation'].forEach(k=>setv('f-'+k,t[k]));
-  setTog('g-type',t.type,'a');
-  if(t.direction){clr('g-dir');const b=findBtn('g-dir',t.direction);if(b)b.classList.add(t.direction==='Long'?'a-long':'a-short')}
-  setTog('g-strat',t.strategy,'a');setTog('g-rr',t.rr,'a');
-  setSc('g-conv',t.conviction);setSc('g-urg',t.urgency);setMT('g-emo-pre',t.emoPre);
-  if(t.result){clr('g-result');const b=findBtn('g-result',t.result);if(b)b.classList.add(t.result==='Won'?'a-win':'a-loss')}
-  setTog('g-exit-type',t.exitType,'a');
-  const mc=(t.mistake&&t.mistake!=='None')?'a-warn':'a';setTog('g-mistake',t.mistake,mc);
-  setMT('g-emo-mid',t.emoMid);
-}
-function resetForm(){
-  ['f-date','f-time','f-entry','f-stop','f-target','f-maxrisk','f-leglow','f-leghigh','f-cp1','f-reentry','f-notes','f-exit','f-pnl','f-cause','f-obs'].forEach(id=>setv(id,''));
-  ['g-type','g-dir','g-strat','g-rr','g-emo-pre','g-result','g-exit-type','g-mistake','g-emo-mid'].forEach(clr);
-  ['g-conv','g-urg'].forEach(clrS);
-}
-function openModal(id){
-  resetForm();editId=id||null;
-  $('modal-title').textContent=id?'Edit Trade':'Log Trade';
-  if(id){const t=trades.find(x=>x.id===id);if(t)fillForm(t)}
-  else{const n=new Date();setv('f-date',n.toISOString().slice(0,10));setv('f-time',n.toTimeString().slice(0,5))}
-  switchTab('before');$('modal-bg').classList.add('open');
-}
-function closeModal(){$('modal-bg').classList.remove('open');editId=null}
-function bgClick(e){if(e.target===$('modal-bg'))closeModal()}
-function switchTab(tab){
-  document.querySelectorAll('.seg-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='before')||(i===1&&tab==='after')));
-  $('tab-before').classList.toggle('active',tab==='before');
-  $('tab-after').classList.toggle('active',tab==='after');
-}
-function saveEntry(){
-  const t=readForm();if(!t.date){alert('Please add a date.');return}
-  if(editId){const i=trades.findIndex(x=>x.id===editId);if(i>-1)trades[i]=t}else trades.push(t);
-  persist();closeModal();
-}
-function del(id){if(!confirm('Remove this entry?'))return;trades=trades.filter(t=>t.id!==id);persist()}
-function persist(){localStorage.setItem('nq-v2',JSON.stringify(trades));render();stats();if(currentPage==='insights')renderInsights()}
+// ── STATE ──
+let trades = JSON.parse(localStorage.getItem('nq-v3') || '[]');
+let editingId = null;
+let entryRowActive = false;
+let curPage = 'ledger';
+const DEFAULT_STOP_PTS = 25;  // default stop distance in points
+const PTS_PER_CONTRACT = 20;  // NQ: $20 per point per contract
 
-function showPage(page,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-  $('page-'+page).classList.add('active');btn.classList.add('active');
-  $('toolbar').style.display=page==='ledger'?'flex':'none';
-  currentPage=page;if(page==='insights')renderInsights();
+const $ = id => document.getElementById(id);
+const uid = () => Date.now() + Math.random().toString(36).slice(2,7);
+const ALL_CLS = ['a','a-long','a-short','a-win','a-loss','a-warn'];
+
+function persist() {
+  localStorage.setItem('nq-v3', JSON.stringify(trades));
+  render(); updateStats();
+  if (curPage === 'insights') renderInsights();
 }
 
-function dots(v){const n=parseInt(v)||0;return '<div class="dots">'+Array.from({length:5},(_,i)=>'<div class="dot'+(i<n?' on':'')+'"></div>').join('')+'</div>'}
-
-function render(){
-  const tbody=$('ledger-body'),empty=$('empty-state');
-  if(!trades.length){tbody.innerHTML='';empty.style.display='block';return}
-  empty.style.display='none';
-  tbody.innerHTML=trades.map((t,i)=>{
-    const dir=t.direction==='Long'?'<span class="badge b-long">Long</span>':t.direction==='Short'?'<span class="badge b-short">Short</span>':'<span class="dash">&mdash;</span>';
-    const res=t.result==='Won'?'<span class="badge b-win">Won</span>':t.result==='Lost'?'<span class="badge b-loss">Lost</span>':'<span class="dash">&mdash;</span>';
-    const typ=t.type==='Scalp'?'<span class="badge b-scalp">'+t.type+'</span>':t.type?'<span class="badge b-type">'+t.type+'</span>':'<span class="dash">&mdash;</span>';
-    const pv=parseFloat(t.pnl);
-    const pnl=t.pnl?'<span class="'+(pv>0?'pnl-pos':pv<0?'pnl-neg':'dash')+'">'+(pv>0?'+':'')+'$'+t.pnl+'</span>':'<span class="dash">&mdash;</span>';
-    const mist=(t.mistake&&t.mistake!=='None')?'<span style="color:var(--warn);font-size:12px">'+t.mistake+'</span>':'<span class="dash">&mdash;</span>';
-    const n=s=>s?'<span>'+s+'</span>':'<span class="dash">&mdash;</span>';
-    return '<tr><td style="color:var(--muted2);font-size:12px">'+(i+1)+'</td><td>'+(t.date||'<span class="dash">&mdash;</span>')+'</td><td style="color:var(--muted)">'+(t.time||'&mdash;')+'</td><td>'+typ+'</td><td>'+dir+'</td><td><span class="truncate" title="'+(t.strategy||'')+'">'+( t.strategy||'<span class="dash">&mdash;</span>')+'</span></td><td style="font-variant-numeric:tabular-nums">'+n(t.entry)+'</td><td style="font-variant-numeric:tabular-nums">'+n(t.stop)+'</td><td style="font-variant-numeric:tabular-nums">'+n(t.target)+'</td><td style="font-variant-numeric:tabular-nums">'+n(t.exit)+'</td><td style="color:var(--muted)">'+(t.rr||'&mdash;')+'</td><td>'+res+'</td><td>'+pnl+'</td><td>'+mist+'</td><td>'+dots(t.conviction)+'</td><td>'+dots(t.urgency)+'</td><td><span class="truncate" style="color:var(--muted);font-size:12px" title="'+(t.emoPre||'')+'">'+( t.emoPre||'&mdash;')+'</span></td><td><span class="truncate" style="color:var(--muted);font-size:12px" title="'+(t.emoMid||'')+'">'+( t.emoMid||'&mdash;')+'</span></td><td><span class="truncate" style="max-width:180px;font-size:12px" title="'+(t.observation||'')+'">'+( t.observation||'&mdash;')+'</span></td><td><div class="row-actions"><button class="icon-btn" onclick="openModal(\''+t.id+'\')" title="Edit"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2-6 6H2.5v-2l6-6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button><button class="icon-btn del" onclick="del(\''+t.id+'\')" title="Delete"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div></td></tr>';
-  }).join('');
+function showPage(p, btn) {
+  document.querySelectorAll('.pg').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(x => x.classList.remove('on'));
+  $('page-' + p).classList.add('on');
+  btn.classList.add('on');
+  $('toolbar').style.display = p === 'ledger' ? 'flex' : 'none';
+  curPage = p;
+  if (p === 'insights') renderInsights();
 }
 
-function stats(){
-  const n=trades.length;
-  const wins=trades.filter(t=>t.result==='Won').length;
-  const wr=n>0?Math.round(wins/n*100):null;
-  const pArr=trades.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v));
-  const pnl=pArr.length?pArr.reduce((a,b)=>a+b,0):null;
-  $('stat-count').textContent=n||'&mdash;';
-  const we=$('stat-wr');we.textContent=wr!=null?wr+'%':'&mdash;';we.className='stat-val'+(wr!=null?(wr>=50?' green':' red'):'');
-  const pe=$('stat-pnl');pe.textContent=pnl!=null?(pnl>=0?'+$'+pnl.toFixed(0):'\u2212$'+Math.abs(pnl).toFixed(0)):'&mdash;';pe.className='stat-val'+(pnl!=null?(pnl>=0?' green':' red'):'');
+// ── PILL / SCALE HELPERS ──
+const clrPills = grp => grp.querySelectorAll('.ep').forEach(b => ALL_CLS.forEach(c => b.classList.remove(c)));
+const tog1 = (grp, btn, cls) => { clrPills(grp); btn.classList.add(cls); };
+const togM = btn => btn.classList.toggle('a');
+const sclClick = (grpEl, btn) => { grpEl.querySelectorAll('.sc').forEach(b => b.classList.remove('a')); btn.classList.add('a'); };
+const getActive = grp => grp.querySelector(ALL_CLS.map(c => '.ep.' + c).join(','))?.textContent.trim() || '';
+const getMulti = grp => [...grp.querySelectorAll('.ep.a')].map(b => b.textContent.trim()).join(', ');
+const getScale = grp => grp.querySelector('.sc.a')?.textContent.trim() || '';
+
+// ── CALCULATION ENGINE ──
+// P&L = (exit - entry) * direction_sign * contracts * $20/pt
+// direction_sign: Long = +1, Short = -1
+function calcPnl(entry, exit, direction, contracts) {
+  entry = parseFloat(entry); exit = parseFloat(exit);
+  contracts = parseInt(contracts) || 1;
+  if (isNaN(entry) || isNaN(exit) || !direction) return null;
+  const sign = direction === 'Short' ? -1 : 1;
+  return (sign * (exit - entry) * contracts * PTS_PER_CONTRACT).toFixed(0);
 }
 
-function renderInsights(){
-  const n=trades.length;
-  if(!n){$('ins-empty').style.display='block';$('ins-content').style.display='none';return}
-  $('ins-empty').style.display='none';$('ins-content').style.display='block';
-  const won=trades.filter(t=>t.result==='Won');
-  const lost=trades.filter(t=>t.result==='Lost');
+// Auto-set stop: entry ± 25pts based on direction
+function autoStop(entry, direction) {
+  entry = parseFloat(entry);
+  if (isNaN(entry) || !direction) return '';
+  return direction === 'Long' ? (entry - DEFAULT_STOP_PTS).toFixed(2) : (entry + DEFAULT_STOP_PTS).toFixed(2);
+}
+
+// ── RECALC (called on any relevant input change) ──
+function recalc() {
+  const entryEl = $('er-entry'), exitEl = $('er-exit');
+  const stopEl = $('er-stop'), contractsEl = $('er-contracts');
+  const dirGrp = $('er-dir');
+  const pnlEl = $('er-pnl');
+  if (!entryEl || !exitEl || !pnlEl) return;
+
+  const entry = entryEl.value, exit = exitEl.value;
+  const direction = dirGrp ? getActive(dirGrp) : '';
+  const contracts = contractsEl ? contractsEl.value : '1';
+
+  // Auto-fill stop if entry exists and direction chosen and stop is still empty
+  if (stopEl && entry && direction && !stopEl.dataset.userEdited) {
+    stopEl.value = autoStop(entry, direction);
+  }
+
+  // Calc P&L
+  const pnl = calcPnl(entry, exit, direction, contracts);
+  if (pnl !== null) {
+    const v = parseFloat(pnl);
+    pnlEl.textContent = (v >= 0 ? '+$' : '-$') + Math.abs(v).toLocaleString();
+    pnlEl.className = 'pnl-calc ' + (v >= 0 ? 'pos' : 'neg');
+    pnlEl.dataset.value = pnl;
+  } else {
+    pnlEl.textContent = 'auto';
+    pnlEl.className = 'pnl-calc';
+    pnlEl.dataset.value = '';
+  }
+}
+
+// ── BUILD ENTRY ROW ──
+function addRow(tradeToEdit) {
+  if (entryRowActive) cancelEntry();
+  entryRowActive = true;
+  editingId = tradeToEdit ? tradeToEdit.id : null;
+  const t = tradeToEdit || {};
+  const now = new Date();
+
+  const tr = document.createElement('tr');
+  tr.className = 'entry-row';
+  tr.id = 'entry-row';
+
+  // helper: labelled cell
+  function cell(label, ...children) {
+    const td = document.createElement('td');
+    if (label) {
+      const l = document.createElement('div');
+      l.className = 'er-label'; l.textContent = label;
+      td.appendChild(l);
+    }
+    children.forEach(c => td.appendChild(c));
+    return td;
+  }
+
+  function inp(id, type, placeholder, value, widthPx, extra) {
+    const i = document.createElement('input');
+    i.type = type; i.id = 'er-' + id;
+    i.placeholder = placeholder || '';
+    i.value = value || '';
+    i.className = 'ei';
+    if (widthPx) i.style.width = widthPx + 'px';
+    if (extra) Object.assign(i, extra);
+    return i;
+  }
+
+  function pills(id, options, mode, activeVal, activeMulti) {
+    const div = document.createElement('div');
+    div.className = 'pg2'; div.id = 'er-' + id;
+    options.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'ep'; b.type = 'button'; b.textContent = opt;
+      if (mode === 'single') {
+        b.onclick = () => tog1(div, b, 'a');
+        if (activeVal === opt) b.classList.add('a');
+      } else if (mode === 'dir') {
+        b.onclick = () => {
+          clrPills(div); b.classList.add(opt === 'Long' ? 'a-long' : 'a-short');
+          setTimeout(() => {
+            const entry = parseFloat($('er-entry')?.value);
+            const dir = opt;
+            const sp=$('er-stop-pts'),stp=$('er-stop'),tp=$('er-target-pts'),tgt=$('er-target');
+            if(!isNaN(entry)){
+              if(sp&&sp.value&&!isNaN(parseFloat(sp.value))){const pts=parseFloat(sp.value);if(stp)stp.value=(dir==='Long'?entry-pts:entry+pts).toFixed(2);stp&&(stp.dataset.userEdited='1');}
+              if(tp&&tp.value&&!isNaN(parseFloat(tp.value))){const pts=parseFloat(tp.value);if(tgt)tgt.value=(dir==='Long'?entry+pts:entry-pts).toFixed(2);}
+            }
+            recalc();
+          }, 30);
+        };
+        if (activeVal === opt) b.classList.add(opt === 'Long' ? 'a-long' : 'a-short');
+      } else if (mode === 'result') {
+        b.onclick = () => { clrPills(div); b.classList.add(opt === 'Won' ? 'a-win' : 'a-loss'); };
+        if (activeVal === opt) b.classList.add(opt === 'Won' ? 'a-win' : 'a-loss');
+      } else if (mode === 'mistake') {
+        b.onclick = () => { clrPills(div); b.classList.add(opt === 'None' ? 'a' : 'a-warn'); };
+        if (activeVal === opt) b.classList.add(opt === 'None' ? 'a' : 'a-warn');
+      } else if (mode === 'multi') {
+        b.onclick = () => togM(b);
+        if (activeMulti && activeMulti.split(', ').map(x => x.trim()).includes(opt)) b.classList.add('a');
+      }
+      div.appendChild(b);
+    });
+    return div;
+  }
+
+  function scale(id, n, activeVal) {
+    const div = document.createElement('div');
+    div.className = 'sc-row'; div.id = 'er-' + id;
+    for (let i = 1; i <= n; i++) {
+      const b = document.createElement('button');
+      b.className = 'sc'; b.type = 'button'; b.textContent = i;
+      b.onclick = () => sclClick(div, b);
+      if (String(i) === activeVal) b.classList.add('a');
+      div.appendChild(b);
+    }
+    return div;
+  }
+
+  // ── DATE ──
+  const dateInp = inp('date', 'date', '', t.date || now.toISOString().slice(0,10), 110);
+
+  // ── ENTRY TIME ──
+  const timeInp = inp('time', 'time', '', t.time || now.toTimeString().slice(0,5), 80);
+
+  // ── EXIT TIME ──
+  const timeExitInp = inp('time-exit', 'time', '', t.timeExit || '', 80);
+
+  // ── TRADE TYPE ──
+  const typePills = pills('type', ['Outer Edge','Channel Edge','Broken Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum'], 'single', t.type);
+
+  // ── DIRECTION ──
+  const dirPills = pills('dir', ['Long','Short'], 'dir', t.direction);
+
+  // ── STRATEGY ──
+  // ── SETUP ATTRIBUTES checkboxes ──
+  const ATTRS = [
+    'Charged Line',
+    'Expansion',
+    'Trendy Market',
+    'Overlapping Market',
+    'On Support',
+    'At Resistance',
+    '3rd Hit',
+    '4th Hit',
+    'Immediate Reclaim',
+    'EMA 200',
+    'VWAP',
+    'Gap Down',
+    'Gap Up',
+  ];
+  const attrDiv = document.createElement('div');
+  attrDiv.style.cssText = 'display:flex;flex-direction:column;gap:2px;min-width:140px';
+  attrDiv.id = 'er-attrs';
+  const attrGrid = document.createElement('div');
+  attrGrid.style.cssText = 'display:grid;grid-template-columns:1fr;gap:2px';
+  const savedAttrs = (t.attrs || '').split(',').map(x=>x.trim()).filter(Boolean);
+  ATTRS.forEach(attr => {
+    const lbl = document.createElement('label');
+    lbl.style.cssText = 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:2px 0;font-size:10.5px;color:var(--text2);white-space:nowrap;user-select:none';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.value = attr;
+    cb.style.cssText = 'width:13px;height:13px;accent-color:var(--accent);cursor:pointer;flex-shrink:0';
+    cb.checked = savedAttrs.includes(attr);
+    lbl.appendChild(cb);
+    lbl.appendChild(document.createTextNode(attr));
+    attrGrid.appendChild(lbl);
+  });
+  attrDiv.appendChild(attrGrid);
+
+  // ── ENTRY PRICE ──
+  const entryInp = inp('entry', 'number', 'e.g. 21450', t.entry, 88, {step:'0.25'});
+  entryInp.addEventListener('input', () => {
+    // Re-derive pts fields when entry price is manually changed
+    const entry = parseFloat(entryInp.value);
+    const dir = getActive($('er-dir'));
+    const sp = $('er-stop-pts'), stp = $('er-stop');
+    const tp = $('er-target-pts'), tgt = $('er-target');
+    if (!isNaN(entry) && dir) {
+      if (sp && sp.value && !isNaN(parseFloat(sp.value))) {
+        const pts = parseFloat(sp.value);
+        if (stp) stp.value = (dir==='Long'?entry-pts:entry+pts).toFixed(2);
+      }
+      if (tp && tp.value && !isNaN(parseFloat(tp.value))) {
+        const pts = parseFloat(tp.value);
+        if (tgt) tgt.value = (dir==='Long'?entry+pts:entry-pts).toFixed(2);
+      }
+    }
+    recalc();
+  });
+
+  // ── STOP — price input + quick point presets ──
+  const stopInp = inp('stop', 'number', 'Price', t.stop, 80, {step:'0.25'});
+  stopInp.addEventListener('input', () => { stopInp.dataset.userEdited = '1'; recalc(); });
+
+  // Stop points input (user types points, price auto-fills)
+  const stopPtsInp = document.createElement('input');
+  stopPtsInp.type = 'number'; stopPtsInp.className = 'ei'; stopPtsInp.id = 'er-stop-pts';
+  stopPtsInp.placeholder = 'pts'; stopPtsInp.step = '0.25';
+  stopPtsInp.style.cssText = 'width:52px;margin-top:3px';
+  stopPtsInp.title = 'Stop in points — auto-fills price above';
+  if (t.stop && t.entry) {
+    const pts = Math.abs(parseFloat(t.entry) - parseFloat(t.stop));
+    if (!isNaN(pts)) stopPtsInp.value = pts.toFixed(2);
+  }
+  stopPtsInp.addEventListener('input', () => {
+    const entry = parseFloat($('er-entry')?.value);
+    const dir = getActive($('er-dir'));
+    const pts = parseFloat(stopPtsInp.value);
+    if (!isNaN(entry) && dir && !isNaN(pts)) {
+      stopInp.value = (dir === 'Long' ? entry - pts : entry + pts).toFixed(2);
+      stopInp.dataset.userEdited = '1';
+      recalc();
+    }
+  });
+
+  // Quick preset buttons
+  const stopQuick = document.createElement('div');
+  stopQuick.className = 'stop-quick';
+  [{label:'25 ✦',pts:25},{label:'20',pts:20},{label:'30',pts:30},{label:'15',pts:15}].forEach(({label,pts}) => {
+    const b = document.createElement('button');
+    b.type='button'; b.className='sq'; b.textContent=label;
+    b.title=`Set ${pts}-pt stop`;
+    b.onclick = () => {
+      const entry = parseFloat($('er-entry')?.value);
+      const dir = getActive($('er-dir'));
+      if (isNaN(entry)) { alert('Enter price first.'); return; }
+      if (!dir) { alert('Select direction first.'); return; }
+      stopPtsInp.value = pts;
+      stopInp.value = (dir==='Long' ? entry-pts : entry+pts).toFixed(2);
+      stopInp.dataset.userEdited = '1';
+      recalc();
+    };
+    stopQuick.appendChild(b);
+  });
+
+  const stopWrap = document.createElement('div');
+  stopWrap.className = 'stop-wrap';
+  const stopRow = document.createElement('div');
+  stopRow.style.cssText='display:flex;gap:4px;align-items:center';
+  const stopPriceLabel = document.createElement('span');
+  stopPriceLabel.style.cssText='font-size:10px;color:var(--muted)';stopPriceLabel.textContent='$';
+  const stopPtsLabel = document.createElement('span');
+  stopPtsLabel.style.cssText='font-size:10px;color:var(--muted)';stopPtsLabel.textContent='pts';
+  stopRow.appendChild(stopPriceLabel); stopRow.appendChild(stopInp);
+  stopRow.appendChild(stopPtsLabel); stopRow.appendChild(stopPtsInp);
+  stopWrap.appendChild(stopRow);
+  stopWrap.appendChild(stopQuick);
+
+  // ── TARGET — price input + points input ──
+  const targetInp = inp('target', 'number', 'Price', t.target, 80, {step:'0.25'});
+  const targetPtsInp = document.createElement('input');
+  targetPtsInp.type='number'; targetPtsInp.className='ei'; targetPtsInp.id='er-target-pts';
+  targetPtsInp.placeholder='pts'; targetPtsInp.step='0.25';
+  targetPtsInp.style.cssText='width:52px;margin-top:0';
+  targetPtsInp.title='Target in points — auto-fills price above';
+  if (t.target && t.entry) {
+    const pts = Math.abs(parseFloat(t.target) - parseFloat(t.entry));
+    if (!isNaN(pts)) targetPtsInp.value = pts.toFixed(2);
+  }
+  targetPtsInp.addEventListener('input', () => {
+    const entry = parseFloat($('er-entry')?.value);
+    const dir = getActive($('er-dir'));
+    const pts = parseFloat(targetPtsInp.value);
+    if (!isNaN(entry) && dir && !isNaN(pts)) {
+      targetInp.value = (dir === 'Long' ? entry + pts : entry - pts).toFixed(2);
+      recalc();
+    }
+  });
+  targetInp.addEventListener('input', recalc);
+
+  const targetWrap = document.createElement('div');
+  targetWrap.className = 'stop-wrap';
+  const targetRow = document.createElement('div');
+  targetRow.style.cssText='display:flex;gap:4px;align-items:center';
+  const tPriceLabel = document.createElement('span');
+  tPriceLabel.style.cssText='font-size:10px;color:var(--muted)';tPriceLabel.textContent='$';
+  const tPtsLabel = document.createElement('span');
+  tPtsLabel.style.cssText='font-size:10px;color:var(--muted)';tPtsLabel.textContent='pts';
+  targetRow.appendChild(tPriceLabel); targetRow.appendChild(targetInp);
+  targetRow.appendChild(tPtsLabel); targetRow.appendChild(targetPtsInp);
+  targetWrap.appendChild(targetRow);
+
+  // ── EXIT PRICE ──
+  const exitInp = inp('exit', 'number', 'e.g. 21490', t.exit, 88, {step:'0.25'});
+  exitInp.addEventListener('input', recalc);
+
+  // ── P&L (auto-calc display) ──
+  const pnlDisp = document.createElement('div');
+  pnlDisp.className = 'pnl-calc';
+  pnlDisp.id = 'er-pnl';
+  pnlDisp.textContent = 'auto';
+  if (t.pnl) {
+    const v = parseFloat(t.pnl);
+    pnlDisp.textContent = (v>=0?'+$':'-$') + Math.abs(v).toLocaleString();
+    pnlDisp.className = 'pnl-calc ' + (v>=0?'pos':'neg');
+    pnlDisp.dataset.value = t.pnl;
+  }
+
+  // contracts input
+  const contractsInp = inp('contracts', 'number', '1', t.contracts || '1', 40, {min:'1'});
+  contractsInp.addEventListener('input', recalc);
+  const contractsRow = document.createElement('div');
+  contractsRow.style.cssText = 'display:flex;align-items:center;gap:4px;margin-top:4px;font-size:10px;color:var(--muted)';
+  const qtyLabel = document.createElement('span'); qtyLabel.textContent = 'Qty:';
+  contractsRow.appendChild(qtyLabel); contractsRow.appendChild(contractsInp);
+
+  const pnlCell = cell('P&L');
+  pnlCell.appendChild(pnlDisp);
+  pnlCell.appendChild(contractsRow);
+
+  // ── R:R ──
+  const rrPills = pills('rr', ['1:1','1:1.5','1:2','1:3'], 'single', t.rr);
+
+  // ── RESULT ──
+  const resultPills = pills('result', ['Won','Lost'], 'result', t.result);
+
+  // ── EXIT TYPE ──
+  const exitTypePills = pills('exit-type', ['TP Hit','Partial','Early','SL Hit'], 'single', t.exitType);
+
+  // ── MISTAKE ──
+  const mistakePills = pills('mistake', ['None','Profit early','Stop too tight','Forced pattern','No clear setup','Oversized','Ignored plan','Other'], 'mistake', t.mistake);
+
+  // ── CONVICTION & URGENCY ──
+  const convScale = scale('conv', 5, t.conviction);
+  const urgScale = scale('urg', 5, t.urgency);
+
+  // ── EMOTIONS ──
+  const emoPrePills = pills('emo-pre', ['Calm','Confident','Patient','Anxious','FOMO','Doubtful','Rushed','Revenge'], 'multi', '', t.emoPre);
+  const emoMidPills = pills('emo-mid', ['Ease','Trust','Proud','Tension','Relief-seeking','Scarcity','Fear','Impatient'], 'multi', '', t.emoMid);
+
+  // ── OBSERVATION ──
+  const obsInp = document.createElement('input');
+  obsInp.type = 'text'; obsInp.id = 'er-obs'; obsInp.className = 'ei';
+  obsInp.placeholder = 'Observation...'; obsInp.value = t.observation || '';
+  obsInp.style.width = '170px';
+
+  // ── ACTIONS ──
+  const saveBtn = document.createElement('button');
+  saveBtn.type = 'button'; saveBtn.className = 'save-btn'; saveBtn.textContent = 'Save';
+  saveBtn.onclick = saveEntry;
+  const cancelBtn = document.createElement('button');
+  cancelBtn.type = 'button'; cancelBtn.className = 'cancel-btn'; cancelBtn.textContent = '✕';
+  cancelBtn.onclick = cancelEntry;
+  const actWrap = document.createElement('div');
+  actWrap.style.cssText = 'display:flex;flex-direction:column;gap:5px';
+  actWrap.appendChild(saveBtn); actWrap.appendChild(cancelBtn);
+
+  // ── ASSEMBLE CELLS ──
+  tr.appendChild(cell('', document.createTextNode('')));                // #
+  tr.appendChild(cell('Date', dateInp));                               // Date
+  tr.appendChild(cell('Entry', timeInp));                              // Entry Time
+  tr.appendChild(cell('Exit', timeExitInp));                           // Exit Time
+  tr.appendChild(cell('Type', typePills));                             // Type
+  tr.appendChild(cell('Direction', dirPills));                         // Dir
+  tr.appendChild(cell('Setup Attributes', attrDiv));                   // Attributes
+  tr.appendChild(cell('Entry $', entryInp));                           // Entry price
+  tr.appendChild(cell('Stop ($·pts)', stopWrap));                     // Stop + pts
+  tr.appendChild(cell('Target ($·pts)', targetWrap));                  // Target + pts
+  tr.appendChild(cell('Exit $', exitInp));                             // Exit price
+
+  // ── DRAWDOWN ──
+  const ddInp = document.createElement('input');
+  ddInp.type='number'; ddInp.id='er-drawdown'; ddInp.className='ei';
+  ddInp.placeholder='e.g. 8'; ddInp.step='0.25'; ddInp.value=t.drawdown||'';
+  ddInp.style.width='70px';
+  ddInp.title='Max adverse excursion in points from entry';
+  const ddWrap = document.createElement('div');
+  ddWrap.style.cssText='display:flex;flex-direction:column;gap:2px';
+  const ddNote = document.createElement('div');
+  ddNote.style.cssText='font-size:9px;color:var(--muted);margin-top:2px';
+  ddNote.textContent='pts from entry';
+  ddWrap.appendChild(ddInp); ddWrap.appendChild(ddNote);
+  tr.appendChild(cell('Drawdown (pts)', ddWrap));                       // Drawdown
+  tr.appendChild(pnlCell);                                             // P&L auto
+  tr.appendChild(cell('R:R', rrPills));                                // R:R
+  tr.appendChild(cell('Result', resultPills));                         // Result
+  tr.appendChild(cell('Exit Type', exitTypePills));                    // Exit type
+  // ── IF STOPPED plan ──
+  const ifStoppedPills = pills('if-stopped', ['Plan B','Reverse','Observe'], 'single', t.ifStopped);
+  tr.appendChild(cell('Mistake', mistakePills));                       // Mistake
+  tr.appendChild(cell('If Stopped', ifStoppedPills));                  // Plan B
+  tr.appendChild(cell('Conv', convScale));                             // Conviction
+  tr.appendChild(cell('Urgency', urgScale));                           // Urgency
+  tr.appendChild(cell('Pre-Emotion', emoPrePills));                    // Pre emotions
+  tr.appendChild(cell('Mid-Emotion', emoMidPills));                    // Mid emotions
+  tr.appendChild(cell('Observation', obsInp));                         // Observation
+  tr.appendChild(cell('', actWrap));                                   // Actions
+
+  const tbody = $('tbody');
+  if (editingId) {
+    const existingRow = document.getElementById('row-' + editingId);
+    if (existingRow) { tbody.insertBefore(tr, existingRow); existingRow.style.display = 'none'; }
+    else tbody.insertBefore(tr, tbody.firstChild);
+  } else {
+    tbody.insertBefore(tr, tbody.firstChild);
+  }
+
+  $('empty-state').style.display = 'none';
+  dateInp.focus();
+
+  // If editing, trigger recalc to show existing PnL
+  if (tradeToEdit) setTimeout(recalc, 50);
+}
+
+// ── SAVE ──
+function saveEntry() {
+  const gv = id => { const el = $(id); return el ? el.value : ''; };
+  const gp = id => { const el = $(id); return el ? getActive(el) : ''; };
+  const gm = id => { const el = $(id); return el ? getMulti(el) : ''; };
+  const gs = id => { const el = $(id); return el ? getScale(el) : ''; };
+
+  const pnlEl = $('er-pnl');
+  const pnl = pnlEl && pnlEl.dataset.value ? pnlEl.dataset.value
+    : calcPnl(gv('er-entry'), gv('er-exit'), gp('er-dir'), gv('er-contracts')) || '';
+
+  const t = {
+    id: editingId || uid(),
+    date: gv('er-date'), time: gv('er-time'), timeExit: gv('er-time-exit'),
+    type: gp('er-type'), direction: gp('er-dir'),
+    strategy: gp('er-strat'),
+    entry: gv('er-entry'), stop: gv('er-stop'), target: gv('er-target'), exit: gv('er-exit'),
+    pnl, contracts: gv('er-contracts') || '1',
+    rr: gp('er-rr'), result: gp('er-result'),
+    exitType: gp('er-exit-type'), mistake: gp('er-mistake'), ifStopped: gp('er-if-stopped'),
+    conviction: gs('er-conv'), urgency: gs('er-urg'),
+    emoPre: gm('er-emo-pre'), emoMid: gm('er-emo-mid'),
+    drawdown: gv('er-drawdown'),
+    attrs: (() => { const el=$('er-attrs'); if(!el) return ''; return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value).join(', '); })(),
+    observation: gv('er-obs'),
+  };
+
+  if (!t.date) { alert('Please set a date.'); return; }
+
+  // Remove entry row and any hidden original
+  const entRow = $('entry-row');
+  if (entRow) entRow.remove();
+  if (editingId) {
+    const orig = document.getElementById('row-' + editingId);
+    if (orig) orig.remove();
+    const idx = trades.findIndex(x => x.id === editingId);
+    if (idx > -1) trades[idx] = t; else trades.unshift(t);
+  } else {
+    trades.unshift(t);
+  }
+
+  entryRowActive = false; editingId = null;
+  persist();
+}
+
+// ── CANCEL ──
+function cancelEntry() {
+  const entRow = $('entry-row');
+  if (entRow) entRow.remove();
+  // Show hidden row if editing
+  if (editingId) {
+    const orig = document.getElementById('row-' + editingId);
+    if (orig) orig.style.display = '';
+  }
+  entryRowActive = false; editingId = null;
+  if (!trades.length) $('empty-state').style.display = 'block';
+}
+
+// ── EDIT / DELETE ──
+function editTrade(id) {
+  const t = trades.find(x => x.id === id);
+  if (!t) return;
+  if (entryRowActive) cancelEntry();
+  editingId = id;
+  entryRowActive = true;
+  const existingRow = document.getElementById('row-' + id);
+  if (existingRow) existingRow.style.display = 'none';
+  addRow(t);
+}
+
+function deleteTrade(id) {
+  if (!confirm('Remove this trade?')) return;
+  trades = trades.filter(t => t.id !== id);
+  persist();
+}
+
+// ── RENDER LEDGER ──
+function dots(v) {
+  const n = parseInt(v)||0;
+  return '<div class="dots">' + Array.from({length:5},(_,i)=>`<div class="dot${i<n?' on':''}"></div>`).join('') + '</div>';
+}
+
+function render() {
+  const tbody = $('tbody');
+  // Remove only non-entry display rows
+  tbody.querySelectorAll('tr:not(.entry-row)').forEach(r => r.remove());
+
+  if (!trades.length && !entryRowActive) {
+    $('empty-state').style.display = 'block'; return;
+  }
+  $('empty-state').style.display = 'none';
+
+  trades.forEach((t, i) => {
+    const tr = document.createElement('tr');
+    tr.id = 'row-' + t.id;
+    if (editingId === t.id) tr.style.display = 'none';
+
+    const dir = t.direction==='Long'?'<span class="badge b-long">Long</span>'
+      :t.direction==='Short'?'<span class="badge b-short">Short</span>':'<span class="dash">—</span>';
+    const res = t.result==='Won'?'<span class="badge b-win">Won</span>'
+      :t.result==='Lost'?'<span class="badge b-loss">Lost</span>':'<span class="dash">—</span>';
+    const typ = t.type==='Scalp'?`<span class="badge b-scalp">${t.type}</span>`
+      :t.type?`<span class="badge b-type">${t.type}</span>`:'<span class="dash">—</span>';
+
+    const pv = parseFloat(t.pnl);
+    const pnlStr = t.pnl
+      ? `<span class="${pv>0?'pnl-p':pv<0?'pnl-n':'dash'}">${pv>0?'+':pv<0?'-':''}$${Math.abs(pv).toLocaleString()}</span>`
+      : '<span class="dash">—</span>';
+
+    const mist = (t.mistake && t.mistake!=='None')
+      ? `<span style="color:var(--warn);font-size:11px">${t.mistake}</span>`
+      : '<span class="dash">—</span>';
+
+    const d = s => s||'<span class="dash">—</span>';
+
+    tr.innerHTML = `
+      <td style="color:var(--muted2);font-size:11px">${i+1}</td>
+      <td>${d(t.date)}</td>
+      <td style="color:var(--muted)">${d(t.time)}</td>
+      <td style="color:var(--muted)">${d(t.timeExit)}</td>
+      <td>${typ}</td><td>${dir}</td>
+      <td style="max-width:220px">${t.attrs ? t.attrs.split(', ').filter(Boolean).map(a=>`<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:10px;font-size:10px;background:var(--accent-light);color:var(--accent);margin:1px;white-space:nowrap">&#10003; ${a}</span>`).join('') : '<span class="dash">—</span>'}</td>
+      <td style="font-variant-numeric:tabular-nums">${d(t.entry)}</td>
+      <td style="font-variant-numeric:tabular-nums">${d(t.stop)}</td>
+      <td style="font-variant-numeric:tabular-nums">${d(t.target)}</td>
+      <td style="font-variant-numeric:tabular-nums">${d(t.exit)}</td>
+      <td style="font-variant-numeric:tabular-nums;color:${t.drawdown?'var(--warn)':'var(--muted2)'}">
+        ${t.drawdown ? t.drawdown+'pt' : '<span class="dash">—</span>'}
+      </td>
+      <td>${pnlStr}</td>
+      <td style="color:var(--muted)">${d(t.rr)}</td>
+      <td>${res}</td>
+      <td style="font-size:11px;color:var(--muted)">${d(t.exitType)}</td>
+      <td>${mist}</td>
+      <td>${t.ifStopped ? `<span style="display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500;background:${t.ifStopped==='Reverse'?'var(--loss-light)':t.ifStopped==='Plan B'?'var(--accent-light)':'var(--surface2)'};color:${t.ifStopped==='Reverse'?'var(--loss)':t.ifStopped==='Plan B'?'var(--accent)':'var(--muted)'};border:1px solid ${t.ifStopped==='Reverse'?'rgba(255,59,48,.2)':t.ifStopped==='Plan B'?'rgba(0,113,227,.2)':'var(--border-strong)'}">${t.ifStopped}</span>` : '<span class="dash">—</span>'}</td>
+      <td>${dots(t.conviction)}</td>
+      <td>${dots(t.urgency)}</td>
+      <td><span class="trunc" style="color:var(--muted);font-size:11px" title="${t.emoPre||''}">${d(t.emoPre)}</span></td>
+      <td><span class="trunc" style="color:var(--muted);font-size:11px" title="${t.emoMid||''}">${d(t.emoMid)}</span></td>
+      <td><span class="trunc" style="max-width:150px;font-size:11px" title="${t.observation||''}">${d(t.observation)}</span></td>
+      <td>
+        <div class="ra">
+          <button class="ib" onclick="editTrade('${t.id}')" title="Edit">✎</button>
+          <button class="ib del" onclick="deleteTrade('${t.id}')" title="Delete">✕</button>
+        </div>
+      </td>`;
+
+    tbody.appendChild(tr);
+  });
+}
+
+// ── STATS ──
+function updateStats() {
+  const n = trades.length;
+  const wins = trades.filter(t => t.result==='Won').length;
+  const wr = n>0 ? Math.round(wins/n*100) : null;
+  const pArr = trades.map(t => parseFloat(t.pnl)).filter(v => !isNaN(v));
+  const pnl = pArr.length ? pArr.reduce((a,b)=>a+b,0) : null;
+
+  $('s-count').textContent = n||'—';
+  const we = $('s-wr');
+  we.textContent = wr!==null ? wr+'%' : '—';
+  we.className = 'st-v' + (wr!==null?(wr>=50?' g':' r'):'');
+  const pe = $('s-pnl');
+  pe.textContent = pnl!==null ? (pnl>=0?'+$':'-$')+Math.abs(pnl).toLocaleString() : '—';
+  pe.className = 'st-v' + (pnl!==null?(pnl>=0?' g':' r'):'');
+}
+
+// ── INSIGHTS ──
+function renderInsights() {
+  const n = trades.length;
+  if (!n) { $('ins-empty').style.display='block'; $('ins-content').style.display='none'; return; }
+  $('ins-empty').style.display='none'; $('ins-content').style.display='block';
+
+  const won=trades.filter(t=>t.result==='Won'), lost=trades.filter(t=>t.result==='Lost');
   const pArr=trades.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v));
   const netPnl=pArr.reduce((a,b)=>a+b,0);
-  const winPnls=won.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v)&&v>0);
-  const lossPnls=lost.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v)&&v<0);
-  const avgWin=winPnls.length?winPnls.reduce((a,b)=>a+b,0)/winPnls.length:0;
-  const avgLoss=lossPnls.length?lossPnls.reduce((a,b)=>a+b,0)/lossPnls.length:0;
+  const wPnls=won.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v)&&v>0);
+  const lPnls=lost.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v)&&v<0);
+  const avgW=wPnls.length?wPnls.reduce((a,b)=>a+b,0)/wPnls.length:0;
+  const avgL=lPnls.length?lPnls.reduce((a,b)=>a+b,0)/lPnls.length:0;
   const wr=Math.round(won.length/n*100);
-  const mistakeCount={};
-  trades.forEach(t=>{if(t.mistake&&t.mistake!=='None')mistakeCount[t.mistake]=(mistakeCount[t.mistake]||0)+1});
-  const mistakeTrades=Object.values(mistakeCount).reduce((a,b)=>a+b,0);
+  const mistMap={};
+  trades.forEach(t=>{if(t.mistake&&t.mistake!=='None')mistMap[t.mistake]=(mistMap[t.mistake]||0)+1});
+  const mistTotal=Object.values(mistMap).reduce((a,b)=>a+b,0);
 
-  // KPIs
-  $('kpi-grid').innerHTML=
-    '<div class="kpi-card"><div class="kpi-label">Total Trades</div><div class="kpi-val">'+n+'</div><div class="kpi-sub">'+won.length+'W &middot; '+lost.length+'L</div></div>'+
-    '<div class="kpi-card"><div class="kpi-label">Win Rate</div><div class="kpi-val '+(wr>=50?'green':'red')+'">'+wr+'%</div><div class="kpi-sub">'+won.length+' winning trades</div></div>'+
-    '<div class="kpi-card"><div class="kpi-label">Net P&amp;L</div><div class="kpi-val '+(netPnl>=0?'green':'red')+'">'+(netPnl>=0?'+':'\u2212')+'$'+Math.abs(netPnl).toFixed(0)+'</div><div class="kpi-sub">Avg win: '+(avgWin?'$'+avgWin.toFixed(0):'&mdash;')+'&nbsp;&middot;&nbsp;Avg loss: '+(avgLoss?'$'+Math.abs(avgLoss).toFixed(0):'&mdash;')+'</div></div>'+
-    '<div class="kpi-card"><div class="kpi-label">Discipline</div><div class="kpi-val '+(mistakeTrades===0?'green':mistakeTrades<=2?'':'red')+'">'+Math.round((1-mistakeTrades/Math.max(n,1))*100)+'%</div><div class="kpi-sub">Mistake-free rate &middot; '+mistakeTrades+' flagged</div></div>';
+  function kpi(l,v,s,cls=''){return`<div class="kpi"><div class="kpi-l">${l}</div><div class="kpi-v ${cls}">${v}</div><div class="kpi-s">${s}</div></div>`}
+  $('kpis').innerHTML=
+    kpi('Total Trades',n,`${won.length}W · ${lost.length}L`)+
+    kpi('Win Rate',wr+'%',`${won.length} winning trades`,wr>=50?'g':'r')+
+    kpi('Net P&L',(netPnl>=0?'+$':'-$')+Math.abs(netPnl).toLocaleString(),`Avg W: ${avgW?'$'+avgW.toFixed(0):'—'} · Avg L: ${avgL?'$'+Math.abs(avgL).toFixed(0):'—'}`,netPnl>=0?'g':'r')+
+    kpi('Discipline',Math.round((1-mistTotal/Math.max(n,1))*100)+'%',`${mistTotal} mistakes flagged`,mistTotal===0?'g':'')+
+    kpi('Avg Qty',(trades.map(t=>parseInt(t.contracts)||1).reduce((a,b)=>a+b,0)/n).toFixed(1),'contracts per trade');
 
-  // P&L Timeline
-  const tlTrades=trades.filter(t=>t.pnl).slice(-20);
-  const maxAbs=Math.max(...tlTrades.map(t=>Math.abs(parseFloat(t.pnl)||0)),1);
-  $('pnl-tl').innerHTML=tlTrades.length?tlTrades.map(t=>{
-    const v=parseFloat(t.pnl);const pct=Math.min(100,Math.abs(v)/maxAbs*100)*0.46;
-    return '<div class="pnl-row"><span class="pnl-date">'+(t.date?t.date.slice(5):t.time||'')+'</span><div class="pnl-bar-wrap"><div class="pnl-center"></div><div class="pnl-bar '+(v>=0?'pos':'neg')+'" style="width:'+pct+'%"></div></div><span class="pnl-amt '+(v>=0?'pos':'neg')+'">'+(v>=0?'+':'\u2212')+'$'+Math.abs(v).toFixed(0)+'</span></div>';
-  }).join(''):'<div class="no-data">Add P&amp;L to trades to see timeline</div>';
+  const tlT=trades.filter(t=>t.pnl).slice(-20);
+  const maxA=Math.max(...tlT.map(t=>Math.abs(parseFloat(t.pnl)||0)),1);
+  $('pnl-tl').innerHTML=tlT.length?tlT.map(t=>{
+    const v=parseFloat(t.pnl),pct=Math.min(100,Math.abs(v)/maxA*100)*0.46;
+    return`<div class="ptr"><span class="pd">${t.date?t.date.slice(5):t.time||''}</span><div class="pw"><div class="pc"></div><div class="pb ${v>=0?'pp':'pn'}" style="width:${pct}%"></div></div><span class="pa ${v>=0?'pp':'pn'}">${v>=0?'+':'-'}$${Math.abs(v).toLocaleString()}</span></div>`;
+  }).join(''):'<div class="nodata">Add P&L to trades to see timeline</div>';
 
-  // Insights callouts
-  const callouts=[];
-  const stratMap={};
-  trades.forEach(t=>{if(!t.strategy)return;if(!stratMap[t.strategy])stratMap[t.strategy]={w:0,l:0};t.result==='Won'?stratMap[t.strategy].w++:stratMap[t.strategy].l++});
-  const stratArr=Object.entries(stratMap).filter(([,v])=>v.w+v.l>=2).map(([k,v])=>({k,wr:v.w/(v.w+v.l),n:v.w+v.l})).sort((a,b)=>b.wr-a.wr);
-  if(stratArr.length)callouts.push({type:'good',icon:'&#x1F3AF;',text:'Your best strategy is <strong>'+stratArr[0].k+'</strong> with a <strong>'+Math.round(stratArr[0].wr*100)+'%</strong> win rate over '+stratArr[0].n+' trades.'});
-  if(stratArr.length>1&&stratArr[stratArr.length-1].wr<0.35)callouts.push({type:'warn',icon:'&#x26A0;&#xFE0F;',text:'<strong>'+stratArr[stratArr.length-1].k+'</strong> is your weakest setup at <strong>'+Math.round(stratArr[stratArr.length-1].wr*100)+'%</strong> win rate. Consider standing aside.'});
-  const highUrg=trades.filter(t=>parseInt(t.urgency)>=4&&t.result);
-  if(highUrg.length>=2){const hwr=highUrg.filter(t=>t.result==='Won').length/highUrg.length;if(hwr<wr/100-0.1)callouts.push({type:'warn',icon:'&#x26A1;',text:'High urgency trades (4&ndash;5) win at <strong>'+Math.round(hwr*100)+'%</strong> vs your overall <strong>'+wr+'%</strong>. Patience is an edge.'})}
-  const lowConv=trades.filter(t=>parseInt(t.conviction)<=2&&t.result);
-  if(lowConv.length>=2){const lcwr=lowConv.filter(t=>t.result==='Won').length/lowConv.length;if(lcwr<0.4)callouts.push({type:'warn',icon:'&#x1F4A1;',text:'Low conviction trades (1&ndash;2) win only <strong>'+Math.round(lcwr*100)+'%</strong> of the time. If conviction is low, the edge may not be there.'})}
-  const topMistake=Object.entries(mistakeCount).sort((a,b)=>b[1]-a[1])[0];
-  if(topMistake)callouts.push({type:'bad',icon:'&#x1F501;',text:'Most repeated mistake: <strong>'+topMistake[0]+'</strong> &mdash; '+topMistake[1]+' time'+(topMistake[1]>1?'s':'')+'. Address this pattern directly.'});
-  const fomoTrades=trades.filter(t=>t.emoPre&&t.emoPre.includes('FOMO')&&t.result);
-  if(fomoTrades.length>=2){const fwr=fomoTrades.filter(t=>t.result==='Won').length/fomoTrades.length;callouts.push({type:fwr<0.4?'bad':'good',icon:'&#x1F630;',text:'FOMO-tagged trades: <strong>'+Math.round(fwr*100)+'%</strong> win rate over '+fomoTrades.length+' entries. '+(fwr<0.4?'A clear edge-destroyer.':'Surprisingly resilient &mdash; keep monitoring.')})}
-  const earlyExits=trades.filter(t=>t.exitType==='Early Exit');
-  if(earlyExits.length>=2){const ewr=earlyExits.filter(t=>t.result==='Won').length/earlyExits.length;callouts.push({type:'warn',icon:'&#x1F6AA;',text:'You\'ve exited early <strong>'+earlyExits.length+'</strong> times ('+Math.round(earlyExits.length/n*100)+'% of trades). Win rate on early exits: '+Math.round(ewr*100)+'%. You may be cutting winners short.'})}
-  const calmTrades=trades.filter(t=>t.emoPre&&t.emoPre.includes('Calm')&&t.result);
-  if(calmTrades.length>=2){const cwr=calmTrades.filter(t=>t.result==='Won').length/calmTrades.length;if(cwr>=0.6)callouts.push({type:'good',icon:'&#x1F9D8;',text:'When you enter <strong>Calm</strong>, your win rate is <strong>'+Math.round(cwr*100)+'%</strong>. Protecting your mental state before entries is paying off.'})}
-  if(!callouts.length)callouts.push({type:'',icon:'&#x1F4C8;',text:'Log more trades to unlock deeper pattern insights across your strategies, emotions, and execution.'});
-  $('callouts').innerHTML=callouts.map(c=>'<div class="callout '+(c.type==='warn'?'callout-warn':c.type==='good'?'callout-good':c.type==='bad'?'callout-bad':'callout-default')+'"><span class="callout-icon">'+c.icon+'</span><span class="callout-text">'+c.text+'</span></div>').join('');
+  const calls=[];
+  const sMap={};
+  trades.forEach(t=>{if(!t.strategy)return;if(!sMap[t.strategy])sMap[t.strategy]={w:0,l:0};t.result==='Won'?sMap[t.strategy].w++:sMap[t.strategy].l++});
+  const sArr=Object.entries(sMap).filter(([,v])=>v.w+v.l>=2).map(([k,v])=>({k,wr:v.w/(v.w+v.l),n:v.w+v.l})).sort((a,b)=>b.wr-a.wr);
+  if(sArr.length)calls.push({t:'g',i:'🎯',m:`Best strategy: <strong>${sArr[0].k}</strong> — <strong>${Math.round(sArr[0].wr*100)}%</strong> win rate over ${sArr[0].n} trades.`});
+  if(sArr.length>1&&sArr[sArr.length-1].wr<0.35)calls.push({t:'w',i:'⚠️',m:`<strong>${sArr[sArr.length-1].k}</strong> weakest at <strong>${Math.round(sArr[sArr.length-1].wr*100)}%</strong>. Consider standing aside on this setup.`});
+  const hU=trades.filter(t=>parseInt(t.urgency)>=4&&t.result);
+  if(hU.length>=2){const hw=hU.filter(t=>t.result==='Won').length/hU.length;if(hw<wr/100-0.1)calls.push({t:'w',i:'⚡',m:`High urgency (4–5) trades win at <strong>${Math.round(hw*100)}%</strong> vs overall <strong>${wr}%</strong>. Patience is an edge.`})}
+  const topM=Object.entries(mistMap).sort((a,b)=>b[1]-a[1])[0];
+  if(topM)calls.push({t:'b',i:'🔁',m:`Most repeated mistake: <strong>${topM[0]}</strong> — ${topM[1]} time${topM[1]>1?'s':''}.`});
+  const fomoT=trades.filter(t=>t.emoPre&&t.emoPre.includes('FOMO')&&t.result);
+  if(fomoT.length>=2){const fw=fomoT.filter(t=>t.result==='Won').length/fomoT.length;calls.push({t:fw<0.4?'b':'g',i:'😰',m:`FOMO-tagged trades: <strong>${Math.round(fw*100)}%</strong> win rate over ${fomoT.length} entries.`})}
+  const calmT=trades.filter(t=>t.emoPre&&t.emoPre.includes('Calm')&&t.result);
+  if(calmT.length>=2){const cw=calmT.filter(t=>t.result==='Won').length/calmT.length;if(cw>=0.6)calls.push({t:'g',i:'🧘',m:`Entering <strong>Calm</strong> → <strong>${Math.round(cw*100)}%</strong> win rate. Protecting your pre-session state is paying off.`})}
+  if(!calls.length)calls.push({t:'',i:'📈',m:'Log more trades to unlock pattern insights.'});
+  $('callouts').innerHTML=calls.map(c=>`<div class="cal cal-${c.t==='w'?'w':c.t==='g'?'g':c.t==='b'?'b':'d'}"><span class="ci">${c.i}</span><span class="ct2">${c.m}</span></div>`).join('');
 
-  // Strategy bars
-  $('strat-bars').innerHTML=Object.entries(stratMap).sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).map(([k,v])=>{
-    const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);
-    return '<div class="bar-row"><span class="bar-label" title="'+k+'">'+k+'</span><div class="bar-track"><div class="bar-fill '+(wr2>=50?'green':'red')+'" style="width:'+wr2+'%"></div></div><span class="bar-meta">'+wr2+'% &middot; '+tot+'</span></div>';
-  }).join('')||'<div class="no-data">No strategy data yet</div>';
+  function bars(map){return Object.entries(map).sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=50?'g':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`}).join('')||'<div class="nodata">No data</div>'}
+  function barsRaw(map,cls='b'){const mx=Math.max(...Object.values(map),1);return Object.entries(map).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${cls}" style="width:${Math.round(v/mx*100)}%"></div></div><span class="bm">${v}×</span></div>`).join('')||'<div class="nodata">No data</div>'}
 
-  // Direction bars
-  const dirMap={Long:{w:0,l:0},Short:{w:0,l:0}};
-  trades.forEach(t=>{if(t.direction&&dirMap[t.direction])t.result==='Won'?dirMap[t.direction].w++:dirMap[t.direction].l++});
-  $('dir-bars').innerHTML=Object.entries(dirMap).map(([d,v])=>{
-    const tot=v.w+v.l;if(!tot)return'';const wr2=Math.round(v.w/tot*100);
-    return '<div class="bar-row"><span class="bar-label">'+d+'</span><div class="bar-track"><div class="bar-fill '+(wr2>=50?'green':'red')+'" style="width:'+wr2+'%"></div></div><span class="bar-meta">'+wr2+'% &middot; '+tot+'</span></div>';
-  }).join('')||'<div class="no-data">No direction data</div>';
+  $('strat-b').innerHTML=bars(sMap);
+  const dM={Long:{w:0,l:0},Short:{w:0,l:0}};
+  trades.forEach(t=>{if(t.direction&&dM[t.direction])t.result==='Won'?dM[t.direction].w++:dM[t.direction].l++});
+  $('dir-b').innerHTML=bars(dM);
+  const tM={};trades.forEach(t=>{if(!t.type)return;if(!tM[t.type])tM[t.type]={w:0,l:0};t.result==='Won'?tM[t.type].w++:tM[t.type].l++});
+  $('type-b').innerHTML=bars(tM);
 
-  // Type bars
-  const typeMap={};
-  trades.forEach(t=>{if(!t.type)return;if(!typeMap[t.type])typeMap[t.type]={w:0,l:0};t.result==='Won'?typeMap[t.type].w++:typeMap[t.type].l++});
-  $('type-bars').innerHTML=Object.entries(typeMap).map(([k,v])=>{
-    const tot=v.w+v.l;const wr2=Math.round(v.w/tot*100);
-    return '<div class="bar-row"><span class="bar-label">'+k+'</span><div class="bar-track"><div class="bar-fill blue" style="width:'+wr2+'%"></div></div><span class="bar-meta">'+wr2+'% &middot; '+tot+'</span></div>';
-  }).join('')||'<div class="no-data">No type data</div>';
+  const cD=Array.from({length:5},(_,i)=>({w:0,lo:0}));
+  trades.forEach(t=>{const c=parseInt(t.conviction)-1;if(c>=0&&c<5&&t.result)t.result==='Won'?cD[c].w++:cD[c].lo++});
+  $('conv-b').innerHTML=cD.map((d,i)=>{const tot=d.w+d.lo;if(!tot)return`<div class="br"><span class="bl">Level ${i+1}</span><div class="bt"><div class="bf b" style="width:0%"></div></div><span class="bm">0</span></div>`;const wr2=Math.round(d.w/tot*100);return`<div class="br"><span class="bl">Conv ${i+1}</span><div class="bt"><div class="bf ${wr2>=50?'g':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`}).join('');
 
-  // Conviction bars
-  const convD=Array.from({length:5},(_,i)=>({l:i+1,w:0,lo:0}));
-  trades.forEach(t=>{const c=parseInt(t.conviction);if(c>=1&&c<=5&&t.result)t.result==='Won'?convD[c-1].w++:convD[c-1].lo++});
-  $('conv-bars').innerHTML=convD.map(d=>{const tot=d.w+d.lo;if(!tot)return'<div class="bar-row"><span class="bar-label">Level '+d.l+'</span><div class="bar-track"><div class="bar-fill blue" style="width:0%"></div></div><span class="bar-meta">0 trades</span></div>';const wr2=Math.round(d.w/tot*100);return'<div class="bar-row"><span class="bar-label">Conviction '+d.l+'</span><div class="bar-track"><div class="bar-fill '+(wr2>=50?'green':'red')+'" style="width:'+wr2+'%"></div></div><span class="bar-meta">'+wr2+'% &middot; '+tot+'</span></div>'}).join('');
+  const uD=Array.from({length:5},(_,i)=>({w:0,lo:0}));
+  trades.forEach(t=>{const u=parseInt(t.urgency)-1;if(u>=0&&u<5&&t.result)t.result==='Won'?uD[u].w++:uD[u].lo++});
+  $('urg-b').innerHTML=uD.map((d,i)=>{const tot=d.w+d.lo;if(!tot)return`<div class="br"><span class="bl">Urgency ${i+1}</span><div class="bt"><div class="bf b" style="width:0%"></div></div><span class="bm">0</span></div>`;const wr2=Math.round(d.w/tot*100);return`<div class="br"><span class="bl">Urgency ${i+1}</span><div class="bt"><div class="bf ${wr2>=50?'g':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`}).join('');
 
-  // Urgency bars
-  const urgD=Array.from({length:5},(_,i)=>({l:i+1,w:0,lo:0}));
-  trades.forEach(t=>{const u=parseInt(t.urgency);if(u>=1&&u<=5&&t.result)t.result==='Won'?urgD[u-1].w++:urgD[u-1].lo++});
-  $('urg-bars').innerHTML=urgD.map(d=>{const tot=d.w+d.lo;if(!tot)return'<div class="bar-row"><span class="bar-label">Urgency '+d.l+'</span><div class="bar-track"><div class="bar-fill blue" style="width:0%"></div></div><span class="bar-meta">0 trades</span></div>';const wr2=Math.round(d.w/tot*100);return'<div class="bar-row"><span class="bar-label">Urgency '+d.l+'</span><div class="bar-track"><div class="bar-fill '+(wr2>=50?'green':'red')+'" style="width:'+wr2+'%"></div></div><span class="bar-meta">'+wr2+'% &middot; '+tot+'</span></div>'}).join('');
+  function emoF(list){const m={};list.forEach(t=>{if(!t.emoPre)return;t.emoPre.split(', ').forEach(e=>{e=e.trim();if(e)m[e]=(m[e]||0)+1})});return Object.entries(m).sort((a,b)=>b[1]-a[1])}
+  $('emo-win').innerHTML=emoF(won).map(([e,c])=>`<div class="ep3 we"><span class="ec">${c}</span><span class="en">${e}</span></div>`).join('')||'<div class="nodata">No data</div>';
+  $('emo-loss').innerHTML=emoF(lost).map(([e,c])=>`<div class="ep3 le"><span class="ec">${c}</span><span class="en">${e}</span></div>`).join('')||'<div class="nodata">No data</div>';
+  $('mist-b').innerHTML=Object.keys(mistMap).length?barsRaw(mistMap,'w'):'<div class="nodata" style="padding:16px 0">No mistakes logged — great discipline.</div>';
+  const eM={};trades.forEach(t=>{if(!t.exitType)return;eM[t.exitType]=(eM[t.exitType]||0)+1});
+  $('exit-b').innerHTML=barsRaw(eM,'b');
 
-  // Emotion grids
-  function emoFreq(list){const m={};list.forEach(t=>{if(!t.emoPre)return;t.emoPre.split(', ').forEach(e=>{e=e.trim();if(e)m[e]=(m[e]||0)+1})});return Object.entries(m).sort((a,b)=>b[1]-a[1])}
-  $('emo-win').innerHTML=emoFreq(won).map(([e,c])=>'<div class="emo-pill w-emo"><span class="emo-count">'+c+'</span><span class="emo-name">'+e+'</span></div>').join('')||'<div class="no-data">No data</div>';
-  $('emo-loss').innerHTML=emoFreq(lost).map(([e,c])=>'<div class="emo-pill l-emo"><span class="emo-count">'+c+'</span><span class="emo-name">'+e+'</span></div>').join('')||'<div class="no-data">No data</div>';
-
-  // Mistake bars
-  $('mistake-bars').innerHTML=Object.entries(mistakeCount).sort((a,b)=>b[1]-a[1]).map(([m,c])=>'<div class="bar-row"><span class="bar-label" title="'+m+'">'+m+'</span><div class="bar-track"><div class="bar-fill warn" style="width:'+Math.round(c/n*100)+'%"></div></div><span class="bar-meta">'+c+'&times;</span></div>').join('')||'<div class="no-data" style="padding:20px 0">No mistakes logged &#8212; great discipline.</div>';
-
-  // Exit bars
-  const exitMap={};trades.forEach(t=>{if(!t.exitType)return;exitMap[t.exitType]=(exitMap[t.exitType]||0)+1});
-  $('exit-bars').innerHTML=Object.entries(exitMap).sort((a,b)=>b[1]-a[1]).map(([et,c])=>'<div class="bar-row"><span class="bar-label">'+et+'</span><div class="bar-track"><div class="bar-fill blue" style="width:'+Math.round(c/n*100)+'%"></div></div><span class="bar-meta">'+c+'&times; ('+Math.round(c/n*100)+'%)</span></div>').join('')||'<div class="no-data">No exit data</div>';
-
-  // Mid-emotion W vs L
   const mW={},mL={};
   won.forEach(t=>{if(!t.emoMid)return;t.emoMid.split(', ').forEach(e=>{e=e.trim();if(e)mW[e]=(mW[e]||0)+1})});
   lost.forEach(t=>{if(!t.emoMid)return;t.emoMid.split(', ').forEach(e=>{e=e.trim();if(e)mL[e]=(mL[e]||0)+1})});
   const allMid=[...new Set([...Object.keys(mW),...Object.keys(mL)])];
-  $('mid-emo').innerHTML=allMid.length?'<div style="display:flex;gap:16px;flex-wrap:wrap">'+allMid.map(e=>{const w=mW[e]||0,l=mL[e]||0,tot=w+l,wp=Math.round(w/tot*100);return'<div style="flex:1;min-width:130px"><div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:7px">'+e+'</div><div style="display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:4px">'+(w?'<div style="flex:'+w+';background:var(--win)"></div>':'')+(l?'<div style="flex:'+l+';background:var(--loss)"></div>':'')+'</div><div style="font-size:11px;color:var(--muted)">'+w+'W &middot; '+l+'L &middot; '+wp+'% win</div></div>'}).join('')+'</div><div style="margin-top:14px;display:flex;gap:16px;font-size:11px;color:var(--muted)"><span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:6px;background:var(--win);border-radius:2px;display:inline-block"></span>Wins</span><span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:6px;background:var(--loss);border-radius:2px;display:inline-block"></span>Losses</span></div>':'<div class="no-data">Log mid-trade emotions to see this chart</div>';
+  $('mid-emo').innerHTML=allMid.length
+    ?'<div style="display:flex;gap:14px;flex-wrap:wrap">'+allMid.map(e=>{const w=mW[e]||0,l=mL[e]||0,tot=w+l,wp=Math.round(w/tot*100);return`<div style="flex:1;min-width:110px"><div style="font-size:12px;font-weight:500;margin-bottom:6px">${e}</div><div style="display:flex;height:7px;border-radius:4px;overflow:hidden;margin-bottom:3px">${w?`<div style="flex:${w};background:var(--win)"></div>`:''}${l?`<div style="flex:${l};background:var(--loss)"></div>`:''}</div><div style="font-size:11px;color:var(--muted)">${w}W · ${l}L · ${wp}%</div></div>`}).join('')+'</div><div style="margin-top:12px;display:flex;gap:14px;font-size:11px;color:var(--muted)"><span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:6px;background:var(--win);border-radius:2px;display:inline-block"></span>Wins</span><span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:6px;background:var(--loss);border-radius:2px;display:inline-block"></span>Losses</span></div>'
+    :'<div class="nodata">Log mid-trade emotions to see this chart</div>';
 }
 
-function exportCSV(){
-  if(!trades.length)return alert('No trades to export.');
-  const k=['date','time','type','direction','strategy','entry','stop','target','exit','rr','result','pnl','exitType','mistake','conviction','urgency','emoPre','emoMid','observation','cause','notes'];
-  const csv=[k.join(','),...trades.map(t=>k.map(key=>'"'+(t[key]||'').toString().replace(/"/g,'""')+'"').join(','))].join('\n');
-  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:'nq-journal-'+new Date().toISOString().slice(0,10)+'.csv'}).click();
+// ── EXPORT ──
+function exportCSV() {
+  if (!trades.length) return alert('No trades to export.');
+  const k=['date','time','timeExit','type','direction','attrs','entry','stop','target','exit','drawdown','pnl','contracts','rr','result','exitType','mistake','ifStopped','conviction','urgency','emoPre','emoMid','observation'];
+  const csv=[k.join(','),...trades.map(t=>k.map(key=>`"${(t[key]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:`nq-journal-${new Date().toISOString().slice(0,10)}.csv`}).click();
 }
-function clearAll(){if(!confirm('Clear all trade entries?'))return;trades=[];persist()}
 
-render();stats();
+function clearAll() {
+  if (!confirm('Clear all trade entries? This cannot be undone.')) return;
+  trades=[]; persist();
+}
+
+// ── INIT ──
+render(); updateStats();
 </script>
 </body>
 </html>
