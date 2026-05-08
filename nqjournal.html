@@ -45,19 +45,44 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica
 .sp{flex:1}
 
 /* PAGES */
-.pg{display:none;flex:1;overflow:hidden;flex-direction:column}.pg.on{display:flex}
+.pg{display:none;flex:1;overflow:hidden;flex-direction:column;min-height:0}.pg.on{display:flex}
 
 /* LEDGER */
-.ledger-wrap{flex:1;overflow-x:auto;overflow-y:auto;padding:18px 24px 32px}
+.ledger-wrap{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px 24px 32px;min-height:0}
 .ledger-wrap::-webkit-scrollbar{width:6px;height:6px}
 .ledger-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}.ledger-wrap::-webkit-scrollbar-corner{background:transparent}
-.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);overflow:hidden;min-width:0}
-table{width:100%;min-width:1680px;border-collapse:collapse}
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);min-width:0}.table-scroll{overflow-x:auto;overflow-y:visible;width:100%;-webkit-overflow-scrolling:touch}.table-scroll::-webkit-scrollbar{height:8px}.table-scroll::-webkit-scrollbar-track{background:var(--surface2);border-radius:0 0 var(--r) var(--r)}.table-scroll::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:8px;border:2px solid var(--surface2)}.table-scroll::-webkit-scrollbar-corner{background:var(--surface2)}
+table{width:100%;min-width:2000px;border-collapse:collapse;table-layout:fixed}
 thead th{background:var(--surface3);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:5}
+/* Fixed column widths — keeps headers aligned with data */
+thead th:nth-child(1){width:36px;min-width:36px}   /* # */
+thead th:nth-child(2){width:96px;min-width:96px}   /* Date */
+thead th:nth-child(3){width:74px;min-width:74px}   /* Entry Time */
+thead th:nth-child(4){width:74px;min-width:74px}   /* Exit Time */
+thead th:nth-child(5){width:110px;min-width:110px} /* Line Type */
+thead th:nth-child(6){width:72px;min-width:72px}   /* Dir */
+thead th:nth-child(7){width:220px;min-width:220px} /* Setup Attrs */
+thead th:nth-child(8){width:88px;min-width:88px}   /* Entry */
+thead th:nth-child(9){width:140px;min-width:140px} /* Stop */
+thead th:nth-child(10){width:140px;min-width:140px}/* Target */
+thead th:nth-child(11){width:88px;min-width:88px}  /* Exit */
+thead th:nth-child(12){width:100px;min-width:100px}/* P&L */
+thead th:nth-child(13){width:56px;min-width:56px}  /* R:R */
+thead th:nth-child(14){width:72px;min-width:72px}  /* Result */
+thead th:nth-child(15){width:80px;min-width:80px}  /* Exit Type */
+thead th:nth-child(16){width:110px;min-width:110px}/* Drawdown */
+thead th:nth-child(17){width:110px;min-width:110px}/* Mistake */
+thead th:nth-child(18){width:90px;min-width:90px}  /* If Stopped */
+thead th:nth-child(19){width:72px;min-width:72px}  /* Conv */
+thead th:nth-child(20){width:80px;min-width:80px}  /* Urgency */
+thead th:nth-child(21){width:120px;min-width:120px}/* Pre-Emotion */
+thead th:nth-child(22){width:110px;min-width:110px}/* Mid-Emotion */
+thead th:nth-child(23){width:200px;min-width:200px}/* Observation */
+thead th:nth-child(24){width:60px;min-width:60px}  /* Actions */
 tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:#f9f9fb}
-td{padding:9px 10px;color:var(--text2);white-space:nowrap;font-size:12.5px;vertical-align:middle}
+td{padding:9px 10px;color:var(--text2);white-space:nowrap;font-size:12.5px;vertical-align:middle;max-width:none}
 
 /* ENTRY ROW */
 .entry-row td{padding:5px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top}
@@ -167,6 +192,15 @@ tbody tr:hover .ra{opacity:1}
 .ct2{font-size:12px;color:var(--text2);line-height:1.55}
 .ct2 strong{color:var(--text);font-weight:600}
 .nodata{text-align:center;padding:24px 0;color:var(--muted);font-size:12px}
+/* OBS MODAL */
+.obs-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center}
+.obs-modal-bg.open{display:flex;animation:bgIn .15s ease}
+.obs-modal{background:var(--surface);border-radius:16px;box-shadow:var(--shm);border:1px solid var(--border);width:560px;max-width:92vw;padding:24px;position:relative;animation:modalIn .2s cubic-bezier(0.34,1.25,0.64,1)}
+.obs-modal h3{font-size:14px;font-weight:600;letter-spacing:-0.01em;margin-bottom:12px;color:var(--text)}
+.obs-modal p{font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.obs-modal-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:none;color:var(--muted);width:26px;height:26px;border-radius:50%;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.obs-modal-close:hover{background:var(--loss-light);color:var(--loss)}
+.obs-hint{font-size:10px;color:var(--muted2);margin-top:4px;font-style:italic}
 </style>
 </head>
 <body>
@@ -209,7 +243,7 @@ tbody tr:hover .ra{opacity:1}
 <div class="pg on" id="page-ledger">
   <div class="ledger-wrap">
     <div class="card">
-      <table id="main-table">
+      <div class="table-scroll"><table id="main-table">
         <thead>
           <tr>
             <th>#</th>
@@ -223,7 +257,7 @@ tbody tr:hover .ra{opacity:1}
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
-      </table>
+      </table></div>
       <div id="empty-state" class="empty-state">
         <div class="ei2">📋</div>
         <h3>No trades yet</h3>
@@ -461,7 +495,7 @@ function addRow(tradeToEdit) {
   const timeExitInp = inp('time-exit', 'time', '', t.timeExit || '', 80);
 
   // ── TRADE TYPE ──
-  const typePills = pills('type', ['Outer Edge','Channel Edge','Broken Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum'], 'single', t.type);
+  const typePills = pills('type', ['Outer Edge','Channel Edge','Break + Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum','Major S/R Break'], 'single', t.type);
 
   // ── DIRECTION ──
   const dirPills = pills('dir', ['Long','Short'], 'dir', t.direction);
@@ -482,12 +516,20 @@ function addRow(tradeToEdit) {
     'VWAP',
     'Gap Down',
     'Gap Up',
+    'Expanding Above Resistance',
+    'Expanding Below Support',
+    '1st Fake Break',
+    '2nd Reclaim',
+    'Clean Break',
+    'Major S/R Break',
+    'MNQ Confluence',
+    'MNQ Divergence',
   ];
   const attrDiv = document.createElement('div');
-  attrDiv.style.cssText = 'display:flex;flex-direction:column;gap:2px;min-width:140px';
+  attrDiv.style.cssText = 'display:flex;flex-direction:column;gap:2px;min-width:220px';
   attrDiv.id = 'er-attrs';
   const attrGrid = document.createElement('div');
-  attrGrid.style.cssText = 'display:grid;grid-template-columns:1fr;gap:2px';
+  attrGrid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:2px 8px';
   const savedAttrs = (t.attrs || '').split(',').map(x=>x.trim()).filter(Boolean);
   ATTRS.forEach(attr => {
     const lbl = document.createElement('label');
@@ -639,9 +681,37 @@ function addRow(tradeToEdit) {
   const qtyLabel = document.createElement('span'); qtyLabel.textContent = 'Qty:';
   contractsRow.appendChild(qtyLabel); contractsRow.appendChild(contractsInp);
 
+  // Manual PnL override (for old entries or broker-confirmed PnL)
+  const pnlOverrideRow = document.createElement('div');
+  pnlOverrideRow.style.cssText = 'display:flex;align-items:center;gap:3px;margin-top:4px;font-size:10px;color:var(--muted)';
+  const pnlOverLabel = document.createElement('span'); pnlOverLabel.textContent = 'Override:';
+  const pnlOverInp = document.createElement('input');
+  pnlOverInp.type='number'; pnlOverInp.id='er-pnl-override'; pnlOverInp.className='ei';
+  pnlOverInp.placeholder='manual $'; pnlOverInp.style.cssText='width:72px;font-size:11px';
+  pnlOverInp.step='0.01';
+  if (t.pnl && !calcPnl(t.entry, t.exit, t.direction, t.contracts)) {
+    pnlOverInp.value = t.pnl;
+  }
+  pnlOverInp.addEventListener('input', () => {
+    const disp = $('er-pnl');
+    if (!disp) return;
+    const v = parseFloat(pnlOverInp.value);
+    if (!isNaN(v) && pnlOverInp.value !== '') {
+      disp.textContent = (v>=0?'+$':'-$')+Math.abs(v).toLocaleString();
+      disp.className='pnl-calc '+(v>=0?'pos':'neg');
+      disp.dataset.value = v.toString();
+      disp.dataset.overridden = '1';
+    } else {
+      disp.dataset.overridden = '';
+      recalc();
+    }
+  });
+  pnlOverrideRow.appendChild(pnlOverLabel); pnlOverrideRow.appendChild(pnlOverInp);
+
   const pnlCell = cell('P&L');
   pnlCell.appendChild(pnlDisp);
   pnlCell.appendChild(contractsRow);
+  pnlCell.appendChild(pnlOverrideRow);
 
   // ── R:R ──
   const rrPills = pills('rr', ['1:1','1:1.5','1:2','1:3'], 'single', t.rr);
@@ -664,10 +734,10 @@ function addRow(tradeToEdit) {
   const emoMidPills = pills('emo-mid', ['Ease','Trust','Proud','Tension','Relief-seeking','Scarcity','Fear','Impatient'], 'multi', '', t.emoMid);
 
   // ── OBSERVATION ──
-  const obsInp = document.createElement('input');
-  obsInp.type = 'text'; obsInp.id = 'er-obs'; obsInp.className = 'ei';
+  const obsInp = document.createElement('textarea');
+  obsInp.id = 'er-obs'; obsInp.className = 'ei';
   obsInp.placeholder = 'Observation...'; obsInp.value = t.observation || '';
-  obsInp.style.width = '170px';
+  obsInp.style.cssText = 'width:220px;height:60px;resize:vertical;line-height:1.5;padding:5px 7px';
 
   // ── ACTIONS ──
   const saveBtn = document.createElement('button');
@@ -734,7 +804,20 @@ function addRow(tradeToEdit) {
   dateInp.focus();
 
   // If editing, trigger recalc to show existing PnL
-  if (tradeToEdit) setTimeout(recalc, 50);
+  if (tradeToEdit) {
+    setTimeout(() => {
+      recalc();
+      // If recalc couldn't compute (missing fields), show stored pnl
+      const pnlEl = $('er-pnl');
+      const overInp = $('er-pnl-override');
+      if (pnlEl && pnlEl.textContent === 'auto' && t.pnl) {
+        pnlEl.textContent = (parseFloat(t.pnl)>=0?'+$':'-$')+Math.abs(parseFloat(t.pnl)).toLocaleString();
+        pnlEl.className = 'pnl-calc '+(parseFloat(t.pnl)>=0?'pos':'neg');
+        pnlEl.dataset.value = t.pnl;
+        if (overInp) overInp.value = t.pnl;
+      }
+    }, 50);
+  }
 }
 
 // ── SAVE ──
@@ -745,7 +828,10 @@ function saveEntry() {
   const gs = id => { const el = $(id); return el ? getScale(el) : ''; };
 
   const pnlEl = $('er-pnl');
-  const pnl = pnlEl && pnlEl.dataset.value ? pnlEl.dataset.value
+  const overrideEl = $('er-pnl-override');
+  const overrideVal = overrideEl && overrideEl.value !== '' ? overrideEl.value : null;
+  const pnl = overrideVal !== null ? overrideVal
+    : pnlEl && pnlEl.dataset.value ? pnlEl.dataset.value
     : calcPnl(gv('er-entry'), gv('er-exit'), gp('er-dir'), gv('er-contracts')) || '';
 
   const t = {
@@ -876,7 +962,7 @@ function render() {
       <td>${dots(t.urgency)}</td>
       <td><span class="trunc" style="color:var(--muted);font-size:11px" title="${t.emoPre||''}">${d(t.emoPre)}</span></td>
       <td><span class="trunc" style="color:var(--muted);font-size:11px" title="${t.emoMid||''}">${d(t.emoMid)}</span></td>
-      <td><span class="trunc" style="max-width:150px;font-size:11px" title="${t.observation||''}">${d(t.observation)}</span></td>
+      <td><span class="obs-cell" title="${t.observation||''}" onclick="expandObs(this)" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;cursor:pointer;white-space:nowrap" data-full="${(t.observation||'').replace(/"/g,'&quot;')}">${d(t.observation)}</span></td>
       <td>
         <div class="ra">
           <button class="ib" onclick="editTrade('${t.id}')" title="Edit">✎</button>
@@ -1004,6 +1090,29 @@ function clearAll() {
 
 // ── INIT ──
 render(); updateStats();
+</script>
+
+<!-- OBSERVATION MODAL -->
+<div class="obs-modal-bg" id="obs-modal-bg" onclick="if(event.target===this)closeObsModal()">
+  <div class="obs-modal">
+    <button class="obs-modal-close" onclick="closeObsModal()">✕</button>
+    <h3>Observation</h3>
+    <p id="obs-modal-text"></p>
+    <div class="obs-hint">Click anywhere outside to close</div>
+  </div>
+</div>
+
+<script>
+function expandObs(el) {
+  const full = el.dataset.full;
+  if (!full || full === '—') return;
+  document.getElementById('obs-modal-text').textContent = full;
+  document.getElementById('obs-modal-bg').classList.add('open');
+}
+function closeObsModal() {
+  document.getElementById('obs-modal-bg').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeObsModal(); });
 </script>
 </body>
 </html>
