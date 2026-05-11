@@ -21,7 +21,7 @@
 body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
 /* HEADER */
-.hdr{display:flex;align-items:center;padding:4px 24px;min-height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20;flex-wrap:nowrap;gap:16px}
+.hdr{display:flex;align-items:center;padding:6px 24px;min-height:62px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20;flex-wrap:nowrap;gap:16px}
 .logo{font-size:15px;font-weight:600;letter-spacing:-0.02em}
 .logo span{color:var(--accent)}
 .mantra{flex:1;text-align:center;font-size:11px;color:var(--muted);font-style:italic}
@@ -85,6 +85,8 @@ thead th:nth-child(26){width:60px;min-width:60px}  /* Actions */
 tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:#f9f9fb}
+td[onclick]{cursor:text}
+td[onclick]:hover{background:rgba(0,113,227,0.04);border-radius:3px}
 td{padding:9px 10px;color:var(--text2);white-space:nowrap;font-size:12.5px;vertical-align:middle;max-width:none}
 
 /* ENTRY ROW */
@@ -218,23 +220,37 @@ tbody tr:hover .ra{opacity:1}
 
 /* HEADER STATS PANEL */
 .stats-panel{display:flex;flex-direction:column;gap:2px;margin-left:auto}
-.sp-row{display:flex;align-items:center;gap:8px}
+.sp-row{display:flex;align-items:center;gap:10px;padding:2px 0}
 .sp-day-lbl{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:44px;flex-shrink:0;text-align:right}
-.sp-stats{display:flex;gap:16px;flex-wrap:nowrap;align-items:flex-end}
+.sp-stats{display:flex;gap:22px;flex-wrap:nowrap;align-items:flex-end}
 .sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
 .sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2}
-.sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text)}
+.sp-v{font-size:13.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text)}
 .sp-v.g{color:var(--win)}.sp-v.r{color:var(--loss)}
 
 /* HEADER STATS PANEL */
-.stats-panel{display:flex;flex-direction:column;gap:4px;margin-left:auto;flex-shrink:0;justify-content:center}
+.stats-panel{display:flex;flex-direction:column;gap:5px;margin-left:auto;flex-shrink:0;justify-content:center;padding-left:20px}
 .sp-row{display:flex;align-items:center;gap:8px}
-.sp-day-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:50px;flex-shrink:0;text-align:right;line-height:1}
+.sp-day-lbl{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:56px;flex-shrink:0;text-align:right;line-height:1}
 .sp-stats{display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-end}
 .sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
-.sp-l{font-size:9px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.sp-l{font-size:9.5px;color:var(--muted2);letter-spacing:.05em;text-transform:uppercase;font-weight:600;line-height:1.2;white-space:nowrap}
 .sp-v{font-size:13px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text);white-space:nowrap}
 .sp-v.g{color:var(--win)}.sp-v.r{color:var(--loss)}
+/* INLINE CELL EDITING */
+.cell-edit-wrap{position:relative;display:inline-block;width:100%}
+.cell-editable{cursor:text;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .12s}
+.cell-editable:hover{background:var(--accent-light)}
+.cell-editable.editing{background:transparent}
+.cell-inline-input{
+  position:absolute;top:-1px;left:-1px;right:-1px;
+  background:#fff;border:2px solid var(--accent);border-radius:5px;
+  padding:4px 7px;font-family:inherit;font-size:12.5px;color:var(--text);
+  outline:none;z-index:10;box-shadow:0 2px 12px rgba(0,113,227,.15);
+  min-width:80px;width:calc(100% + 2px);
+}
+.cell-inline-input.wide{min-width:180px;width:220px}
+.cell-saving{opacity:.5;pointer-events:none}
 </style>
 </head>
 <body>
@@ -585,7 +601,7 @@ function addRow(tradeToEdit) {
   timeExitInp.addEventListener('change', recalc); timeExitInp.addEventListener('input', recalc);
 
   // ── TRADE TYPE ──
-  const typePills = pills('type', ['Outer Edge','Channel Edge','Break + Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum','Major S/R Break','Breakout','3rd Hit EXP','Wedge EXP'], 'single', t.type);
+  const typePills = pills('type', ['Outer Edge','Channel Edge','Break + Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum','Major S/R Break','Breakout','3rd Hit EXP','Wedge EXP','Expansion at Support','Expansion at Resistance'], 'single', t.type);
 
   // ── DIRECTION ──
   const dirPills = pills('dir', ['Long','Short'], 'dir', t.direction);
@@ -893,7 +909,12 @@ function addRow(tradeToEdit) {
   }
 
   $('empty-state').style.display = 'none';
-  dateInp.focus();
+  // Scroll entry row into view smoothly
+  setTimeout(() => {
+    const entRow = $('entry-row');
+    if (entRow) entRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    dateInp.focus();
+  }, 50);
 
   // If editing, trigger recalc to show existing PnL
   if (tradeToEdit) {
@@ -1015,7 +1036,10 @@ function render() {
   sorted.forEach((t, i) => {
     const tr = document.createElement('tr');
     tr.id = 'row-' + t.id;
-    tr.ondblclick = (e) => { if(!e.target.closest('.ra') && !e.target.closest('.obs-cell')) editTrade(t.id); };
+    tr.ondblclick = (e) => {
+      if(e.target.closest('.ra')) return; // ignore action buttons
+      editTrade(t.id);
+    };
     tr.style.cursor = 'pointer';
     if (editingId === t.id) tr.style.display = 'none';
 
@@ -1049,24 +1073,24 @@ function render() {
     tr.innerHTML = `
       <td style="color:var(--muted2);font-size:11px">${i+1}</td>
       <td>${d(t.date)}</td>
-      <td style="color:var(--muted)">${d(t.time)}</td>
-      <td style="color:var(--muted)">${d(t.timeExit)}</td>
+      <td style="color:var(--muted);cursor:text" onclick="makeInlineEditable(this,'${t.id}','time')" title="Click to edit entry time">${d(t.time)}</td>
+      <td style="color:var(--muted);cursor:text" onclick="makeInlineEditable(this,'${t.id}','timeExit')" title="Click to edit exit time">${d(t.timeExit)}</td>
       <td>${typ}</td><td>${dir}</td>
       <td style="max-width:220px">${t.attrs ? t.attrs.split(', ').filter(Boolean).map(a=>`<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:10px;font-size:10px;background:var(--accent-light);color:var(--accent);margin:1px;white-space:nowrap">&#10003; ${a}</span>`).join('') : '<span class="dash">—</span>'}</td>
-      <td><span class="obs-cell" title="${t.observation||''}" onclick="expandObs(this)" style="max-width:170px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;cursor:pointer;white-space:nowrap" data-full="${(t.observation||'').replace(/"/g,'&quot;')}">${d(t.observation)}</span></td>
-      <td style="font-variant-numeric:tabular-nums">${d(t.entry)}</td>
-      <td style="font-variant-numeric:tabular-nums">${d(t.stop)}</td>
-      <td style="font-variant-numeric:tabular-nums">${d(t.target)}</td>
-      <td style="font-variant-numeric:tabular-nums">${d(t.exit)}</td>
-      <td>${pnlStr}</td>
+      <td onclick="makeInlineEditable(this,'${t.id}','observation')" title="Click to edit · expand ▸" style="cursor:text"><span class="obs-cell" style="max-width:170px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;white-space:nowrap" data-full="${(t.observation||'').replace(/"/g,'&quot;')}">${d(t.observation)}</span></td>
+      <td style="font-variant-numeric:tabular-nums;cursor:text" onclick="makeInlineEditable(this,'${t.id}','entry')" title="Click to edit entry">${d(t.entry)}</td>
+      <td style="font-variant-numeric:tabular-nums;cursor:text" onclick="makeInlineEditable(this,'${t.id}','stop')" title="Click to edit stop">${d(t.stop)}</td>
+      <td style="font-variant-numeric:tabular-nums;cursor:text" onclick="makeInlineEditable(this,'${t.id}','target')" title="Click to edit target">${d(t.target)}</td>
+      <td style="font-variant-numeric:tabular-nums;cursor:text" onclick="makeInlineEditable(this,'${t.id}','exit')" title="Click to edit exit price">${d(t.exit)}</td>
+      <td onclick="makeInlineEditable(this,'${t.id}','pnl')" title="Click to edit P&L" style="cursor:text">${pnlStr}</td>
       <td style="font-variant-numeric:tabular-nums;font-weight:500;color:${pts>0?'var(--win)':pts<0?'var(--loss)':'var(--muted2)'}">
         ${pts!==null?(pts>0?'+':'')+pts+'pt':'<span class=\"dash\">—</span>'}
       </td>
       <td style="color:var(--muted);font-size:11px">${dur||'<span class=\"dash\">—</span>'}</td>
-      <td style="font-weight:500;color:${(() => { if(!t.rr)return'var(--muted2)'; const v=parseFloat(t.rr); return isNaN(v)?'var(--muted)':v>=1?'var(--win)':v>=0?'var(--warn)':'var(--loss)'; })()}">${d(t.rr)}</td>
+      <td style="font-weight:500;cursor:text;color:${(() => { if(!t.rr)return'var(--muted2)'; const v=parseFloat(t.rr); return isNaN(v)?'var(--muted)':v>=1?'var(--win)':v>=0?'var(--warn)':'var(--loss)'; })()}" onclick="makeInlineEditable(this,'${t.id}','rr')" title="Click to edit R:R">${d(t.rr)}</td>
       <td>${res}</td>
       <td style="font-size:11px;color:var(--muted)">${d(t.exitType)}</td>
-      <td style="font-variant-numeric:tabular-nums;color:${t.drawdown?'var(--warn)':'var(--muted2)'}">
+      <td style="font-variant-numeric:tabular-nums;cursor:text;color:${t.drawdown?'var(--warn)':'var(--muted2)'}" onclick="makeInlineEditable(this,'${t.id}','drawdown')" title="Click to edit drawdown">
         ${t.drawdown ? t.drawdown+'pt' : '<span class="dash">—</span>'}
       </td>
       <td>${mist}</td>
@@ -1240,7 +1264,89 @@ function renderInsights() {
     :'<div class="nodata">Log mid-trade emotions to see this chart</div>';
 }
 
+// ── INLINE CELL EDITING ──
+// Simple fields that can be edited directly in the cell without opening full form
+const INLINE_FIELDS = {
+  'exit':      { type:'number', step:'0.25', label:'Exit price', wide:false },
+  'pnl':       { type:'number', step:'0.01', label:'P&L ($)',    wide:false },
+  'stop':      { type:'number', step:'0.25', label:'Stop price', wide:false },
+  'entry':     { type:'number', step:'0.25', label:'Entry price',wide:false },
+  'target':    { type:'number', step:'0.25', label:'Target',     wide:false },
+  'drawdown':  { type:'number', step:'0.25', label:'Drawdown pts',wide:false },
+  'time':      { type:'time',   label:'Entry time',  wide:false },
+  'timeExit':  { type:'time',   label:'Exit time',   wide:false },
+  'observation':{ type:'text',  label:'Observation', wide:true  },
+  'rr':        { type:'text',   label:'R:R',         wide:false },
+  'contracts': { type:'number', step:'1',   label:'Qty',         wide:false },
+};
+
+function makeInlineEditable(tdEl, tradeId, field) {
+  const cfg = INLINE_FIELDS[field];
+  if (!cfg) return;
+  if (tdEl.dataset.inlineActive) return;
+
+  const trade = trades.find(t => t.id === tradeId);
+  if (!trade) return;
+
+  tdEl.dataset.inlineActive = '1';
+  const originalHTML = tdEl.innerHTML;
+  const currentVal = trade[field] || '';
+
+  const inp = document.createElement('input');
+  inp.type = cfg.type;
+  inp.value = currentVal;
+  if (cfg.step) inp.step = cfg.step;
+  inp.className = 'cell-inline-input' + (cfg.wide ? ' wide' : '');
+  inp.placeholder = cfg.label;
+
+  // Replace cell content with input
+  tdEl.innerHTML = '';
+  tdEl.appendChild(inp);
+  inp.focus();
+  inp.select();
+
+  function saveInline() {
+    if (!tdEl.dataset.inlineActive) return;
+    delete tdEl.dataset.inlineActive;
+    const newVal = inp.value.trim();
+    const idx = trades.findIndex(t => t.id === tradeId);
+    if (idx < 0) { tdEl.innerHTML = originalHTML; return; }
+
+    trades[idx][field] = newVal;
+
+    // If exit or entry or stop changed, recalc P&L and R:R
+    if (['exit','entry','stop'].includes(field)) {
+      const t = trades[idx];
+      const pnl = calcPnl(t.entry, t.exit, t.direction, t.contracts);
+      if (pnl !== null) trades[idx].pnl = pnl;
+      // recalc RR
+      const eN=parseFloat(t.entry),sN=parseFloat(t.stop),xN=parseFloat(t.exit);
+      if(!isNaN(eN)&&!isNaN(sN)&&!isNaN(xN)&&sN!==eN){
+        const sign=t.direction==='Short'?-1:1;
+        const risk=Math.abs(eN-sN), gained=(xN-eN)*sign;
+        if(risk>0){const r=gained/risk; trades[idx].rr=parseFloat(Math.abs(r).toFixed(2)).toString();}
+      }
+    }
+
+    persist();
+  }
+
+  function cancelInline() {
+    delete tdEl.dataset.inlineActive;
+    tdEl.innerHTML = originalHTML;
+  }
+
+  inp.addEventListener('blur', saveInline);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+    if (e.key === 'Escape') { inp.removeEventListener('blur', saveInline); cancelInline(); }
+    e.stopPropagation(); // prevent row dblclick from firing
+  });
+  inp.addEventListener('click', e => e.stopPropagation());
+}
+
 // ── EXPORT ──
+
 function exportCSV() {
   if (!trades.length) return alert('No trades to export.');
   const k=['date','time','timeExit','type','direction','attrs','entry','stop','target','exit','drawdown','pnl','contracts','rr','result','exitType','mistake','ifStopped','conviction','urgency','emoPre','emoMid','observation'];
