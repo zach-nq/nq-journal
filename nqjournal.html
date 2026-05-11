@@ -21,7 +21,7 @@
 body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
 /* HEADER */
-.hdr{display:flex;align-items:center;padding:0 24px;height:50px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20}
+.hdr{display:flex;align-items:center;padding:4px 24px;min-height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20;flex-wrap:nowrap;gap:16px}
 .logo{font-size:15px;font-weight:600;letter-spacing:-0.02em}
 .logo span{color:var(--accent)}
 .mantra{flex:1;text-align:center;font-size:11px;color:var(--muted);font-style:italic}
@@ -219,18 +219,17 @@ tbody tr:hover .ra{opacity:1}
 .stats-panel{display:flex;flex-direction:column;gap:2px;margin-left:auto}
 .sp-row{display:flex;align-items:center;gap:8px}
 .sp-day-lbl{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:44px;flex-shrink:0;text-align:right}
-.sp-stats{display:flex;gap:12px}
+.sp-stats{display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-end}
 .sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
 .sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2}
 .sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text)}
 .sp-v.g{color:var(--win)}.sp-v.r{color:var(--loss)}
 
 /* HEADER STATS PANEL */
-.hdr{height:auto!important;min-height:58px;padding-top:6px;padding-bottom:6px;flex-wrap:wrap;align-items:flex-start}
-.stats-panel{display:flex;flex-direction:column;gap:3px;margin-left:auto;flex-shrink:0}
+.stats-panel{display:flex;flex-direction:column;gap:4px;margin-left:auto;flex-shrink:0;justify-content:center}
 .sp-row{display:flex;align-items:center;gap:8px}
 .sp-day-lbl{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:44px;flex-shrink:0;text-align:right;line-height:1}
-.sp-stats{display:flex;gap:14px;flex-wrap:nowrap}
+.sp-stats{display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-end}
 .sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
 .sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
 .sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text);white-space:nowrap}
