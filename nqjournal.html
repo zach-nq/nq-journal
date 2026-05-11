@@ -224,6 +224,17 @@ tbody tr:hover .ra{opacity:1}
 .sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2}
 .sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text)}
 .sp-v.g{color:var(--win)}.sp-v.r{color:var(--loss)}
+
+/* HEADER STATS PANEL */
+.hdr{height:auto!important;min-height:58px;padding-top:6px;padding-bottom:6px;flex-wrap:wrap;align-items:flex-start}
+.stats-panel{display:flex;flex-direction:column;gap:3px;margin-left:auto;flex-shrink:0}
+.sp-row{display:flex;align-items:center;gap:8px}
+.sp-day-lbl{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:44px;flex-shrink:0;text-align:right;line-height:1}
+.sp-stats{display:flex;gap:14px;flex-wrap:nowrap}
+.sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
+.sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text);white-space:nowrap}
+.sp-v.g{color:var(--win)}.sp-v.r{color:var(--loss)}
 </style>
 </head>
 <body>
@@ -232,10 +243,15 @@ tbody tr:hover .ra{opacity:1}
 <div class="hdr">
   <div class="logo">NQ<span>.</span>Journal</div>
   <div class="mantra">Every day is perfect. There are always at least two great setups. The ocean is not going anywhere.</div>
-  <div class="stats">
-    <div class="st"><span class="st-l">Trades</span><span class="st-v" id="s-count">—</span></div>
-    <div class="st"><span class="st-l">Win Rate</span><span class="st-v" id="s-wr">—</span></div>
-    <div class="st"><span class="st-l">Net P&amp;L</span><span class="st-v" id="s-pnl">—</span></div>
+  <div class="stats-panel">
+    <div class="sp-row">
+      <span class="sp-day-lbl">Today</span>
+      <div class="sp-stats" id="sp-today"></div>
+    </div>
+    <div class="sp-row">
+      <span class="sp-day-lbl">All Time</span>
+      <div class="sp-stats" id="sp-all"></div>
+    </div>
   </div>
 </div>
 
@@ -1060,33 +1076,30 @@ function updateStats() {
 
   const td=stats(todayT), al=stats(allT);
 
-  // Header stats panel
-  function sp(label,val,cls=''){return`<div class="sp-stat"><span class="sp-l">${label}</span><span class="sp-v ${cls}">${val}</span></div>`}
+  // Header two-row stats panel
+  function sp(label,val,cls=''){return`<div class="sp-stat"><span class="sp-l">${label}</span><span class="sp-v ${cls}">${val}</span></div>`;}
   const spToday=$('sp-today');
   if(spToday) spToday.innerHTML=
     sp('Trades',td.n||'0')+
     sp('P&amp;L',td.pnl!==null?fmtCurrency(td.pnl):'—',td.pnl!==null?(td.pnl>=0?'g':'r'):'')+
-    sp('Win %',td.wr!==null?td.wr+'%':'—',td.wr!==null?(td.wr>=50?'g':'r'):'')+
-    sp('Avg Dur',fmtDur(td.avgDurV))+
-    sp('Med Dur',fmtDur(td.medDurV))+
-    sp('L/S',(td.longs||0)+' / '+(td.shorts||0))+
-    sp('Long',td.longs>0?fmtCurrency(td.longPnl):'—',td.longPnl>0?'g':td.longPnl<0?'r':'')+
-    sp('Short',td.shorts>0?fmtCurrency(td.shortPnl):'—',td.shortPnl>0?'g':td.shortPnl<0?'r':'');
+    sp('Win%',td.wr!==null?td.wr+'%':'—',td.wr!==null?(td.wr>=50?'g':'r'):'')+
+    sp('Avg',fmtDur(td.avgDurV))+
+    sp('Med',fmtDur(td.medDurV))+
+    sp('L/S',(td.longs||0)+'/'+(td.shorts||0))+
+    sp('Long$',td.longs>0?fmtCurrency(td.longPnl):'—',td.longPnl>0?'g':td.longPnl<0?'r':'')+
+    sp('Short$',td.shorts>0?fmtCurrency(td.shortPnl):'—',td.shortPnl>0?'g':td.shortPnl<0?'r':'');
   const spAll=$('sp-all');
   if(spAll) spAll.innerHTML=
     sp('Trades',fmtNum(al.n)||'—')+
     sp('P&amp;L',al.pnl!==null?fmtCurrency(al.pnl):'—',al.pnl!==null?(al.pnl>=0?'g':'r'):'')+
-    sp('Win %',al.wr!==null?al.wr+'%':'—',al.wr!==null?(al.wr>=50?'g':'r'):'')+
-    sp('Avg Dur',fmtDur(al.avgDurV))+
-    sp('Med Dur',fmtDur(al.medDurV))+
-    sp('L/S',fmtNum(al.longs)+' / '+fmtNum(al.shorts))+
-    sp('Long',al.longs>0?fmtCurrency(al.longPnl):'—',al.longPnl>0?'g':al.longPnl<0?'r':'')+
-    sp('Short',al.shorts>0?fmtCurrency(al.shortPnl):'—',al.shortPnl>0?'g':al.shortPnl<0?'r':'');
+    sp('Win%',al.wr!==null?al.wr+'%':'—',al.wr!==null?(al.wr>=50?'g':'r'):'')+
+    sp('Avg',fmtDur(al.avgDurV))+
+    sp('Med',fmtDur(al.medDurV))+
+    sp('L/S',fmtNum(al.longs)+'/'+fmtNum(al.shorts))+
+    sp('Long$',al.longs>0?fmtCurrency(al.longPnl):'—',al.longPnl>0?'g':al.longPnl<0?'r':'')+
+    sp('Short$',al.shorts>0?fmtCurrency(al.shortPnl):'—',al.shortPnl>0?'g':al.shortPnl<0?'r':'');
 
-  // Dashboard rows
-  function dc(label,val,cls=''){return`<div class="dc"><span class="dc-l">${label}</span><span class="dc-v ${cls}">${val}</span></div>`}
-
-  // Line Type cards
+  // Line type cards strip
   const ltMap={};
   trades.forEach(t=>{
     const lt=t.type||'Unknown';
@@ -1100,7 +1113,7 @@ function updateStats() {
     .sort((a,b)=>b[1].n-a[1].n)
     .map(([lt,v])=>{
       const wr=Math.round(v.wins/v.n*100);
-      return`<div class="ltc"><span class="ltc-name">${lt}</span><span class="ltc-pnl ${v.pnl>=0?'g':'r'}">${fmtCurrency(v.pnl)}</span><span class="ltc-meta">${v.n} trade${v.n!==1?'s':''} · ${wr}% win</span></div>`;
+      return`<div class="ltc"><span class="ltc-name">${lt}</span><span class="ltc-pnl ${v.pnl>=0?'g':'r'}">${fmtCurrency(v.pnl)}</span><span class="ltc-meta">${v.n} trade${v.n!==1?'s':''} · ${wr}%</span></div>`;
     }).join('');
 }
 
