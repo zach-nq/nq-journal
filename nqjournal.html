@@ -62,7 +62,8 @@ thead th:nth-child(4){width:74px;min-width:74px}   /* Exit Time */
 thead th:nth-child(5){width:110px;min-width:110px} /* Line Type */
 thead th:nth-child(6){width:72px;min-width:72px}   /* Dir */
 thead th:nth-child(7){width:220px;min-width:220px} /* Setup Attrs */
-thead th:nth-child(8){width:88px;min-width:88px}   /* Entry */
+thead th:nth-child(8){width:180px;min-width:180px} /* Observation */
+thead th:nth-child(26){width:88px;min-width:88px}   /* Entry */
 thead th:nth-child(9){width:140px;min-width:140px} /* Stop */
 thead th:nth-child(10){width:140px;min-width:140px}/* Target */
 thead th:nth-child(11){width:88px;min-width:88px}  /* Exit */
@@ -79,7 +80,7 @@ thead th:nth-child(21){width:72px;min-width:72px}  /* Conv */
 thead th:nth-child(22){width:80px;min-width:80px}  /* Urgency */
 thead th:nth-child(23){width:120px;min-width:120px}/* Pre-Emotion */
 thead th:nth-child(24){width:110px;min-width:110px}/* Mid-Emotion */
-thead th:nth-child(25){width:200px;min-width:200px}/* Observation */
+
 thead th:nth-child(26){width:60px;min-width:60px}  /* Actions */
 tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 tbody tr:last-child{border-bottom:none}
@@ -219,7 +220,7 @@ tbody tr:hover .ra{opacity:1}
 .stats-panel{display:flex;flex-direction:column;gap:2px;margin-left:auto}
 .sp-row{display:flex;align-items:center;gap:8px}
 .sp-day-lbl{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:44px;flex-shrink:0;text-align:right}
-.sp-stats{display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-end}
+.sp-stats{display:flex;gap:16px;flex-wrap:nowrap;align-items:flex-end}
 .sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
 .sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2}
 .sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text)}
@@ -228,11 +229,11 @@ tbody tr:hover .ra{opacity:1}
 /* HEADER STATS PANEL */
 .stats-panel{display:flex;flex-direction:column;gap:4px;margin-left:auto;flex-shrink:0;justify-content:center}
 .sp-row{display:flex;align-items:center;gap:8px}
-.sp-day-lbl{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:44px;flex-shrink:0;text-align:right;line-height:1}
+.sp-day-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);width:50px;flex-shrink:0;text-align:right;line-height:1}
 .sp-stats{display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-end}
 .sp-stat{display:flex;flex-direction:column;align-items:flex-end;gap:0}
-.sp-l{font-size:8.5px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
-.sp-v{font-size:12.5px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text);white-space:nowrap}
+.sp-l{font-size:9px;color:var(--muted2);letter-spacing:.04em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.sp-v{font-size:13px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;color:var(--text);white-space:nowrap}
 .sp-v.g{color:var(--win)}.sp-v.r{color:var(--loss)}
 </style>
 </head>
@@ -289,7 +290,7 @@ tbody tr:hover .ra{opacity:1}
           <tr>
             <th>#</th>
             <th>Date</th><th>Entry Time</th><th>Exit Time</th>
-            <th>Line Type</th><th>Dir</th><th>Setup Attributes</th><th>Entry</th><th>Stop</th><th>Target</th><th>Exit</th>
+            <th>Line Type</th><th>Dir</th><th>Setup Attributes</th><th>Observation</th><th>Entry</th><th>Stop</th><th>Target</th><th>Exit</th>
             <th>P&amp;L ($)</th><th>Points</th><th>Duration</th><th>R:R</th><th>Result</th>
             <th>Exit Type</th><th>Drawdown (pts)</th><th>Mistake</th><th>If Stopped</th>
             <th>Conv</th><th>Urgency</th>
@@ -441,6 +442,43 @@ function recalc() {
     pnlEl.className = 'pnl-calc';
     pnlEl.dataset.value = '';
   }
+  // Auto R:R calculation
+  const rrEl = $('er-rr');
+  if (rrEl) {
+    const eN = parseFloat($('er-entry')?.value);
+    const sN = parseFloat($('er-stop')?.value);
+    const xN = parseFloat($('er-exit')?.value);
+    const dirV = getActive($('er-dir'));
+    if (!isNaN(eN) && !isNaN(sN) && !isNaN(xN) && dirV && sN !== eN) {
+      const risk = Math.abs(eN - sN);
+      const sign = dirV === 'Short' ? -1 : 1;
+      const gained = (xN - eN) * sign;
+      if (risk > 0) {
+        const rr = gained / risk;
+        // Display as exact number to 2 decimal places, strip trailing zeros
+        const rrRaw = Math.abs(rr).toFixed(2);
+        const rrStr = parseFloat(rrRaw).toString().includes('.') 
+          ? parseFloat(rrRaw).toFixed(2).replace(/0+$/, '').replace(/\.$/, '')
+          : parseFloat(rrRaw).toString();
+        // Update the R:R display pill or set a data value
+        const existing = rrEl.querySelector('.rr-auto');
+        if (existing) {
+          existing.textContent = rrStr;
+          existing.style.color = rr >= 1 ? 'var(--win)' : rr >= 0 ? 'var(--warn)' : 'var(--loss)';
+        } else {
+          const span = document.createElement('div');
+          span.className = 'rr-auto';
+          span.dataset.rrVal = rrStr;
+          span.style.cssText = 'font-size:12px;font-weight:600;padding:4px 8px;border-radius:5px;background:var(--surface2);border:1px solid var(--border);text-align:center;margin-top:2px';
+          span.textContent = rrStr;
+          span.style.color = rr >= 1 ? 'var(--win)' : rr >= 0 ? 'var(--warn)' : 'var(--loss)';
+          rrEl.appendChild(span);
+        }
+        rrEl._autoRR = rrStr;
+      }
+    }
+  }
+
   // Points display
   const ptsEl=$('er-pts-display');
   if(ptsEl){const eN=parseFloat($('er-entry')?.value),xN=parseFloat($('er-exit')?.value),dv=getActive($('er-dir'));const sn=dv==='Short'?-1:dv==='Long'?1:0;if(!isNaN(eN)&&!isNaN(xN)&&sn!==0){const p=Math.round((xN-eN)*sn*100)/100;ptsEl.textContent=(p>0?'+':'')+p+'pt';ptsEl.className='pnl-calc '+(p>0?'pos':p<0?'neg':'');}else{ptsEl.textContent='auto';ptsEl.className='pnl-calc';}}
@@ -810,6 +848,7 @@ function addRow(tradeToEdit) {
   tr.appendChild(cell('Type', typePills));                             // Type
   tr.appendChild(cell('Direction', dirPills));                         // Dir
   tr.appendChild(cell('Setup Attributes', attrDiv));                   // Attributes
+  tr.appendChild(cell('Observation', obsInp));                          // Observation (moved here)
   tr.appendChild(cell('Entry $', entryInp));                           // Entry price
   tr.appendChild(cell('Stop ($·pts)', stopWrap));                     // Stop + pts
   tr.appendChild(cell('Target ($·pts)', targetWrap));                  // Target + pts
@@ -842,7 +881,6 @@ function addRow(tradeToEdit) {
   tr.appendChild(cell('Urgency', urgScale));                           // Urgency
   tr.appendChild(cell('Pre-Emotion', emoPrePills));                    // Pre emotions
   tr.appendChild(cell('Mid-Emotion', emoMidPills));                    // Mid emotions
-  tr.appendChild(cell('Observation', obsInp));                         // Observation
   tr.appendChild(cell('', actWrap));                                   // Actions
 
   const tbody = $('tbody');
@@ -895,7 +933,7 @@ function saveEntry() {
     strategy: gp('er-strat'),
     entry: gv('er-entry'), stop: gv('er-stop'), target: gv('er-target'), exit: gv('er-exit'),
     pnl, contracts: gv('er-contracts') || '1',
-    rr: gp('er-rr'), result: gp('er-result'),
+    rr: (() => { const el=$('er-rr'); return (el && el._autoRR) ? el._autoRR : (el ? getActive(el) : ''); })(), result: gp('er-result'),
     exitType: gp('er-exit-type'), mistake: gp('er-mistake'), ifStopped: gp('er-if-stopped'),
     conviction: gs('er-conv'), urgency: gs('er-urg'),
     emoPre: gm('er-emo-pre'), emoMid: gm('er-emo-mid'),
@@ -977,6 +1015,8 @@ function render() {
   sorted.forEach((t, i) => {
     const tr = document.createElement('tr');
     tr.id = 'row-' + t.id;
+    tr.ondblclick = (e) => { if(!e.target.closest('.ra') && !e.target.closest('.obs-cell')) editTrade(t.id); };
+    tr.style.cursor = 'pointer';
     if (editingId === t.id) tr.style.display = 'none';
 
     // Points calc: (exit-entry)*sign
@@ -1013,6 +1053,7 @@ function render() {
       <td style="color:var(--muted)">${d(t.timeExit)}</td>
       <td>${typ}</td><td>${dir}</td>
       <td style="max-width:220px">${t.attrs ? t.attrs.split(', ').filter(Boolean).map(a=>`<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:10px;font-size:10px;background:var(--accent-light);color:var(--accent);margin:1px;white-space:nowrap">&#10003; ${a}</span>`).join('') : '<span class="dash">—</span>'}</td>
+      <td><span class="obs-cell" title="${t.observation||''}" onclick="expandObs(this)" style="max-width:170px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;cursor:pointer;white-space:nowrap" data-full="${(t.observation||'').replace(/"/g,'&quot;')}">${d(t.observation)}</span></td>
       <td style="font-variant-numeric:tabular-nums">${d(t.entry)}</td>
       <td style="font-variant-numeric:tabular-nums">${d(t.stop)}</td>
       <td style="font-variant-numeric:tabular-nums">${d(t.target)}</td>
@@ -1022,7 +1063,7 @@ function render() {
         ${pts!==null?(pts>0?'+':'')+pts+'pt':'<span class=\"dash\">—</span>'}
       </td>
       <td style="color:var(--muted);font-size:11px">${dur||'<span class=\"dash\">—</span>'}</td>
-      <td style="color:var(--muted)">${d(t.rr)}</td>
+      <td style="font-weight:500;color:${(() => { if(!t.rr)return'var(--muted2)'; const v=parseFloat(t.rr); return isNaN(v)?'var(--muted)':v>=1?'var(--win)':v>=0?'var(--warn)':'var(--loss)'; })()}">${d(t.rr)}</td>
       <td>${res}</td>
       <td style="font-size:11px;color:var(--muted)">${d(t.exitType)}</td>
       <td style="font-variant-numeric:tabular-nums;color:${t.drawdown?'var(--warn)':'var(--muted2)'}">
@@ -1034,7 +1075,6 @@ function render() {
       <td>${dots(t.urgency)}</td>
       <td><span class="trunc" style="color:var(--muted);font-size:11px" title="${t.emoPre||''}">${d(t.emoPre)}</span></td>
       <td><span class="trunc" style="color:var(--muted);font-size:11px" title="${t.emoMid||''}">${d(t.emoMid)}</span></td>
-      <td><span class="obs-cell" title="${t.observation||''}" onclick="expandObs(this)" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;cursor:pointer;white-space:nowrap" data-full="${(t.observation||'').replace(/"/g,'&quot;')}">${d(t.observation)}</span></td>
       <td>
         <div class="ra">
           <button class="ib" onclick="editTrade('${t.id}')" title="Edit">✎</button>
