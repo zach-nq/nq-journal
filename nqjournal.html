@@ -65,7 +65,7 @@ thead th:nth-child(7){width:220px;min-width:220px} /* Setup Attrs */
 thead th:nth-child(8){width:180px;min-width:180px} /* Observation */
 thead th:nth-child(26){width:88px;min-width:88px}   /* Entry */
 thead th:nth-child(9){width:140px;min-width:140px} /* Stop */
-thead th:nth-child(10){width:140px;min-width:140px}/* Target */
+thead th:nth-child(10){width:160px;min-width:160px}/* Target */
 thead th:nth-child(11){width:88px;min-width:88px}  /* Exit */
 thead th:nth-child(12){width:100px;min-width:100px}/* P&L */
 thead th:nth-child(13){width:72px;min-width:72px}  /* Points */
@@ -257,7 +257,7 @@ tbody tr:hover .ra{opacity:1}
 .notes-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
 .notes-tb{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .notes-card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);overflow:hidden}
-.notes-table{width:100%;border-collapse:collapse}
+.notes-table{width:100%;border-collapse:collapse;table-layout:fixed}
 .notes-table thead th{background:var(--surface3);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border)}
 .notes-table tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 .notes-table tbody tr:last-child{border-bottom:none}
@@ -359,11 +359,11 @@ tbody tr:hover .ra{opacity:1}
       <table class="notes-table">
         <thead>
           <tr>
-            <th style="width:40px">#</th>
-            <th style="width:130px">Date</th>
-            <th style="width:160px">Line Type</th>
+            <th style="width:36px">#</th>
+            <th style="width:100px">Date</th>
+            <th style="width:140px">Line Type</th>
             <th>Observation / Note</th>
-            <th style="width:50px"></th>
+            <th style="width:36px"></th>
           </tr>
         </thead>
         <tbody id="notes-tbody"></tbody>
@@ -783,11 +783,11 @@ function addRow(tradeToEdit) {
   stopWrap.appendChild(stopQuick);
 
   // ── TARGET — price input + points input ──
-  const targetInp = inp('target', 'number', 'Price', t.target, 80, {step:'0.25'});
+  const targetInp = inp('target', 'number', 'Price', t.target, 96, {step:'0.25'});
   const targetPtsInp = document.createElement('input');
   targetPtsInp.type='number'; targetPtsInp.className='ei'; targetPtsInp.id='er-target-pts';
   targetPtsInp.placeholder='pts'; targetPtsInp.step='0.25';
-  targetPtsInp.style.cssText='width:52px;margin-top:0';
+  targetPtsInp.style.cssText='width:58px;margin-top:0';
   targetPtsInp.title='Target in points — auto-fills price above';
   if (t.target && t.entry) {
     const pts = Math.abs(parseFloat(t.target) - parseFloat(t.entry));
@@ -1613,7 +1613,7 @@ function renderNotes() {
     // Date
     const dateTd = document.createElement('td');
     dateTd.dataset.nid = n.id; dateTd.dataset.nf = 'date';
-    dateTd.style.cssText = 'cursor:text;width:110px;color:var(--muted)';
+    dateTd.style.cssText = 'cursor:text;width:100px;color:var(--muted)';
     dateTd.textContent = n.date || '—';
     dateTd.onclick = () => activateNoteCell(dateTd);
     tr.appendChild(dateTd);
@@ -1621,7 +1621,7 @@ function renderNotes() {
     // Line Type
     const ltTd = document.createElement('td');
     ltTd.dataset.nid = n.id; ltTd.dataset.nf = 'lineType';
-    ltTd.style.cssText = 'cursor:pointer;width:160px';
+    ltTd.style.cssText = 'cursor:pointer;width:140px';
     if (n.lineType) {
       const pill = document.createElement('span');
       pill.style.cssText = 'display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:500;background:var(--accent-light);color:var(--accent)';
@@ -1638,7 +1638,7 @@ function renderNotes() {
     const textTd = document.createElement('td');
     textTd.dataset.nid = n.id; textTd.dataset.nf = 'text';
     textTd.contentEditable = 'false';
-    textTd.style.cssText = 'cursor:text;line-height:1.7;white-space:pre-wrap;word-break:break-word;min-height:36px;vertical-align:middle';
+    textTd.style.cssText = 'cursor:text;line-height:1.7;white-space:pre-wrap;word-break:break-word;min-height:36px;vertical-align:middle;width:100%';
     textTd.textContent = n.text || '';
     if (!n.text) {
       textTd.style.color = 'var(--muted2)';
