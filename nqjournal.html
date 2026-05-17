@@ -783,8 +783,11 @@ function deleteTrade(id){ if(!confirm('Remove this trade?'))return; trades=trade
 // ── INLINE CELL EDITING ──
 const INLINE_FIELDS={
   'exit':          {type:'number',step:'0.25',label:'Exit price',wide:false},
+  'grade':         {type:'select',label:'Grade',wide:false},
+  'direction':     {type:'select',label:'Direction',wide:false},
   'type':          {type:'select',label:'Line Type',wide:false},
   'tf':            {type:'select',label:'Timeframe',wide:false},
+  'processScore':  {type:'select',label:'Process 1-5',wide:false},
   'pnl':           {type:'number',step:'0.01',label:'P&L ($)',wide:false},
   'stop':          {type:'number',step:'0.25',label:'Stop price',wide:false},
   'entry':         {type:'number',step:'0.25',label:'Entry price',wide:false},
@@ -805,8 +808,11 @@ const INLINE_FIELDS={
   'reactiveState': {type:'select',label:'Reactive?',wide:false},
 };
 const SELECT_OPTS={
+  grade: [['','— grade —'],['A+','A+ (best setup)'],['A','A (good setup)'],['B','B (okay setup)'],['C','C (weak — skip)']],
+  direction: [['','— dir —'],['Long','Long'],['Short','Short']],
   type: [['','— select —'],...LINE_TYPES.map(lt=>[lt,lt])],
   tf:   [['','— TF —'],['1M','1M'],['5M','5M'],['10M','10M'],['15M','15M'],['1H','1H'],['1D','1D']],
+  processScore: [['','— score —'],['1','1 — Poor process'],['2','2 — Below avg'],['3','3 — Average'],['4','4 — Good'],['5','5 — Perfect']],
   trendAlign:    [['','— none —'],['With','✓ With Trend'],['Counter','✗ Counter']],
   rangeLocation: [['','— none —'],['Top','Top of Range'],['Mid','Mid Range'],['Bottom','Bottom of Range']],
   result:        [['','— none —'],['Won','Won'],['Lost','Lost']],
@@ -961,14 +967,13 @@ function render(){
       td.innerHTML=content; return td;
     }
 
-    // Row # (no inline edit)
-    const numTd=document.createElement('td'); numTd.style.cssText='color:var(--muted2);font-size:11px;text-align:center'; numTd.textContent=i+1; tr.appendChild(numTd);
-
-    tr.appendChild(mkTd('',gradeBadge));
+    // Col 1: Grade badge (clickable inline select)
+    const gradeTd=document.createElement('td'); gradeTd.dataset.field='grade'; gradeTd.dataset.tid=t.id; gradeTd.style.cursor='pointer'; gradeTd.style.textAlign='center';
+    gradeTd.innerHTML=gradeBadge; tr.appendChild(gradeTd);
     tr.appendChild(mkTd('date',d(t.date)));
     tr.appendChild(mkTd('time',`<span style="color:var(--muted)">${d(t.time)}</span>`));
     tr.appendChild(mkTd('timeExit',`<span style="color:var(--muted)">${d(t.timeExit)}</span>`));
-    tr.appendChild(selTd('',''+dirBadge));
+    const dirTd=document.createElement('td'); dirTd.dataset.field='direction'; dirTd.dataset.tid=t.id; dirTd.style.cursor='pointer'; dirTd.innerHTML=dirBadge; tr.appendChild(dirTd);
     tr.appendChild(selTd('trendAlign',trendBadge));
     // Line Type — dropdown on click
     const ltTd=document.createElement('td'); ltTd.style.cursor='pointer'; ltTd.dataset.field='type'; ltTd.dataset.tid=t.id;
@@ -993,8 +998,8 @@ function render(){
     tr.appendChild(selTd('targetReached',tgtBadge));
     // Duration (auto)
     const durTd=document.createElement('td'); durTd.innerHTML=`<span style="color:var(--muted);font-size:11px">${d(dur)}</span>`; tr.appendChild(durTd);
-    // Process score
-    const procTd=document.createElement('td'); procTd.innerHTML=t.processScore?`<span style="font-weight:700;color:${procColor}">${t.processScore}/5</span>`:'<span class="dash">—</span>'; tr.appendChild(procTd);
+    // Process score - inline select
+    const procTd=document.createElement('td'); procTd.dataset.field='processScore'; procTd.dataset.tid=t.id; procTd.style.cursor='pointer'; procTd.innerHTML=t.processScore?`<span style="font-weight:700;color:${procColor}">${t.processScore}/5</span>`:'<span class="dash">—</span>'; tr.appendChild(procTd);
     tr.appendChild(selTd('followedPlan',planBadge));
     tr.appendChild(selTd('reactiveState',reactiveBadge));
     // Observation
@@ -1199,7 +1204,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeObs(); });
 // ── EXPORT ──
 function exportCSV(){
   if(!trades.length)return alert('No trades to export.');
-  const k=['date','time','timeExit','grade','direction','trendAlign','type','tf','rangeLocation','entry','stop','target','exit','pnl','rr','mae','mfe','drawdown','result','exitType','targetReached','processScore','followedPlan','reactiveState','attrs','observation'];
+  const k=['date','time','timeExit','grade','direction','trendAlign','type','tf','rangeLocation','entry','stop','target','exit','pnl','contracts','rr','mae','mfe','drawdown','result','exitType','targetReached','processScore','followedPlan','reactiveState','attrs','observation'];
   const csv=[k.join(','),...trades.map(t=>k.map(key=>`"${(t[key]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
   Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:`nq-journal-${new Date().toISOString().slice(0,10)}.csv`}).click();
 }
