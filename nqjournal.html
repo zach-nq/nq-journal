@@ -1431,42 +1431,39 @@ async function runDeepInsights(){
 
 function renderDeepInsights(text){
   $('deep-loading').style.display='none';
-
-  const icons={'EDGE PATTERNS':'🎯','RISK PATTERNS':'⚠️','PSYCHOLOGICAL PATTERNS':'🧠','REGIME ALIGNMENT':'📋','BLIND SPOTS':'🔍','PRIORITY ACTIONS':'🚀'};
-  const colors={'EDGE PATTERNS':'dp-g','RISK PATTERNS':'dp-r','PSYCHOLOGICAL PATTERNS':'dp-b','REGIME ALIGNMENT':'dp-b','BLIND SPOTS':'dp-w','PRIORITY ACTIONS':'dp-g'};
-
-  // Split by numbered sections
-  const sections=text.split(/
-(?=\d+\.\s+[A-Z])/);
-  let html2='<div style="margin-bottom:8px;font-size:11px;color:var(--muted);text-align:right">Last analysed: '+new Date().toLocaleString()+'</div>';
-
-  sections.forEach(sec=>{
-    sec=sec.trim(); if(!sec)return;
-    const titleMatch=sec.match(/^\d+\.\s+([A-Z\s&]+)/);
-    const title=titleMatch?titleMatch[1].trim():sec.slice(0,40);
-    const icon=icons[title]||'💡';
-    const colorClass=colors[title]||'dp-b';
-    const body=sec.replace(/^\d+\.\s+[A-Z\s&]+
-?/,'').trim();
-
-    // Parse bullet points or paragraphs
-    const paras=body.split(/
-+/).filter(p=>p.trim());
-    const bodyHtml=paras.map(p=>{
-      p=p.trim();
-      const isBullet=p.match(/^[-•*]\s+/) || p.match(/^\d+[.)]\s+/);
-      const pClean=p.replace(/^[-•*]\s+/,'').replace(/^\d+[.)]\s+/,'').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-      if(isBullet)return`<div class="deep-pattern ${colorClass}"><span class="dp-icon">${icon}</span><span class="dp-text">${pClean}</span></div>`;
-      return`<p style="margin-bottom:8px;font-size:13px;color:var(--text2);line-height:1.7">${pClean}</p>`;
-    }).join('');
-
-    html2+=`<div class="deep-card">
-      <div class="deep-card-title">${icon} ${title}</div>
-      <div>${bodyHtml}</div>
-    </div>`;
+  var icons={'EDGE PATTERNS':'🎯','RISK PATTERNS':'⚠️','PSYCHOLOGICAL PATTERNS':'🧠','REGIME ALIGNMENT':'📋','BLIND SPOTS':'🔍','PRIORITY ACTIONS':'🚀'};
+  var colorMap={'EDGE PATTERNS':'dp-g','RISK PATTERNS':'dp-r','PSYCHOLOGICAL PATTERNS':'dp-b','REGIME ALIGNMENT':'dp-b','BLIND SPOTS':'dp-w','PRIORITY ACTIONS':'dp-g'};
+  var out='<div style="margin-bottom:8px;font-size:11px;color:var(--muted);text-align:right">Last analysed: '+new Date().toLocaleString()+'</div>';
+  
+  // Simple split on numbered headers like "1. " "2. " etc
+  var lines=text.split('\n');
+  var sections=[];
+  var cur=[];
+  lines.forEach(function(line){
+    if(/^[1-6]\. [A-Z]/.test(line)&&cur.length>0){sections.push(cur.join('\n'));cur=[];}
+    cur.push(line);
   });
-
-  $('deep-content').innerHTML=html2;
+  if(cur.length)sections.push(cur.join('\n'));
+  
+  sections.forEach(function(sec){
+    sec=sec.trim(); if(!sec)return;
+    var firstLine=sec.split('\n')[0];
+    var titleMatch=firstLine.match(/^[0-9]+\. (.+)/);
+    var title=titleMatch?titleMatch[1].trim().toUpperCase():firstLine.toUpperCase();
+    var icon=icons[title]||'💡';
+    var cls=colorMap[title]||'dp-b';
+    var bodyLines=sec.split('\n').slice(1).filter(function(l){return l.trim();});
+    var bodyHtml=bodyLines.map(function(line){
+      var l=line.trim();
+      var isBullet=/^[-*•]/.test(l)||/^[0-9]+[.).]/.test(l);
+      var clean=l.replace(/^[-*•]\s*/,'').replace(/^[0-9]+[.)]\s*/,'').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+      if(isBullet)return'<div class="deep-pattern '+cls+'"><span class="dp-icon">'+icon+'</span><span class="dp-text">'+clean+'</span></div>';
+      return'<p style="margin-bottom:6px;font-size:13px;color:var(--text2);line-height:1.7">'+clean+'</p>';
+    }).join('');
+    out+='<div class="deep-card"><div class="deep-card-title">'+icon+' '+title+'</div><div style="margin-top:10px">'+bodyHtml+'</div></div>';
+  });
+  
+  $('deep-content').innerHTML=out;
   $('deep-content').style.display='block';
 }
 
