@@ -1356,10 +1356,8 @@ async function runDeepInsights(){
   if(btn){btn.disabled=true;btn.textContent='Analysing...';}
 
   // Build context from observations, takeaways and notes
-  const obsEntries=trades.filter(t=>t.observation||t.takeaway).map(t=>`[${t.date||''} ${t.type||''} ${t.direction||''} ${t.result||''}] Obs: ${t.observation||''} | Takeaway: ${t.takeaway||''}`).join('
-');
-  const noteEntries=notes.filter(n=>n.text&&n.text!=='Click to write...').map((n,i)=>`${i+1}. ${n.text}`).join('
-');
+  const obsEntries=trades.filter(t=>t.observation||t.takeaway).map(t=>`[${t.date||''} ${t.type||''} ${t.direction||''} ${t.result||''}] Obs: ${t.observation||''} | Takeaway: ${t.takeaway||''}`).join('\n');
+  const noteEntries=notes.filter(n=>n.text&&n.text!=='Click to write...').map((n,i)=>`${i+1}. ${n.text}`).join('\n');
   const statsBlock=`Total trades: ${trades.length}, Win rate: ${Math.round(trades.filter(t=>t.result==='Won').length/Math.max(trades.length,1)*100)}%, Net P&L: ${trades.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0).toFixed(0)}`;
   const lineTypePnl={};
   trades.forEach(t=>{if(!t.type)return;if(!lineTypePnl[t.type])lineTypePnl[t.type]={n:0,pnl:0,wins:0};lineTypePnl[t.type].n++;lineTypePnl[t.type].pnl+=parseFloat(t.pnl)||0;if(t.result==='Won')lineTypePnl[t.type].wins++;});
@@ -1459,8 +1457,7 @@ function renderDeepInsights(text){
 
 function exportNotes(){
   if(!notes.length)return alert('No notes to export.');
-  const lines=notes.map((n,i)=>`${i+1}. ${n.text||''}`).join('
-');
+  const lines=notes.map((n,i)=>`${i+1}. ${n.text||''}`).join('\n');
   const blob=new Blob([lines],{type:'text/plain'});
   Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:`nq-notes-${new Date().toISOString().slice(0,10)}.txt`}).click();
 }
