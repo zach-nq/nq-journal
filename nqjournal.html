@@ -1355,62 +1355,79 @@ async function runDeepInsights(){
   $('deep-loading').style.display='block';
   if(btn){btn.disabled=true;btn.textContent='Analysing...';}
 
-  // Build context from observations, takeaways and notes
-  const obsEntries=trades.filter(t=>t.observation||t.takeaway).map(t=>`[${t.date||''} ${t.type||''} ${t.direction||''} ${t.result||''}] Obs: ${t.observation||''} | Takeaway: ${t.takeaway||''}`).join('\n');
-  const noteEntries=notes.filter(n=>n.text&&n.text!=='Click to write...').map((n,i)=>`${i+1}. ${n.text}`).join('\n');
-  const statsBlock=`Total trades: ${trades.length}, Win rate: ${Math.round(trades.filter(t=>t.result==='Won').length/Math.max(trades.length,1)*100)}%, Net P&L: ${trades.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0).toFixed(0)}`;
-  const lineTypePnl={};
-  trades.forEach(t=>{if(!t.type)return;if(!lineTypePnl[t.type])lineTypePnl[t.type]={n:0,pnl:0,wins:0};lineTypePnl[t.type].n++;lineTypePnl[t.type].pnl+=parseFloat(t.pnl)||0;if(t.result==='Won')lineTypePnl[t.type].wins++;});
-  const ltStats=Object.entries(lineTypePnl).map(([k,v])=>`${k}: ${v.n} trades, ${Math.round(v.wins/v.n*100)}% win, $${v.pnl.toFixed(0)}`).join('; ');
-  const trendStats=`With Trend: ${trades.filter(t=>t.trendAlign==='With'&&t.result==='Won').length}W/${trades.filter(t=>t.trendAlign==='With').length}T | Counter: ${trades.filter(t=>t.trendAlign==='Counter'&&t.result==='Won').length}W/${trades.filter(t=>t.trendAlign==='Counter').length}T`;
-  const rangeStats=`Top: ${trades.filter(t=>t.rangeLocation==='Top'&&t.result==='Won').length}W/${trades.filter(t=>t.rangeLocation==='Top').length}T | Mid: ${trades.filter(t=>t.rangeLocation==='Mid'&&t.result==='Won').length}W/${trades.filter(t=>t.rangeLocation==='Mid').length}T | Bottom: ${trades.filter(t=>t.rangeLocation==='Bottom'&&t.result==='Won').length}W/${trades.filter(t=>t.rangeLocation==='Bottom').length}T`;
+  const obsEntries=trades.filter(function(t){return t.observation||t.takeaway;}).map(function(t){
+    return '['+( t.date||'')+' '+(t.type||'')+' '+(t.direction||'')+' '+(t.result||'')+'] Obs: '+(t.observation||'')+' | Takeaway: '+(t.takeaway||'');
+  }).join('\n');
 
-  const prompt=`You are an elite trading coach analysing the journal of an NQ futures trader. Extract deep, specific, actionable insights.
+  const noteEntries=notes.filter(function(n){return n.text&&n.text!=='Click to write...';}).map(function(n,i){
+    return (i+1)+'. '+n.text;
+  }).join('\n');
 
-TRADING STATS:
-${statsBlock}
-Setup types: ${ltStats}
-Trend alignment: ${trendStats}
-Range location: ${rangeStats}
+  const totalTrades=trades.length;
+  const winRate=Math.round(trades.filter(function(t){return t.result==='Won';}).length/Math.max(totalTrades,1)*100);
+  const netPnl=trades.map(function(t){return parseFloat(t.pnl)||0;}).reduce(function(a,b){return a+b;},0);
 
-TRADE OBSERVATIONS & TAKEAWAYS (from journal entries):
-${obsEntries||'None logged yet'}
+  const ltMap2={};
+  trades.forEach(function(t){
+    if(!t.type)return;
+    if(!ltMap2[t.type])ltMap2[t.type]={n:0,pnl:0,wins:0};
+    ltMap2[t.type].n++;
+    ltMap2[t.type].pnl+=parseFloat(t.pnl)||0;
+    if(t.result==='Won')ltMap2[t.type].wins++;
+  });
+  const ltStats=Object.entries(ltMap2).map(function(e){
+    return e[0]+': '+e[1].n+' trades, '+Math.round(e[1].wins/e[1].n*100)+'% win, $'+e[1].pnl.toFixed(0);
+  }).join('; ');
 
-TRADER NOTES & LESSONS (from notes tab):
-${noteEntries||'None logged yet'}
+  const withWins=trades.filter(function(t){return t.trendAlign==='With'&&t.result==='Won';}).length;
+  const withTotal=trades.filter(function(t){return t.trendAlign==='With';}).length;
+  const ctrWins=trades.filter(function(t){return t.trendAlign==='Counter'&&t.result==='Won';}).length;
+  const ctrTotal=trades.filter(function(t){return t.trendAlign==='Counter';}).length;
+  const trendStats='With Trend: '+withWins+'W/'+withTotal+'T | Counter: '+ctrWins+'W/'+ctrTotal+'T';
 
-Provide a deep analysis in these exact sections. Be specific, reference actual patterns from their data. Do not be generic.
-
-1. EDGE PATTERNS (what is clearly working — be specific with setups and conditions)
-2. RISK PATTERNS (what is causing losses or bad trades — specific situations to avoid)
-3. PSYCHOLOGICAL PATTERNS (recurring mental patterns from their notes and observations)
-4. REGIME ALIGNMENT (how well are they following their own stated rules from the notes)
-5. BLIND SPOTS (things they may be missing or not tracking that matter)
-6. PRIORITY ACTIONS (3 most impactful things to work on, ranked)
-
-Format each section with clear labels. Use specific trade examples where possible.`;
+  const promptLines=[
+    'You are an elite trading coach analysing the journal of an NQ futures trader. Be specific and reference actual data.',
+    '',
+    'STATS: '+totalTrades+' trades, '+winRate+'% win rate, $'+netPnl.toFixed(0)+' net P&L',
+    'Setup types: '+ltStats,
+    'Trend: '+trendStats,
+    '',
+    'TRADE OBSERVATIONS:',
+    obsEntries||'None logged yet',
+    '',
+    'TRADER NOTES:',
+    noteEntries||'None logged yet',
+    '',
+    'Provide analysis in these sections (use the exact headings):',
+    '1. EDGE PATTERNS - what is clearly working',
+    '2. RISK PATTERNS - what causes losses, situations to avoid',
+    '3. PSYCHOLOGICAL PATTERNS - mental patterns from notes and observations',
+    '4. REGIME ALIGNMENT - how well they follow their own rules',
+    '5. BLIND SPOTS - things missing or not tracked that matter',
+    '6. PRIORITY ACTIONS - 3 most impactful things to work on, ranked',
+    '',
+    'Be specific. Reference actual setups and patterns from their data. Use bullet points within each section.'
+  ];
+  const prompt=promptLines.join('\n');
 
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:2000,
-        messages:[{role:'user',content:prompt}]
-      })
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]})
     });
     const data=await resp.json();
-    const text=data.content?.[0]?.text||'No response received.';
+    const text=(data.content&&data.content[0]&&data.content[0].text)||'No response received.';
     renderDeepInsights(text);
   }catch(err){
     $('deep-loading').style.display='none';
     $('deep-content').style.display='block';
-    $('deep-content').innerHTML=`<div class="deep-card"><div class="deep-card-title">⚠️ Error</div><div class="deep-body">${err.message}</div></div>`;
+    $('deep-content').innerHTML='<div class="deep-card"><div class="deep-card-title">Error</div><div class="deep-body">'+err.message+'</div></div>';
   }finally{
     if(btn){btn.disabled=false;btn.textContent='Analyse Now';}
   }
 }
+
 
 function renderDeepInsights(text){
   $('deep-loading').style.display='none';
