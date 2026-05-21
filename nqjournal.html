@@ -384,24 +384,51 @@ tbody tr:hover .ra{opacity:1}
         <div class="cc"><div class="ct">P&amp;L Per Trade</div><div class="cs">Win/loss across recent trades</div><div class="pnl-tl" id="pnl-tl"></div></div>
         <div class="cc"><div class="ct">Key Insights</div><div class="cs">Patterns detected from your data</div><div id="callouts"></div></div>
       </div>
+      <!-- Row 1: Grade + Trend + Range -->
       <div class="irow ir3">
-        <div class="cc"><div class="ct">Setup Grade</div><div class="cs">Win rate + P&L by grade assigned pre-trade</div><div class="bch" id="grade-b"></div></div>
-        <div class="cc"><div class="ct">Trend Alignment</div><div class="cs">With Trend vs Counter Trend outcomes</div><div class="bch" id="trend-b"></div></div>
-        <div class="cc"><div class="ct">Range Location</div><div class="cs">Win rate by where in the range you entered</div><div class="bch" id="range-b"></div></div>
+        <div class="cc">
+          <div class="ct">Setup Grade</div>
+          <div class="cs">Win rate &amp; P&L by grade — does your pre-trade assessment predict outcome?</div>
+          <div class="bch" id="grade-b"></div>
+          <div id="grade-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">Trend Alignment</div>
+          <div class="cs">With Trend vs Counter Trend — your regime says trade with trend</div>
+          <div class="bch" id="trend-b"></div>
+          <div id="trend-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">Range Location</div>
+          <div class="cs">Top / Mid / Bottom — your regime says avoid midrange</div>
+          <div class="bch" id="range-b"></div>
+          <div id="range-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
+        </div>
       </div>
-      <div class="irow ir3">
-        <div class="cc"><div class="ct">Line Type</div><div class="cs">Win rate + total P&L by setup type</div><div class="bch" id="lt-b"></div></div>
-        <div class="cc"><div class="ct">Direction</div><div class="cs">Long vs Short win rate</div><div class="bch" id="dir-b"></div></div>
-        <div class="cc"><div class="ct">Timeframe</div><div class="cs">Win rate by line timeframe</div><div class="bch" id="tf-b"></div></div>
+      <!-- Row 2: Line Type (full width) -->
+      <div class="irow ir1">
+        <div class="cc">
+          <div class="ct">Line Type Performance</div>
+          <div class="cs">Win rate, trade count and total P&L by setup — sorted by most traded</div>
+          <div class="bch" id="lt-b"></div>
+        </div>
       </div>
+      <!-- Row 3: Direction + TF + Duration -->
       <div class="irow ir3">
-        <div class="cc"><div class="ct">Reactive State</div><div class="cs">Win rate when in reactive vs calm state</div><div class="bch" id="react-b"></div></div>
-        <div class="cc"><div class="ct">Confluence</div><div class="cs">Trades with vs without confluence</div><div class="bch" id="conf-b"></div></div>
+        <div class="cc"><div class="ct">Direction</div><div class="cs">Long vs Short outcomes</div><div class="bch" id="dir-b"></div></div>
+        <div class="cc"><div class="ct">Timeframe</div><div class="cs">Performance by line timeframe</div><div class="bch" id="tf-b"></div></div>
         <div class="cc"><div class="ct">Trade Duration</div><div class="cs">Win rate by how long you held</div><div class="bch" id="dur-b"></div></div>
       </div>
+      <!-- Row 4: Day + Hour + Reactive -->
+      <div class="irow ir3">
+        <div class="cc"><div class="ct">Day of Week</div><div class="cs">Best and worst days to trade</div><div class="bch" id="dow-b"></div></div>
+        <div class="cc"><div class="ct">Time of Day</div><div class="cs">Best entry hours</div><div class="bch" id="hour-b"></div></div>
+        <div class="cc"><div class="ct">Reactive State</div><div class="cs">When you flagged yourself as reactive</div><div class="bch" id="react-b"></div></div>
+      </div>
+      <!-- Row 5: Confluence -->
       <div class="irow ir2">
-        <div class="cc"><div class="ct">Day of Week</div><div class="cs">Which days perform best</div><div class="bch" id="dow-b"></div></div>
-        <div class="cc"><div class="ct">Time of Day</div><div class="cs">Win rate by entry hour</div><div class="bch" id="hour-b"></div></div>
+        <div class="cc"><div class="ct">Confluence</div><div class="cs">Trades with vs without confluence markers</div><div class="bch" id="conf-b"></div></div>
+        <div class="cc"><div class="ct">Confluence Type</div><div class="cs">Which confluence types appear on winners</div><div class="bch" id="conf-type-b"></div></div>
       </div>
     </div>
   </div>
@@ -1084,11 +1111,57 @@ function render(){
     const durTd=document.createElement('td'); durTd.innerHTML=`<span style="color:var(--muted);font-size:11px">${d(dur)}</span>`; tr.appendChild(durTd);
     tr.appendChild(selTd('reactiveState',reactiveBadge));
     tr.appendChild(selTd('confluence',t.confluence==='Yes'?'<span style="color:var(--win);font-weight:600;font-size:11px">✓ Yes</span>':t.confluence==='No'?'<span style="color:var(--muted);font-size:11px">No</span>':'<span class="dash">—</span>'));
-    // Confluence Types — multiselect pills display
-    const confTd=document.createElement('td'); confTd.style.cssText='cursor:pointer;max-width:180px';
-    if(t.confluenceTypes){ confTd.innerHTML=t.confluenceTypes.split(',').filter(Boolean).map(ct=>`<span style="display:inline-flex;align-items:center;padding:1px 6px;border-radius:10px;font-size:10px;background:var(--accent-l);color:var(--accent);margin:1px;white-space:nowrap">${ct.trim()}</span>`).join(''); }
-    else{ confTd.innerHTML='<span class="dash">—</span>'; }
-    confTd.onclick=()=>editTrade(t.id); tr.appendChild(confTd);
+    // Confluence Types — inline multiselect on single click
+    const confTd=document.createElement('td'); confTd.style.cssText='cursor:pointer;max-width:200px';
+    const renderConfPills=()=>{
+      const saved=(t.confluenceTypes||'').split(',').map(x=>x.trim()).filter(Boolean);
+      confTd.innerHTML=saved.length
+        ? saved.map(ct=>'<span style="display:inline-flex;align-items:center;padding:1px 6px;border-radius:10px;font-size:10px;background:var(--accent-l);color:var(--accent);margin:1px;white-space:nowrap">'+ct+'</span>').join('')
+        : '<span class="dash">—</span>';
+    };
+    renderConfPills();
+    confTd.onclick=function(e){
+      e.stopPropagation();
+      if(confTd.dataset.active)return;
+      confTd.dataset.active='1';
+      const saved=(t.confluenceTypes||'').split(',').map(x=>x.trim()).filter(Boolean);
+      confTd.innerHTML='';
+      const wrap=document.createElement('div');
+      wrap.style.cssText='display:flex;flex-wrap:wrap;gap:4px;padding:4px;background:#fff;border:2px solid var(--accent);border-radius:6px;box-shadow:0 0 0 3px var(--accent-l);min-width:160px;max-width:220px;z-index:10';
+      CONFLUENCE_TYPES.forEach(function(ct){
+        const b=document.createElement('button');
+        b.type='button'; b.textContent=ct;
+        b.style.cssText='padding:3px 8px;border-radius:20px;font-size:10.5px;cursor:pointer;border:1px solid var(--border-s);background:var(--s2);color:var(--text2);transition:all .12s;white-space:nowrap';
+        if(saved.includes(ct)){b.style.background='var(--accent)';b.style.borderColor='var(--accent)';b.style.color='#fff';}
+        b.onclick=function(ev){
+          ev.stopPropagation();
+          if(b.style.background.includes('accent')||b.style.color==='rgb(255, 255, 255)'){
+            b.style.background='var(--s2)';b.style.borderColor='var(--border-s)';b.style.color='var(--text2)';
+          } else {
+            b.style.background='var(--accent)';b.style.borderColor='var(--accent)';b.style.color='#fff';
+          }
+        };
+        wrap.appendChild(b);
+      });
+      const doneBtn=document.createElement('button');
+      doneBtn.type='button'; doneBtn.textContent='✓ Done';
+      doneBtn.style.cssText='padding:3px 10px;border-radius:20px;font-size:10.5px;cursor:pointer;border:none;background:var(--accent);color:#fff;font-weight:600;margin-top:2px;width:100%';
+      doneBtn.onclick=function(ev){
+        ev.stopPropagation();
+        const selected=[...wrap.querySelectorAll('button:not([style*="Done"])')].filter(function(b){
+          return b.style.color==='rgb(255, 255, 255)'||b.style.background.includes('accent');
+        }).map(function(b){return b.textContent;});
+        // Save
+        const idx2=trades.findIndex(function(x){return x.id===t.id;});
+        if(idx2>=0){trades[idx2].confluenceTypes=selected.join(', '); t.confluenceTypes=selected.join(', ');}
+        delete confTd.dataset.active;
+        renderConfPills();
+        persist();
+      };
+      wrap.appendChild(doneBtn);
+      confTd.appendChild(wrap);
+    };
+    tr.appendChild(confTd);
     // Observation
     const obsTd=document.createElement('td'); obsTd.dataset.field='observation'; obsTd.dataset.tid=t.id; obsTd.style.cursor='text';
     const obsSpan=document.createElement('span'); obsSpan.style.cssText='overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;white-space:nowrap;cursor:text;color:var(--text2)';
@@ -1258,6 +1331,49 @@ function renderInsights(){
   const confMap={};trades.forEach(t=>{if(!t.confluence)return;if(!confMap[t.confluence])confMap[t.confluence]={w:0,l:0,pnl:0};t.result==='Won'?confMap[t.confluence].w++:confMap[t.confluence].l++;confMap[t.confluence].pnl+=parseFloat(t.pnl)||0;});
   $('conf-b').innerHTML=bars(confMap)||'<div class="nodata">Fill in Confluence? column on trades</div>';
 
+  // Confluence Type breakdown — which types appear on winners vs all
+  const confTypeMap={};
+  trades.forEach(function(t){
+    if(!t.confluenceTypes)return;
+    t.confluenceTypes.split(',').forEach(function(ct){
+      ct=ct.trim(); if(!ct)return;
+      if(!confTypeMap[ct])confTypeMap[ct]={n:0,wins:0,pnl:0};
+      confTypeMap[ct].n++;
+      if(t.result==='Won')confTypeMap[ct].wins++;
+      confTypeMap[ct].pnl+=parseFloat(t.pnl)||0;
+    });
+  });
+  const ctEl=$('conf-type-b');
+  if(ctEl){
+    const ctEntries=Object.entries(confTypeMap).sort(function(a,b){return b[1].n-a[1].n;});
+    ctEl.innerHTML=ctEntries.length?ctEntries.map(function(e){
+      const k=e[0],v=e[1],wr2=Math.round(v.wins/v.n*100);
+      return'<div class="br"><span class="bl" title="'+k+'">'+k+'</span><div class="bt"><div class="bf '+(wr2>=60?'g':wr2>=50?'b':'r')+'" style="width:'+wr2+'%"></div></div><span class="bm">'+wr2+'%·'+v.n+'</span><span style="font-size:10px;color:'+(v.pnl>=0?'var(--win)':'var(--loss)')+';width:72px;text-align:right;flex-shrink:0">'+fmtC(v.pnl)+'</span></div>';
+    }).join(''):'<div class="nodata">Log confluence types on trades to see data</div>';
+  }
+
+  // Inline insights under grade/trend/range cards
+  const gradeInsEl=$('grade-insight');
+  if(gradeInsEl&&Object.keys(gradeMap).length){
+    const apG=gradeMap['A+'],cG=gradeMap['C'];
+    const parts=[];
+    if(apG){const wr2=Math.round(apG.w/(apG.w+apG.l)*100);parts.push('A+ wins '+wr2+'% — '+(wr2>=70?'your grading is accurate':'consider tightening A+ criteria'));}
+    if(cG){const wr2=Math.round(cG.w/(cG.w+cG.l)*100);parts.push('C trades win only '+wr2+'% — eliminating them would improve overall rate');}
+    gradeInsEl.textContent=parts.join(' · ');
+  }
+  const trendInsEl=$('trend-insight');
+  if(trendInsEl&&(trendMap['With']||trendMap['Counter'])){
+    const w=trendMap['With'],c=trendMap['Counter'];
+    const wwr=w?Math.round(w.w/(w.w+w.l)*100):0;
+    const cwr=c?Math.round(c.w/(c.w+c.l)*100):0;
+    trendInsEl.textContent=wwr>cwr?'With Trend outperforms Counter by '+(wwr-cwr)+'pp — keep trading with trend.':'Counter Trend matches With Trend — interesting edge to study.';
+  }
+  const rangeInsEl=$('range-insight');
+  if(rangeInsEl&&rangeMap['Mid']){
+    const midWr=Math.round(rangeMap['Mid'].w/(rangeMap['Mid'].w+rangeMap['Mid'].l)*100);
+    rangeInsEl.textContent='Midrange win rate: '+midWr+'% — '+(midWr<60?'your regime is right to avoid midrange.':'midrange performing well for you.');
+  }
+
   // Duration analysis
   const durs=trades.map(t=>{const e=parseMins(t.time),x=parseMins(t.timeExit);if(e===null||x===null)return null;const d=x>=e?x-e:x+1440-e;return{dur:d,won:t.result==='Won',pnl:parseFloat(t.pnl)||0};}).filter(v=>v!==null);
   const durBuckets={'<10m':{w:0,l:0},'10-30m':{w:0,l:0},'30-60m':{w:0,l:0},'1-2h':{w:0,l:0},'>2h':{w:0,l:0}};
@@ -1349,80 +1465,135 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeObs(); });
 // ── DEEP INSIGHTS ──
 async function runDeepInsights(){
   const btn=$('deep-run-btn');
-  if(!trades.length&&!notes.length)return alert('Log some trades and notes first.');
+  if(!trades.length&&!notes.length){
+    $('deep-empty').style.display='none';
+    $('deep-content').style.display='block';
+    $('deep-content').innerHTML='<div class="deep-card"><div class="deep-card-title">No Data Yet</div><div class="deep-body">Log some trades and notes first, then click Analyse Now.</div></div>';
+    return;
+  }
   $('deep-empty').style.display='none';
   $('deep-content').style.display='none';
   $('deep-loading').style.display='block';
   if(btn){btn.disabled=true;btn.textContent='Analysing...';}
 
-  const obsEntries=trades.filter(function(t){return t.observation||t.takeaway;}).map(function(t){
-    return '['+( t.date||'')+' '+(t.type||'')+' '+(t.direction||'')+' '+(t.result||'')+'] Obs: '+(t.observation||'')+' | Takeaway: '+(t.takeaway||'');
-  }).join('\n');
+  // Build observations from trades
+  var obsLines=[];
+  trades.forEach(function(t){
+    if(t.observation||t.takeaway){
+      var line='['+[t.date,t.type,t.direction,t.result].filter(Boolean).join(' ')+']';
+      if(t.observation)line+=' Observation: '+t.observation;
+      if(t.takeaway)line+=' Takeaway: '+t.takeaway;
+      obsLines.push(line);
+    }
+  });
+  var obsText=obsLines.length?obsLines.join('
+'):'No observations logged yet.';
 
-  const noteEntries=notes.filter(function(n){return n.text&&n.text!=='Click to write...';}).map(function(n,i){
-    return (i+1)+'. '+n.text;
-  }).join('\n');
+  // Build notes
+  var noteLines=notes.filter(function(n){return n.text&&n.text.trim()&&n.text!=='Click to write...';}).map(function(n,i){return (i+1)+'. '+n.text;});
+  var notesText=noteLines.length?noteLines.join('
+'):'No notes logged yet.';
 
-  const totalTrades=trades.length;
-  const winRate=Math.round(trades.filter(function(t){return t.result==='Won';}).length/Math.max(totalTrades,1)*100);
-  const netPnl=trades.map(function(t){return parseFloat(t.pnl)||0;}).reduce(function(a,b){return a+b;},0);
+  // Stats
+  var totalT=trades.length;
+  var winCount=trades.filter(function(t){return t.result==='Won';}).length;
+  var winPct=Math.round(winCount/Math.max(totalT,1)*100);
+  var netPnl=trades.map(function(t){return parseFloat(t.pnl)||0;}).reduce(function(a,b){return a+b;},0);
 
-  const ltMap2={};
+  var ltStats={};
   trades.forEach(function(t){
     if(!t.type)return;
-    if(!ltMap2[t.type])ltMap2[t.type]={n:0,pnl:0,wins:0};
-    ltMap2[t.type].n++;
-    ltMap2[t.type].pnl+=parseFloat(t.pnl)||0;
-    if(t.result==='Won')ltMap2[t.type].wins++;
+    if(!ltStats[t.type])ltStats[t.type]={n:0,pnl:0,wins:0};
+    ltStats[t.type].n++;ltStats[t.type].pnl+=parseFloat(t.pnl)||0;
+    if(t.result==='Won')ltStats[t.type].wins++;
   });
-  const ltStats=Object.entries(ltMap2).map(function(e){
-    return e[0]+': '+e[1].n+' trades, '+Math.round(e[1].wins/e[1].n*100)+'% win, $'+e[1].pnl.toFixed(0);
-  }).join('; ');
+  var ltSummary=Object.keys(ltStats).map(function(k){
+    var v=ltStats[k];return k+': '+v.n+' trades, '+Math.round(v.wins/v.n*100)+'% win, $'+v.pnl.toFixed(0);
+  }).join(' | ');
 
-  const withWins=trades.filter(function(t){return t.trendAlign==='With'&&t.result==='Won';}).length;
-  const withTotal=trades.filter(function(t){return t.trendAlign==='With';}).length;
-  const ctrWins=trades.filter(function(t){return t.trendAlign==='Counter'&&t.result==='Won';}).length;
-  const ctrTotal=trades.filter(function(t){return t.trendAlign==='Counter';}).length;
-  const trendStats='With Trend: '+withWins+'W/'+withTotal+'T | Counter: '+ctrWins+'W/'+ctrTotal+'T';
+  var withW=trades.filter(function(t){return t.trendAlign==='With'&&t.result==='Won';}).length;
+  var withT=trades.filter(function(t){return t.trendAlign==='With';}).length;
+  var ctrW=trades.filter(function(t){return t.trendAlign==='Counter'&&t.result==='Won';}).length;
+  var ctrT=trades.filter(function(t){return t.trendAlign==='Counter';}).length;
 
-  const promptLines=[
-    'You are an elite trading coach analysing the journal of an NQ futures trader. Be specific and reference actual data.',
+  var rangeStats=['Top','Mid','Bottom'].map(function(r){
+    var rt=trades.filter(function(t){return t.rangeLocation===r;});
+    var rw=rt.filter(function(t){return t.result==='Won';}).length;
+    return r+': '+rw+'/'+rt.length;
+  }).join(', ');
+
+  var gradeStats=['A+','A','B','C'].map(function(g){
+    var gt=trades.filter(function(t){return t.grade===g;});
+    if(!gt.length)return null;
+    var gw=gt.filter(function(t){return t.result==='Won';}).length;
+    return g+': '+gw+'/'+gt.length+' ('+Math.round(gw/gt.length*100)+'%)';
+  }).filter(Boolean).join(', ');
+
+  var promptParts=[
+    'You are an elite NQ futures trading coach. Analyse this trader journal deeply and specifically.',
     '',
-    'STATS: '+totalTrades+' trades, '+winRate+'% win rate, $'+netPnl.toFixed(0)+' net P&L',
-    'Setup types: '+ltStats,
-    'Trend: '+trendStats,
+    '=== TRADING STATISTICS ===',
+    'Total trades: '+totalT+' | Win rate: '+winPct+'% | Net P&L: $'+netPnl.toFixed(0),
+    'By setup type: '+ltSummary,
+    'Trend alignment - With: '+withW+'/'+withT+' | Counter: '+ctrW+'/'+ctrT,
+    'Range location: '+rangeStats,
+    'Setup grades: '+gradeStats,
     '',
-    'TRADE OBSERVATIONS:',
-    obsEntries||'None logged yet',
+    '=== TRADE OBSERVATIONS & TAKEAWAYS ===',
+    obsText,
     '',
-    'TRADER NOTES:',
-    noteEntries||'None logged yet',
+    '=== TRADER JOURNAL NOTES & LESSONS ===',
+    notesText,
     '',
-    'Provide analysis in these sections (use the exact headings):',
-    '1. EDGE PATTERNS - what is clearly working',
-    '2. RISK PATTERNS - what causes losses, situations to avoid',
-    '3. PSYCHOLOGICAL PATTERNS - mental patterns from notes and observations',
-    '4. REGIME ALIGNMENT - how well they follow their own rules',
-    '5. BLIND SPOTS - things missing or not tracked that matter',
-    '6. PRIORITY ACTIONS - 3 most impactful things to work on, ranked',
+    '=== INSTRUCTIONS ===',
+    'Provide a deep, specific analysis using ONLY the data above. Reference actual setups, dates, patterns.',
+    'Use these exact section headings:',
     '',
-    'Be specific. Reference actual setups and patterns from their data. Use bullet points within each section.'
+    '1. EDGE PATTERNS',
+    '2. RISK PATTERNS',
+    '3. PSYCHOLOGICAL PATTERNS',
+    '4. REGIME ALIGNMENT',
+    '5. BLIND SPOTS',
+    '6. PRIORITY ACTIONS',
+    '',
+    'Under each section use bullet points. Be specific - name actual setups, quote actual notes.'
   ];
-  const prompt=promptLines.join('\n');
+  var prompt=promptParts.join('
+');
 
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:2500,
+        messages:[{role:'user',content:prompt}]
+      })
     });
-    const data=await resp.json();
-    const text=(data.content&&data.content[0]&&data.content[0].text)||'No response received.';
+    var data=await resp.json();
+    if(data.error){
+      throw new Error(data.error.message||'API error: '+resp.status);
+    }
+    var text=(data.content&&data.content[0]&&data.content[0].text)||'No response received.';
     renderDeepInsights(text);
   }catch(err){
     $('deep-loading').style.display='none';
     $('deep-content').style.display='block';
-    $('deep-content').innerHTML='<div class="deep-card"><div class="deep-card-title">Error</div><div class="deep-body">'+err.message+'</div></div>';
+    var errMsg=err.message||'Unknown error';
+    var isAuth=errMsg.indexOf('401')>-1||errMsg.indexOf('auth')>-1||errMsg.indexOf('API key')>-1;
+    $('deep-content').innerHTML='<div class="deep-card" style="border-color:var(--loss-l)">'+
+      '<div class="deep-card-title">⚠️ '+(isAuth?'API Authentication Required':'Connection Error')+'</div>'+
+      '<div class="deep-body" style="margin-top:8px">'+
+        (isAuth
+          ? 'The Deep Insights feature requires the Claude API. This works when viewing via <strong>Claude.ai artifacts</strong>. If you are hosting this on GitHub Pages, the API call will be blocked.<br><br>Your data is safe — all trade data and notes are stored in your browser.'
+          : 'Error: '+errMsg)+
+      '</div>'+
+      '<div style="margin-top:14px;padding:12px;background:var(--s2);border-radius:var(--rs);font-size:12px;color:var(--text2)">'+
+        '<strong>Data prepared for analysis:</strong><br>'+
+        totalT+' trades · '+obsLines.length+' observations · '+noteLines.length+' notes'+
+      '</div>'+
+    '</div>';
   }finally{
     if(btn){btn.disabled=false;btn.textContent='Analyse Now';}
   }
