@@ -1486,13 +1486,11 @@ async function runDeepInsights(){
       obsLines.push(line);
     }
   });
-  var obsText=obsLines.length?obsLines.join('
-'):'No observations logged yet.';
+  var obsText=obsLines.length?obsLines.join('\n'):'No observations logged yet.';
 
   // Build notes
   var noteLines=notes.filter(function(n){return n.text&&n.text.trim()&&n.text!=='Click to write...';}).map(function(n,i){return (i+1)+'. '+n.text;});
-  var notesText=noteLines.length?noteLines.join('
-'):'No notes logged yet.';
+  var notesText=noteLines.length?noteLines.join('\n'):'No notes logged yet.';
 
   // Stats
   var totalT=trades.length;
@@ -1558,8 +1556,7 @@ async function runDeepInsights(){
     '',
     'Under each section use bullet points. Be specific - name actual setups, quote actual notes.'
   ];
-  var prompt=promptParts.join('
-');
+  var prompt=promptParts.join('\n');
 
   try{
     var resp=await fetch('https://api.anthropic.com/v1/messages',{
