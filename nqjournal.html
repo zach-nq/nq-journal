@@ -62,16 +62,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica
 .pg{display:none;flex:1;overflow:hidden;flex-direction:column;min-height:0}.pg.on{display:flex}
 
 /* ── LEDGER ── */
-.ledger-wrap{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px 24px 32px;min-height:0}
+.ledger-wrap{flex:1;overflow:hidden;padding:18px 24px 32px;min-height:0;display:flex;flex-direction:column}
 .ledger-wrap::-webkit-scrollbar{width:5px}
 .ledger-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
-.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);min-width:0}
-.table-scroll{overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);min-width:0;display:flex;flex-direction:column;max-height:100%}
+.table-scroll{overflow-x:auto;overflow-y:auto;width:100%;height:100%;-webkit-overflow-scrolling:touch;flex:1}
 .table-scroll::-webkit-scrollbar{height:7px}
 .table-scroll::-webkit-scrollbar-track{background:var(--s2);border-radius:0 0 var(--r) var(--r)}
 .table-scroll::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:8px;border:2px solid var(--s2)}
-table{width:100%;min-width:2200px;border-collapse:collapse;table-layout:fixed}
-thead th{background:var(--s3);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:5}
+table{width:100%;min-width:2000px;border-collapse:collapse;table-layout:fixed}
+thead th{background:var(--s3);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:5;box-shadow:0 1px 0 var(--border)}
 tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:default}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:#f9f9fb}
@@ -80,42 +80,42 @@ td[data-field]{cursor:text}
 td[data-field]:hover{background:rgba(0,113,227,0.04);border-radius:3px}
 
 /* Column widths */
-thead th:nth-child(1){width:52px}  /* Grade */
-thead th:nth-child(2){width:96px}  /* Date */
-thead th:nth-child(3){width:72px}  /* Entry Time */
-thead th:nth-child(4){width:72px}  /* Exit Time */
-thead th:nth-child(5){width:68px}  /* Dir */
-thead th:nth-child(6){width:80px}  /* Trend */
-thead th:nth-child(7){width:130px} /* Line Type */
-thead th:nth-child(8){width:68px}  /* TF */
-thead th:nth-child(9){width:68px}  /* Range Loc */
-thead th:nth-child(10){width:88px} /* Entry */
-thead th:nth-child(11){width:148px}/* Stop */
-thead th:nth-child(12){width:148px}/* Target */
-thead th:nth-child(13){width:88px} /* Exit */
-thead th:nth-child(14){width:96px} /* P&L */
-thead th:nth-child(15){width:68px} /* Points */
-thead th:nth-child(16){width:56px} /* R:R */
-thead th:nth-child(17){width:68px} /* MAE */
-thead th:nth-child(18){width:68px} /* MFE */
-thead th:nth-child(19){width:80px} /* Drawdown */
-thead th:nth-child(20){width:70px} /* Result */
-thead th:nth-child(21){width:80px} /* Exit Type */
-thead th:nth-child(22){width:68px} /* Tgt Reached */
-thead th:nth-child(23){width:80px} /* Duration */
-thead th:nth-child(24){width:64px} /* Process */
-thead th:nth-child(25){width:72px} /* Followed Plan */
-thead th:nth-child(26){width:68px} /* Reactive */
-thead th:nth-child(27){width:200px}/* Observation */
-thead th:nth-child(28){width:44px} /* Actions */
+thead th:nth-child(1){width:52px}   /* Grade */
+thead th:nth-child(2){width:96px}   /* Date */
+thead th:nth-child(3){width:72px}   /* Entry Time */
+thead th:nth-child(4){width:90px}   /* Entry $ */
+thead th:nth-child(5){width:72px}   /* Exit Time */
+thead th:nth-child(6){width:90px}   /* Exit $ */
+thead th:nth-child(7){width:68px}   /* Dir */
+thead th:nth-child(8){width:80px}   /* Trend */
+thead th:nth-child(9){width:130px}  /* Line Type */
+thead th:nth-child(10){width:60px}  /* TF */
+thead th:nth-child(11){width:64px}  /* Range */
+thead th:nth-child(12){width:100px} /* Stop */
+thead th:nth-child(13){width:100px} /* Target */
+thead th:nth-child(14){width:96px}  /* P&L */
+thead th:nth-child(15){width:68px}  /* Points */
+thead th:nth-child(16){width:54px}  /* R:R */
+thead th:nth-child(17){width:72px}  /* Drawdown */
+thead th:nth-child(18){width:68px}  /* Result */
+thead th:nth-child(19){width:76px}  /* Exit Type */
+thead th:nth-child(20){width:56px}  /* Tgt? */
+thead th:nth-child(21){width:68px}  /* Duration */
+thead th:nth-child(22){width:64px}  /* Reactive? */
+thead th:nth-child(23){width:80px}  /* Confluence? */
+thead th:nth-child(24){width:180px} /* Confluence Type */
+thead th:nth-child(25){width:220px} /* Observation */
+thead th:nth-child(26){width:220px} /* Takeaway */
+thead th:nth-child(27){width:44px}  /* Actions */ /* Actions */
 
 /* ── ENTRY ROW ── */
 .entry-row td{padding:4px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top}
 .er-label{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
 .ei{width:100%;background:#fff;border:1px solid var(--border-s);color:var(--text);border-radius:var(--rx);padding:5px 7px;font-family:inherit;font-size:12px;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;min-width:0}
 .ei:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-l)}
-input[type=time]{-webkit-appearance:textfield;appearance:textfield}
-input[type=time]::-webkit-datetime-edit-ampm-field{display:none!important}
+input[type=time]{-webkit-appearance:textfield;appearance:textfield;font-variant-numeric:tabular-nums}
+input[type=time]::-webkit-datetime-edit-ampm-field{display:none!important;width:0!important;opacity:0!important}
+input[type=time]::-webkit-calendar-picker-indicator{opacity:0.5;cursor:pointer}
 .pg2{display:flex;flex-wrap:wrap;gap:3px}
 .ep{padding:3px 8px;border-radius:20px;font-size:11px;cursor:pointer;background:var(--s2);border:1px solid var(--border-s);color:var(--text2);white-space:nowrap;transition:all .12s;user-select:none;line-height:1.3}
 .ep:hover{border-color:var(--accent);color:var(--accent)}
@@ -241,6 +241,21 @@ tbody tr:hover .ra{opacity:1}
 .obs-modal-close{position:absolute;top:14px;right:14px;background:var(--s2);border:none;color:var(--muted);width:26px;height:26px;border-radius:50%;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .obs-modal-close:hover{background:var(--loss-l);color:var(--loss)}
 .sp-sub{font-size:8.5px;color:var(--muted2);line-height:1;margin-top:1px;white-space:nowrap}
+/* DEEP INSIGHTS */
+.deep-card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:20px 22px;margin-bottom:14px}
+.deep-card-title{font-size:14px;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.deep-card-sub{font-size:11px;color:var(--muted);margin-bottom:12px}
+.deep-body{font-size:13px;color:var(--text2);line-height:1.75;white-space:pre-wrap}
+.deep-body strong{color:var(--text);font-weight:600}
+.deep-pattern{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:var(--rs);margin-bottom:8px;border:1px solid var(--border)}
+.deep-pattern:last-child{margin-bottom:0}
+.dp-g{background:var(--win-l);border-color:rgba(52,199,89,.2)}
+.dp-r{background:var(--loss-l);border-color:rgba(255,59,48,.2)}
+.dp-b{background:var(--accent-l);border-color:rgba(0,113,227,.15)}
+.dp-w{background:var(--warn-l);border-color:rgba(255,149,0,.2)}
+.dp-icon{font-size:16px;flex-shrink:0;line-height:1.4}
+.dp-text{font-size:12px;color:var(--text2);line-height:1.6}
+.dp-text strong{color:var(--text);font-weight:600}
 </style>
 </head>
 <body>
@@ -248,7 +263,7 @@ tbody tr:hover .ra{opacity:1}
 <!-- HEADER -->
 <div class="hdr">
   <div class="logo">NQ<span>.</span>Journal</div>
-  <div class="mantra">Every day is perfect. There are always at least two great setups. The ocean is not going anywhere.</div>
+  <div class="mantra">I will Wait &nbsp;·&nbsp; I am Aligned &nbsp;·&nbsp; I seek Support &nbsp;·&nbsp; I seek Resistance &nbsp;·&nbsp; I seek Momentum &nbsp;·&nbsp; I seek Trendline &nbsp;·&nbsp; I seek Projected Path &nbsp;·&nbsp; I seek Outer Edges</div>
   <div class="stats-panel">
     <div class="sp-row">
       <span class="sp-day-lbl">Today</span>
@@ -276,6 +291,10 @@ tbody tr:hover .ra{opacity:1}
     <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 5h6M4 7.5h6M4 10h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
     Notes
   </button>
+  <button class="ntab" onclick="showPage('deep',this)">
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    Deep Insights
+  </button>
 </div>
 
 <!-- TOOLBAR -->
@@ -300,15 +319,18 @@ tbody tr:hover .ra{opacity:1}
         <table>
           <thead><tr>
             <th>Grade</th>
-            <th>Date</th><th>Entry</th><th>Exit</th>
+            <th>Date</th>
+            <th>Entry Time</th><th>Entry $</th>
+            <th>Exit Time</th><th>Exit $</th>
             <th>Dir</th><th>Trend</th>
             <th>Line Type</th><th>TF</th><th>Range</th>
-            <th>Entry $</th><th>Stop</th><th>Target</th><th>Exit $</th>
+            <th>Stop</th><th>Target</th>
             <th>P&amp;L ($)</th><th>Points</th><th>R:R</th>
-            <th>MAE</th><th>MFE</th><th>Drawdown</th>
-            <th>Result</th><th>Exit Type</th><th>Tgt Reached</th>
-            <th>Duration</th><th>Process</th><th>Plan?</th><th>Reactive?</th>
-            <th>Observation</th><th></th>
+            <th>Drawdown</th>
+            <th>Result</th><th>Exit Type</th><th>Tgt?</th>
+            <th>Duration</th><th>Reactive?</th>
+            <th>Confluence?</th><th>Confluence Type</th>
+            <th>Observation</th><th>Takeaway</th><th></th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -319,6 +341,33 @@ tbody tr:hover .ra{opacity:1}
         <p>Press <strong>New Trade</strong> to log your first entry.</p>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- DEEP INSIGHTS PAGE -->
+<div class="pg" id="page-deep">
+  <div class="ins-wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <div style="font-size:16px;font-weight:600;letter-spacing:-0.02em">Deep Insights</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">AI analysis of your trade observations and journal notes</div>
+      </div>
+      <button class="btn-p" onclick="runDeepInsights()" id="deep-run-btn">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v5M9.5 3.5A5 5 0 1 1 2.5 3.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Analyse Now
+      </button>
+    </div>
+    <div id="deep-empty" class="empty-state" style="padding:48px 0">
+      <div class="ei2">🧠</div>
+      <h3>No analysis yet</h3>
+      <p>Click <strong>Analyse Now</strong> to get AI-powered insights from your observations and notes.</p>
+    </div>
+    <div id="deep-loading" style="display:none;text-align:center;padding:60px 0">
+      <div style="font-size:28px;margin-bottom:12px">⏳</div>
+      <div style="font-size:14px;font-weight:500;color:var(--text)">Analysing your journal...</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px">Reading observations, takeaways and notes</div>
+    </div>
+    <div id="deep-content" style="display:none"></div>
   </div>
 </div>
 
@@ -336,22 +385,23 @@ tbody tr:hover .ra{opacity:1}
         <div class="cc"><div class="ct">Key Insights</div><div class="cs">Patterns detected from your data</div><div id="callouts"></div></div>
       </div>
       <div class="irow ir3">
-        <div class="cc"><div class="ct">Setup Grade</div><div class="cs">Win rate by grade you assigned pre-trade</div><div class="bch" id="grade-b"></div></div>
+        <div class="cc"><div class="ct">Setup Grade</div><div class="cs">Win rate + P&L by grade assigned pre-trade</div><div class="bch" id="grade-b"></div></div>
         <div class="cc"><div class="ct">Trend Alignment</div><div class="cs">With Trend vs Counter Trend outcomes</div><div class="bch" id="trend-b"></div></div>
         <div class="cc"><div class="ct">Range Location</div><div class="cs">Win rate by where in the range you entered</div><div class="bch" id="range-b"></div></div>
       </div>
       <div class="irow ir3">
-        <div class="cc"><div class="ct">Line Type Win Rate</div><div class="cs">W/L by setup type</div><div class="bch" id="lt-b"></div></div>
-        <div class="cc"><div class="ct">Direction Performance</div><div class="cs">Long vs Short</div><div class="bch" id="dir-b"></div></div>
-        <div class="cc"><div class="ct">Timeframe Win Rate</div><div class="cs">Performance by line timeframe</div><div class="bch" id="tf-b"></div></div>
+        <div class="cc"><div class="ct">Line Type</div><div class="cs">Win rate + total P&L by setup type</div><div class="bch" id="lt-b"></div></div>
+        <div class="cc"><div class="ct">Direction</div><div class="cs">Long vs Short win rate</div><div class="bch" id="dir-b"></div></div>
+        <div class="cc"><div class="ct">Timeframe</div><div class="cs">Win rate by line timeframe</div><div class="bch" id="tf-b"></div></div>
+      </div>
+      <div class="irow ir3">
+        <div class="cc"><div class="ct">Reactive State</div><div class="cs">Win rate when in reactive vs calm state</div><div class="bch" id="react-b"></div></div>
+        <div class="cc"><div class="ct">Confluence</div><div class="cs">Trades with vs without confluence</div><div class="bch" id="conf-b"></div></div>
+        <div class="cc"><div class="ct">Trade Duration</div><div class="cs">Win rate by how long you held</div><div class="bch" id="dur-b"></div></div>
       </div>
       <div class="irow ir2">
-        <div class="cc"><div class="ct">Process Score</div><div class="cs">Execution quality vs outcome</div><div class="bch" id="proc-b"></div></div>
-        <div class="cc"><div class="ct">Followed Plan?</div><div class="cs">Plan adherence vs outcome</div><div class="bch" id="plan-b"></div></div>
-      </div>
-      <div class="irow ir2">
-        <div class="cc"><div class="ct">MAE vs Result</div><div class="cs">How far against you before it worked</div><div id="mae-chart"></div></div>
-        <div class="cc"><div class="ct">MFE vs Exit</div><div class="cs">How much you left on the table</div><div id="mfe-chart"></div></div>
+        <div class="cc"><div class="ct">Day of Week</div><div class="cs">Which days perform best</div><div class="bch" id="dow-b"></div></div>
+        <div class="cc"><div class="ct">Time of Day</div><div class="cs">Win rate by entry hour</div><div class="bch" id="hour-b"></div></div>
       </div>
     </div>
   </div>
@@ -365,15 +415,14 @@ tbody tr:hover .ra{opacity:1}
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
         Add Note
       </button>
+      <button class="btn-s" onclick="exportNotes()">Export Notes</button>
       <div class="sp"></div>
-      <span style="font-size:12px;color:var(--muted);font-style:italic">Click any cell to edit · Enter to save · Esc to cancel</span>
+      <span style="font-size:12px;color:var(--muted);font-style:italic">Click to edit · Enter to save · Esc to cancel</span>
     </div>
     <div class="notes-card">
       <table class="notes-table">
         <thead><tr>
           <th style="width:36px">#</th>
-          <th style="width:100px">Date</th>
-          <th style="width:150px">Line Type</th>
           <th>Observation / Note</th>
           <th style="width:36px"></th>
         </tr></thead>
@@ -417,6 +466,8 @@ const PTS_PER_CONTRACT=20;
 
 const LINE_TYPES=['Outer Edge','Channel Edge','Break + Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum','Major S/R Break','Breakout','3rd Hit EXP','Wedge EXP','Expansion at Support','Expansion at Resistance','Anti Trend Breakout','Pullback Breakout','Narrow Wedge','Descending Momentum Breakout','With Trend Trendline'];
 const NOTE_LTS=['','Outer Edge','Channel Edge','Break + Retest','S / R','R / S','Reclaim','HTF','EMA 200','EMA20','Momentum','Major S/R Break','Breakout','3rd Hit EXP','Wedge EXP','Expansion at Support','Expansion at Resistance','Anti Trend Breakout','Pullback Breakout','Narrow Wedge','Descending Momentum Breakout','With Trend Trendline'];
+const CONFLUENCE_TYPES=['Double Line','Break and Retest','Building Momentum','Reclaim','Tightening Consolidation','Projected Path','Top / Bottom'];
+
 const ATTRS=['Charged Line','Expansion','Trendy Market','Overlapping Market','On Support','At Resistance','3rd Hit','4th Hit','Immediate Reclaim','EMA 200','VWAP','Gap Down','Gap Up','Expanding Above Resistance','Expanding Below Support','1st Fake Break','2nd Reclaim','Clean Break','Major S/R Break','MNQ Confluence','MNQ Divergence'];
 
 function persist(){ localStorage.setItem('nq-v4',JSON.stringify(trades)); render(); updateStats(); if(curPage==='insights')renderInsights(); }
@@ -432,6 +483,7 @@ function showPage(p,btn){
   curPage=p;
   if(p==='insights')renderInsights();
   if(p==='notes')renderNotes();
+  if(p==='deep'){$('deep-empty').style.display='block';$('deep-content').style.display='none';}
 }
 
 // ── PILL HELPERS ──
@@ -579,6 +631,7 @@ function addRow(tradeToEdit){
 
   // Times
   const timeInp=inp('time','time','',t.time||now.toTimeString().slice(0,5),76);
+  timeInp.setAttribute('data-time-24','1');
   const timeExitInp=inp('time-exit','time','',t.timeExit||'',76);
   timeExitInp.addEventListener('change',recalc); timeExitInp.addEventListener('input',recalc);
 
@@ -607,7 +660,7 @@ function addRow(tradeToEdit){
   // Stop
   const stopInp=inp('stop','number','Price',t.stop,76,{step:'0.25'});
   stopInp.addEventListener('input',()=>{ stopInp.dataset.userEdited='1'; recalc(); });
-  const stopPtsInp=document.createElement('input'); stopPtsInp.type='number'; stopPtsInp.className='ei'; stopPtsInp.id='er-stop-pts'; stopPtsInp.placeholder='pts'; stopPtsInp.step='0.25'; stopPtsInp.style.cssText='width:48px;margin-top:3px';
+  const stopPtsInp=document.createElement('input'); stopPtsInp.type='number'; stopPtsInp.className='ei'; stopPtsInp.id='er-stop-pts'; stopPtsInp.placeholder='pts'; stopPtsInp.step='0.25'; stopPtsInp.style.cssText='width:44px;margin-top:3px';
   if(t.stop&&t.entry){ const pts=Math.abs(parseFloat(t.entry)-parseFloat(t.stop)); if(!isNaN(pts))stopPtsInp.value=pts.toFixed(2); }
   stopPtsInp.addEventListener('input',()=>{ const entry=parseFloat($('er-entry')?.value),dir=getActive($('er-dir')),pts=parseFloat(stopPtsInp.value); if(!isNaN(entry)&&dir&&!isNaN(pts)){ stopInp.value=(dir==='Long'?entry-pts:entry+pts).toFixed(2); stopInp.dataset.userEdited='1'; recalc(); } });
   const stopQuick=document.createElement('div'); stopQuick.className='stop-quick';
@@ -703,33 +756,49 @@ function addRow(tradeToEdit){
   const durTd=document.createElement('td'); durTd.style.cssText='padding:4px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top'; const durDisp=document.createElement('div'); durDisp.id='er-dur-display'; durDisp.style.cssText='font-size:11px;color:var(--muted);min-width:52px'; durDisp.textContent='—'; durTd.appendChild(durDisp);
   const attrsTd=document.createElement('td'); attrsTd.style.cssText='padding:4px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top;position:relative'; attrsTd.setAttribute('colspan','1'); attrsTd.appendChild(attrsWrap);
 
+  // ── Confluence type multiselect ──
+  const confTypeWrap=document.createElement('div'); confTypeWrap.style.cssText='display:flex;flex-wrap:wrap;gap:3px;max-width:170px';
+  const savedConf=(t.confluenceTypes||'').split(',').map(x=>x.trim()).filter(Boolean);
+  CONFLUENCE_TYPES.forEach(ct=>{
+    const b=document.createElement('button'); b.type='button'; b.className='ep'; b.textContent=ct;
+    b.style.cssText='padding:2px 7px;font-size:10px';
+    if(savedConf.includes(ct))b.classList.add('a');
+    b.onclick=()=>b.classList.toggle('a');
+    confTypeWrap.appendChild(b);
+  });
+  confTypeWrap._getVal=()=>[...confTypeWrap.querySelectorAll('.ep.a')].map(b=>b.textContent).join(', ');
+
+  // ── Takeaway textarea ──
+  const takeawayInp=document.createElement('textarea'); takeawayInp.id='er-takeaway'; takeawayInp.className='ei';
+  takeawayInp.placeholder='Key lesson...'; takeawayInp.value=t.takeaway||'';
+  takeawayInp.style.cssText='width:190px;height:50px;resize:vertical;line-height:1.5;padding:5px 7px';
+
   tr.appendChild(cell('Grade',gradePills));
   tr.appendChild(cell('Date',dateInp));
-  tr.appendChild(cell('Entry',timeInp));
-  tr.appendChild(cell('Exit',timeExitInp));
+  tr.appendChild(cell('Entry Time',timeInp));
+  tr.appendChild(cell('Entry $',entryInp));
+  tr.appendChild(cell('Exit Time',timeExitInp));
+  tr.appendChild(cell('Exit $',exitInp));
   tr.appendChild(cell('Dir',dirPills));
   tr.appendChild(cell('Trend',trendPills));
   tr.appendChild(cell('Line Type',ltSel));
   tr.appendChild(cell('TF',tfPills));
   tr.appendChild(cell('Range',rangePills));
-  tr.appendChild(cell('Entry $',entryInp));
   tr.appendChild(cell('Stop',stopWrap));
   tr.appendChild(cell('Target',targetWrap));
-  tr.appendChild(cell('Exit $',exitInp));
   tr.appendChild(pnlCell);
   tr.appendChild(ptsTd);
   tr.appendChild(rrTd);
-  tr.appendChild(cell('MAE',maeInp));
-  tr.appendChild(cell('MFE',mfeInp));
-  tr.appendChild(cell('DD',ddInp));
+  tr.appendChild(cell('DD (pts)',ddInp));
   tr.appendChild(cell('Result',resultPills));
   tr.appendChild(cell('Exit Type',exitTypePills));
   tr.appendChild(cell('Tgt Hit?',tgtReachedPills));
   tr.appendChild(durTd);
-  tr.appendChild(cell('Process',processScale));
-  tr.appendChild(cell('Plan?',planPills));
   tr.appendChild(cell('Reactive?',reactivePills));
+  tr.appendChild(cell('Confluence?',pills('confluence',['Yes','No'],'yesno',t.confluence)));
+  tr.appendChild(cell('Conf. Types',confTypeWrap));
   tr.appendChild(cell('Observation',obsInp));
+  tr.appendChild(cell('Takeaway',takeawayInp));
   tr.appendChild(cell('',actWrap));
 
   const tbody=$('tbody');
@@ -757,11 +826,14 @@ function saveEntry(){
     type:ltEl?ltEl.value:'', tf:gp('er-tf'), rangeLocation:gp('er-range-loc'),
     entry:entryV, stop:stopV, target:gv('er-target'), exit:exitV,
     pnl, contracts:gv('er-contracts')||'1', rr,
-    mae:gv('er-mae'), mfe:gv('er-mfe'), drawdown:gv('er-drawdown'),
+    drawdown:gv('er-drawdown'),
     result:gp('er-result'), exitType:gp('er-exit-type'), targetReached:gp('er-tgt-reached'),
-    processScore:gs('er-process'), followedPlan:gp('er-followed-plan'), reactiveState:gp('er-reactive'),
+    reactiveState:gp('er-reactive'),
+    confluence:gp('er-confluence'),
+    confluenceTypes:(()=>{ try{ return confTypeWrap._getVal(); }catch(e){return'';} })(),
     attrs:(()=>{ const el=$('er-attrs'); if(!el)return''; return[...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value).join(', '); })(),
     observation:gv('er-obs'),
+    takeaway:gv('er-takeaway'),
   };
   if(!t.date){alert('Please set a date.');return;}
   const entRow=$('entry-row'); if(entRow)entRow.remove();
@@ -782,37 +854,35 @@ function deleteTrade(id){ if(!confirm('Remove this trade?'))return; trades=trade
 
 // ── INLINE CELL EDITING ──
 const INLINE_FIELDS={
-  'exit':          {type:'number',step:'0.25',label:'Exit price',wide:false},
-  'grade':         {type:'select',label:'Grade',wide:false},
-  'direction':     {type:'select',label:'Direction',wide:false},
-  'type':          {type:'select',label:'Line Type',wide:false},
-  'tf':            {type:'select',label:'Timeframe',wide:false},
-  'processScore':  {type:'select',label:'Process 1-5',wide:false},
-  'pnl':           {type:'number',step:'0.01',label:'P&L ($)',wide:false},
-  'stop':          {type:'number',step:'0.25',label:'Stop price',wide:false},
-  'entry':         {type:'number',step:'0.25',label:'Entry price',wide:false},
-  'target':        {type:'number',step:'0.25',label:'Target',wide:false},
-  'drawdown':      {type:'number',step:'0.25',label:'Drawdown pts',wide:false},
-  'mae':           {type:'number',step:'0.25',label:'MAE pts',wide:false},
-  'mfe':           {type:'number',step:'0.25',label:'MFE pts',wide:false},
-  'time':          {type:'time',label:'Entry time',wide:false},
-  'timeExit':      {type:'time',label:'Exit time',wide:false},
-  'observation':   {type:'text',label:'Observation',wide:true},
-  'rr':            {type:'text',label:'R:R',wide:false},
-  'trendAlign':    {type:'select',label:'Trend',wide:false},
-  'rangeLocation': {type:'select',label:'Range',wide:false},
-  'result':        {type:'select',label:'Result',wide:false},
-  'exitType':      {type:'select',label:'Exit Type',wide:false},
-  'targetReached': {type:'select',label:'Target Reached?',wide:false},
-  'followedPlan':  {type:'select',label:'Followed Plan?',wide:false},
-  'reactiveState': {type:'select',label:'Reactive?',wide:false},
+  'exit':           {type:'number',step:'0.25',label:'Exit price',wide:false},
+  'grade':          {type:'select',label:'Grade',wide:false},
+  'direction':      {type:'select',label:'Direction',wide:false},
+  'type':           {type:'select',label:'Line Type',wide:false},
+  'tf':             {type:'select',label:'Timeframe',wide:false},
+  'pnl':            {type:'number',step:'0.01',label:'P&L ($)',wide:false},
+  'stop':           {type:'number',step:'0.25',label:'Stop price',wide:false},
+  'entry':          {type:'number',step:'0.25',label:'Entry price',wide:false},
+  'target':         {type:'number',step:'0.25',label:'Target',wide:false},
+  'drawdown':       {type:'number',step:'0.25',label:'Drawdown pts',wide:false},
+  'time':           {type:'time',label:'Entry time',wide:false},
+  'timeExit':       {type:'time',label:'Exit time',wide:false},
+  'observation':    {type:'textarea',label:'Observation',wide:true},
+  'takeaway':       {type:'textarea',label:'Takeaway lesson',wide:true},
+  'rr':             {type:'text',label:'R:R',wide:false},
+  'trendAlign':     {type:'select',label:'Trend',wide:false},
+  'rangeLocation':  {type:'select',label:'Range',wide:false},
+  'result':         {type:'select',label:'Result',wide:false},
+  'exitType':       {type:'select',label:'Exit Type',wide:false},
+  'targetReached':  {type:'select',label:'Target Reached?',wide:false},
+  'reactiveState':  {type:'select',label:'Reactive?',wide:false},
+  'confluence':     {type:'select',label:'Confluence?',wide:false},
 };
 const SELECT_OPTS={
   grade: [['','— grade —'],['A+','A+ (best setup)'],['A','A (good setup)'],['B','B (okay setup)'],['C','C (weak — skip)']],
   direction: [['','— dir —'],['Long','Long'],['Short','Short']],
   type: [['','— select —'],...LINE_TYPES.map(lt=>[lt,lt])],
   tf:   [['','— TF —'],['1M','1M'],['5M','5M'],['10M','10M'],['15M','15M'],['1H','1H'],['1D','1D']],
-  processScore: [['','— score —'],['1','1 — Poor process'],['2','2 — Below avg'],['3','3 — Average'],['4','4 — Good'],['5','5 — Perfect']],
+  confluence: [['','— none —'],['Yes','Yes'],['No','No']],
   trendAlign:    [['','— none —'],['With','✓ With Trend'],['Counter','✗ Counter']],
   rangeLocation: [['','— none —'],['Top','Top of Range'],['Mid','Mid Range'],['Bottom','Bottom of Range']],
   result:        [['','— none —'],['Won','Won'],['Lost','Lost']],
@@ -842,8 +912,24 @@ function makeInlineEditable(tdEl,tradeId,field){
     return;
   }
 
+  // Textarea for long text fields
+  if(cfg.type==='textarea'){
+    const ta=document.createElement('textarea');
+    ta.value=currentVal; ta.className='cell-inline-input wide';
+    ta.style.cssText='height:72px;resize:vertical;width:210px;display:block';
+    ta.placeholder=cfg.label;
+    const prev2=document.createElement('div'); prev2.className='cell-preview';
+    tdEl.innerHTML=''; tdEl.appendChild(ta); tdEl.appendChild(prev2);
+    ta.focus(); ta.setSelectionRange(ta.value.length,ta.value.length);
+    const saveTA=()=>{ delete tdEl.dataset.inlineActive; const idx=trades.findIndex(t=>t.id===tradeId); if(idx>=0){trades[idx][field]=ta.value.trim();persist();} };
+    ta.addEventListener('blur',saveTA);
+    ta.addEventListener('keydown',e=>{ if(e.key==='Escape'){ta.removeEventListener('blur',saveTA);delete tdEl.dataset.inlineActive;tdEl.innerHTML=originalHTML;} if(e.key==='Enter'&&e.ctrlKey){ta.blur();} e.stopPropagation(); });
+    ta.addEventListener('click',e=>e.stopPropagation());
+    return;
+  }
+
   const inp=document.createElement('input');
-  inp.type=cfg.type; inp.value=currentVal;
+  inp.type=cfg.type==='textarea'?'text':cfg.type; inp.value=currentVal;
   if(cfg.step)inp.step=cfg.step;
   if(cfg.type==='time')inp.step='60';
   inp.className='cell-inline-input'+(cfg.wide?' wide':'');
@@ -967,47 +1053,52 @@ function render(){
       td.innerHTML=content; return td;
     }
 
-    // Col 1: Grade badge (clickable inline select)
+    // Format price with commas e.g. 29,145
+    const fmtP=n=>{ const v=parseFloat(n); if(isNaN(n)||isNaN(v))return'<span class="dash">—</span>'; return v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2}); };
+
+    // Col 1: Grade
     const gradeTd=document.createElement('td'); gradeTd.dataset.field='grade'; gradeTd.dataset.tid=t.id; gradeTd.style.cursor='pointer'; gradeTd.style.textAlign='center';
     gradeTd.innerHTML=gradeBadge; tr.appendChild(gradeTd);
+
     tr.appendChild(mkTd('date',d(t.date)));
     tr.appendChild(mkTd('time',`<span style="color:var(--muted)">${d(t.time)}</span>`));
+    tr.appendChild(mkTd('entry',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.entry)}</span>`));
     tr.appendChild(mkTd('timeExit',`<span style="color:var(--muted)">${d(t.timeExit)}</span>`));
+    tr.appendChild(mkTd('exit',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.exit)}</span>`));
     const dirTd=document.createElement('td'); dirTd.dataset.field='direction'; dirTd.dataset.tid=t.id; dirTd.style.cursor='pointer'; dirTd.innerHTML=dirBadge; tr.appendChild(dirTd);
     tr.appendChild(selTd('trendAlign',trendBadge));
-    // Line Type — dropdown on click
     const ltTd=document.createElement('td'); ltTd.style.cursor='pointer'; ltTd.dataset.field='type'; ltTd.dataset.tid=t.id;
     ltTd.innerHTML=t.type?`<span class="badge b-type" style="font-size:10.5px">${t.type}</span>`:'<span class="dash">—</span>'; tr.appendChild(ltTd);
-    // TF — dropdown on click
     const tfTd=document.createElement('td'); tfTd.style.cursor='pointer'; tfTd.dataset.field='tf'; tfTd.dataset.tid=t.id;
     tfTd.innerHTML=t.tf?`<span style="font-size:11px;font-weight:600;color:var(--accent)">${t.tf}</span>`:'<span class="dash">—</span>'; tr.appendChild(tfTd);
     tr.appendChild(selTd('rangeLocation',rangeBadge));
-    tr.appendChild(mkTd('entry',`<span style="font-variant-numeric:tabular-nums">${d(t.entry)}</span>`));
-    tr.appendChild(mkTd('stop',`<span style="font-variant-numeric:tabular-nums">${d(t.stop)}</span>`));
-    tr.appendChild(mkTd('target',`<span style="font-variant-numeric:tabular-nums">${d(t.target)}</span>`));
-    tr.appendChild(mkTd('exit',`<span style="font-variant-numeric:tabular-nums">${d(t.exit)}</span>`));
+    tr.appendChild(mkTd('stop',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.stop)}</span>`));
+    tr.appendChild(mkTd('target',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.target)}</span>`));
     tr.appendChild(mkTd('pnl',pnlStr));
-    // Points (auto, no edit)
     const ptsTd=document.createElement('td'); ptsTd.innerHTML=pts!==null?`<span style="font-weight:500;color:${pts>0?'var(--win)':pts<0?'var(--loss)':'var(--muted2)'}">${pts>0?'+':''}${pts}pt</span>`:'<span class="dash">—</span>'; tr.appendChild(ptsTd);
     tr.appendChild(mkTd('rr',`<span style="font-weight:600;color:${rrColor}">${d(t.rr)}</span>`));
-    tr.appendChild(mkTd('mae',t.mae?`<span style="color:var(--warn)">${t.mae}pt</span>`:'<span class="dash">—</span>'));
-    tr.appendChild(mkTd('mfe',t.mfe?`<span style="color:var(--accent)">${t.mfe}pt</span>`:'<span class="dash">—</span>'));
     tr.appendChild(mkTd('drawdown',t.drawdown?`<span style="color:var(--warn)">${t.drawdown}pt</span>`:'<span class="dash">—</span>'));
     tr.appendChild(selTd('result',resBadge));
     tr.appendChild(selTd('exitType',`<span style="font-size:11px;color:var(--muted)">${d(t.exitType)}</span>`));
     tr.appendChild(selTd('targetReached',tgtBadge));
-    // Duration (auto)
     const durTd=document.createElement('td'); durTd.innerHTML=`<span style="color:var(--muted);font-size:11px">${d(dur)}</span>`; tr.appendChild(durTd);
-    // Process score - inline select
-    const procTd=document.createElement('td'); procTd.dataset.field='processScore'; procTd.dataset.tid=t.id; procTd.style.cursor='pointer'; procTd.innerHTML=t.processScore?`<span style="font-weight:700;color:${procColor}">${t.processScore}/5</span>`:'<span class="dash">—</span>'; tr.appendChild(procTd);
-    tr.appendChild(selTd('followedPlan',planBadge));
     tr.appendChild(selTd('reactiveState',reactiveBadge));
+    tr.appendChild(selTd('confluence',t.confluence==='Yes'?'<span style="color:var(--win);font-weight:600;font-size:11px">✓ Yes</span>':t.confluence==='No'?'<span style="color:var(--muted);font-size:11px">No</span>':'<span class="dash">—</span>'));
+    // Confluence Types — multiselect pills display
+    const confTd=document.createElement('td'); confTd.style.cssText='cursor:pointer;max-width:180px';
+    if(t.confluenceTypes){ confTd.innerHTML=t.confluenceTypes.split(',').filter(Boolean).map(ct=>`<span style="display:inline-flex;align-items:center;padding:1px 6px;border-radius:10px;font-size:10px;background:var(--accent-l);color:var(--accent);margin:1px;white-space:nowrap">${ct.trim()}</span>`).join(''); }
+    else{ confTd.innerHTML='<span class="dash">—</span>'; }
+    confTd.onclick=()=>editTrade(t.id); tr.appendChild(confTd);
     // Observation
     const obsTd=document.createElement('td'); obsTd.dataset.field='observation'; obsTd.dataset.tid=t.id; obsTd.style.cursor='text';
-    const obsSpan=document.createElement('span'); obsSpan.style.cssText='max-width:190px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;white-space:nowrap;cursor:text';
+    const obsSpan=document.createElement('span'); obsSpan.style.cssText='overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;white-space:nowrap;cursor:text;color:var(--text2)';
     obsSpan.textContent=t.observation||''; obsSpan.title=t.observation||'';
-    if(t.observation){ obsSpan.style.cursor='pointer'; obsSpan.onclick=e=>{e.stopPropagation();$('obs-modal-text').textContent=t.observation;$('obs-modal-bg').classList.add('open');}; }
     obsTd.appendChild(obsSpan); tr.appendChild(obsTd);
+    // Takeaway
+    const takeTd=document.createElement('td'); takeTd.dataset.field='takeaway'; takeTd.dataset.tid=t.id; takeTd.style.cursor='text';
+    const takeSpan=document.createElement('span'); takeSpan.style.cssText='overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;white-space:nowrap;cursor:text;color:var(--text2);font-style:italic';
+    takeSpan.textContent=t.takeaway||''; takeSpan.title=t.takeaway||'';
+    takeTd.appendChild(takeSpan); tr.appendChild(takeTd);
     // Actions
     const actTd=document.createElement('td'); const wrap=document.createElement('div'); wrap.className='ra';
     const eb=document.createElement('button'); eb.className='ib'; eb.title='Edit'; eb.innerHTML='✎'; eb.onclick=()=>editTrade(t.id);
@@ -1080,64 +1171,107 @@ function renderInsights(){
   const n=trades.length;
   if(!n){$('ins-empty').style.display='block';$('ins-content').style.display='none';return;}
   $('ins-empty').style.display='none';$('ins-content').style.display='block';
+
   const won=trades.filter(t=>t.result==='Won'),lost=trades.filter(t=>t.result==='Lost');
   const pArr=trades.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v));
   const netPnl=pArr.reduce((a,b)=>a+b,0);
   const wr=Math.round(won.length/n*100);
-  const avgProc=trades.filter(t=>t.processScore).map(t=>parseInt(t.processScore)).reduce((a,b,_,arr)=>a+b/arr.length,0);
+  const avgW=won.length?won.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)/won.length:0;
+  const avgL=lost.length?lost.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)/lost.length:0;
 
   function kpi(l,v,s,cls=''){return`<div class="kpi"><div class="kpi-l">${l}</div><div class="kpi-v ${cls}">${v}</div><div class="kpi-s">${s}</div></div>`;}
-  $('kpis').innerHTML=kpi('Trades',n,`${won.length}W · ${lost.length}L`)+kpi('Win Rate',wr+'%',`${won.length} wins`,wr>=50?'g':'r')+kpi('Net P&L',(netPnl>=0?'+$':'-$')+Math.abs(netPnl).toLocaleString(),'',netPnl>=0?'g':'r')+kpi('Avg Process',avgProc?avgProc.toFixed(1)+'/5':'—','Execution quality',avgProc>=4?'g':avgProc>=2?'':'r')+kpi('Avg Dur',fmtDur(avgDurList(trades)),'per trade');
+  $('kpis').innerHTML=
+    kpi('Total Trades',n,`${won.length}W · ${lost.length}L`)+
+    kpi('Win Rate',wr+'%',`${won.length} winning trades`,wr>=60?'g':wr>=50?'':'r')+
+    kpi('Net P&L',(netPnl>=0?'+$':'-$')+Math.abs(netPnl).toLocaleString(),'',netPnl>=0?'g':'r')+
+    kpi('Avg Winner','$'+Math.abs(avgW).toFixed(0),`vs Avg Loser $${Math.abs(avgL).toFixed(0)}`,avgW>Math.abs(avgL)?'g':'r')+
+    kpi('Avg Duration',fmtDur(avgDurList(trades)),'per trade');
 
-  const tlT=trades.filter(t=>t.pnl).slice(-20),maxA=Math.max(...tlT.map(t=>Math.abs(parseFloat(t.pnl)||0)),1);
-  $('pnl-tl').innerHTML=tlT.map(t=>{ const v=parseFloat(t.pnl),pct=Math.min(100,Math.abs(v)/maxA*100)*0.46; return`<div class="ptr"><span class="pd">${t.date?t.date.slice(5):''}</span><div class="pw"><div class="pc"></div><div class="pb ${v>=0?'pp':'pn'}" style="width:${pct}%"></div></div><span class="pa ${v>=0?'pp':'pn'}">${v>=0?'+':'-'}$${Math.abs(v).toLocaleString()}</span></div>`; }).join('');
+  // P&L timeline
+  const tlT=trades.filter(t=>t.pnl).slice(-20);
+  const maxA=Math.max(...tlT.map(t=>Math.abs(parseFloat(t.pnl)||0)),1);
+  $('pnl-tl').innerHTML=tlT.map(t=>{const v=parseFloat(t.pnl),pct=Math.min(100,Math.abs(v)/maxA*100)*0.46;return`<div class="ptr"><span class="pd">${t.date?t.date.slice(5):''}</span><div class="pw"><div class="pc"></div><div class="pb ${v>=0?'pp':'pn'}" style="width:${pct}%"></div></div><span class="pa ${v>=0?'pp':'pn'}">${v>=0?'+':'-'}$${Math.abs(v).toLocaleString()}</span></div>`;}).join('');
 
-  // Callouts
+  // Callouts — deeper pattern detection
   const calls=[];
-  const ltMap2={};trades.forEach(t=>{if(!t.type)return;if(!ltMap2[t.type])ltMap2[t.type]={w:0,l:0};t.result==='Won'?ltMap2[t.type].w++:ltMap2[t.type].l++;});
-  const sArr=Object.entries(ltMap2).filter(([,v])=>v.w+v.l>=2).map(([k,v])=>({k,wr:v.w/(v.w+v.l),n:v.w+v.l})).sort((a,b)=>b.wr-a.wr);
-  if(sArr.length)calls.push({t:'g',i:'🎯',m:`Best setup: <strong>${sArr[0].k}</strong> — <strong>${Math.round(sArr[0].wr*100)}%</strong> win rate over ${sArr[0].n} trades.`});
+  const ltMap2={};trades.forEach(t=>{if(!t.type)return;if(!ltMap2[t.type])ltMap2[t.type]={w:0,l:0,pnl:0};t.result==='Won'?ltMap2[t.type].w++:ltMap2[t.type].l++;ltMap2[t.type].pnl+=parseFloat(t.pnl)||0;});
+  const sArr=Object.entries(ltMap2).filter(([,v])=>v.w+v.l>=2).map(([k,v])=>({k,wr:v.w/(v.w+v.l),n:v.w+v.l,pnl:v.pnl})).sort((a,b)=>b.pnl-a.pnl);
+  if(sArr.length){calls.push({t:'g',i:'🎯',m:`Best earning setup: <strong>${sArr[0].k}</strong> — $${Math.abs(sArr[0].pnl).toLocaleString()} P&L, ${Math.round(sArr[0].wr*100)}% win rate.`});}
+  if(sArr.length>1&&sArr[sArr.length-1].wr<0.4){calls.push({t:'b',i:'⚠️',m:`<strong>${sArr[sArr.length-1].k}</strong> has the lowest win rate at <strong>${Math.round(sArr[sArr.length-1].wr*100)}%</strong>. Consider standing aside on this setup.`});}
+  const midT=trades.filter(t=>t.rangeLocation==='Mid'&&t.result);
+  if(midT.length>=2){const mwr=Math.round(midT.filter(t=>t.result==='Won').length/midT.length*100);if(mwr<60)calls.push({t:'b',i:'📍',m:`Midrange trades win <strong>${mwr}%</strong> — your regime says avoid midrange. ${midT.length} trades logged there.`});}
+  const topT=trades.filter(t=>t.rangeLocation==='Top'&&t.result);
+  const botT=trades.filter(t=>t.rangeLocation==='Bottom'&&t.result);
+  if(topT.length+botT.length>=3){const edgeWr=Math.round([...topT,...botT].filter(t=>t.result==='Won').length/(topT.length+botT.length)*100);calls.push({t:edgeWr>=60?'g':'w',i:'🏔️',m:`Outer edge trades (Top+Bottom): <strong>${edgeWr}%</strong> win rate over ${topT.length+botT.length} trades.`});}
   const withT=trades.filter(t=>t.trendAlign==='With'&&t.result);
   const ctrT=trades.filter(t=>t.trendAlign==='Counter'&&t.result);
-  if(withT.length>=2&&ctrT.length>=2){ const wwr=Math.round(withT.filter(t=>t.result==='Won').length/withT.length*100),cwr=Math.round(ctrT.filter(t=>t.result==='Won').length/ctrT.length*100); calls.push({t:wwr>cwr?'g':'w',i:'📈',m:`With Trend wins <strong>${wwr}%</strong> vs Counter Trend <strong>${cwr}%</strong>. ${wwr>cwr?'Trade with trend.':'Interesting — counter trend performing.'}`}); }
-  const midT=trades.filter(t=>t.rangeLocation==='Mid'&&t.result);
-  if(midT.length>=2){ const mwr=Math.round(midT.filter(t=>t.result==='Won').length/midT.length*100); if(mwr<50)calls.push({t:'b',i:'⚠️',m:`Midrange trades win only <strong>${mwr}%</strong> of the time. Your regime says avoid midrange.`}); }
+  if(withT.length>=2&&ctrT.length>=2){const wwr=Math.round(withT.filter(t=>t.result==='Won').length/withT.length*100),cwr=Math.round(ctrT.filter(t=>t.result==='Won').length/ctrT.length*100);calls.push({t:wwr>cwr?'g':'w',i:'📈',m:`With Trend: <strong>${wwr}%</strong> win · Counter Trend: <strong>${cwr}%</strong> win. ${wwr>cwr?'Trend alignment is paying off.':'Counter trend performing surprisingly well.'}`});}
   const apTrades=trades.filter(t=>t.grade==='A+'&&t.result);
-  if(apTrades.length>=2){ const awr=Math.round(apTrades.filter(t=>t.result==='Won').length/apTrades.length*100); calls.push({t:awr>=70?'g':'w',i:'⭐',m:`A+ setups: <strong>${awr}%</strong> win rate over ${apTrades.length} trades.`}); }
-  const noplanT=trades.filter(t=>t.followedPlan==='No'&&t.result);
-  if(noplanT.length>=2){ const npwr=Math.round(noplanT.filter(t=>t.result==='Won').length/noplanT.length*100); calls.push({t:'b',i:'📋',m:`When you didn't follow the plan: <strong>${npwr}%</strong> win rate. Discipline is edge.`}); }
-  if(!calls.length)calls.push({t:'',i:'📈',m:'Log more trades to unlock pattern insights.'});
+  const cTrades=trades.filter(t=>t.grade==='C'&&t.result);
+  if(apTrades.length>=2){const awr=Math.round(apTrades.filter(t=>t.result==='Won').length/apTrades.length*100);calls.push({t:awr>=70?'g':'w',i:'⭐',m:`A+ setups: <strong>${awr}%</strong> win rate — ${apTrades.length} trades. ${awr>=70?'Your grading is accurate.':'Review what qualifies as A+.'}`});}
+  if(cTrades.length>=2){const cwr2=Math.round(cTrades.filter(t=>t.result==='Won').length/cTrades.length*100);calls.push({t:cwr2<50?'b':'w',i:'🚫',m:`C-grade trades: <strong>${cwr2}%</strong> win rate. ${cwr2<50?'Eliminating C trades could significantly improve performance.':''}`});}
+  const reactT=trades.filter(t=>t.reactiveState==='Yes'&&t.result);
+  if(reactT.length>=2){const rwr=Math.round(reactT.filter(t=>t.result==='Won').length/reactT.length*100);calls.push({t:rwr<60?'b':'w',i:'😤',m:`Reactive state trades: <strong>${rwr}%</strong> win rate over ${reactT.length} entries. ${rwr<60?'Emotional state is costing you.':''}`});}
+  if(!calls.length)calls.push({t:'',i:'📈',m:'Log more trades with all fields filled to unlock deeper pattern insights.'});
   $('callouts').innerHTML=calls.map(c=>`<div class="cal cal-${c.t==='w'?'w':c.t==='g'?'g':c.t==='b'?'b':'d'}"><span class="ci">${c.i}</span><span class="ct2">${c.m}</span></div>`).join('');
 
-  function bars(map){return Object.entries(map).sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=50?'g':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No data</div>';}
+  function bars(map,sortByWr=false){
+    let entries=Object.entries(map).filter(([,v])=>v.w+v.l>0);
+    if(sortByWr)entries.sort((a,b)=>(b[1].w/(b[1].w+b[1].l))-(a[1].w/(a[1].w+a[1].l)));
+    else entries.sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l));
+    return entries.map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100),pnl=v.pnl||0;return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm" title="P&L: ${fmtC(pnl)}">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  }
+  function barsWithPnl(map){
+    return Object.entries(map).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>{
+      const wr2=v.n>0?Math.round(v.wins/v.n*100):0;
+      const pnlColor=v.pnl>=0?'var(--win)':'var(--loss)';
+      return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%</span><span style="font-size:10px;color:${pnlColor};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;
+    }).join('')||'<div class="nodata">No data</div>';
+  }
 
   // Grade bars
-  const gradeMap={};trades.forEach(t=>{if(!t.grade)return;if(!gradeMap[t.grade])gradeMap[t.grade]={w:0,l:0};t.result==='Won'?gradeMap[t.grade].w++:gradeMap[t.grade].l++;});
-  $('grade-b').innerHTML=['A+','A','B','C'].filter(g=>gradeMap[g]).map(g=>{const v=gradeMap[g],tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${g}</span><div class="bt"><div class="bf ${wr2>=50?'g':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  const gradeMap={};trades.forEach(t=>{if(!t.grade)return;if(!gradeMap[t.grade])gradeMap[t.grade]={w:0,l:0,pnl:0};t.result==='Won'?gradeMap[t.grade].w++:gradeMap[t.grade].l++;gradeMap[t.grade].pnl+=parseFloat(t.pnl)||0;});
+  const gradePnl=grade=>gradeMap[grade]?fmtC(gradeMap[grade].pnl):'';
+  $('grade-b').innerHTML=['A+','A','B','C'].filter(g=>gradeMap[g]).map(g=>{const v=gradeMap[g],tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${g}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 
-  const trendMap={};trades.forEach(t=>{if(!t.trendAlign)return;if(!trendMap[t.trendAlign])trendMap[t.trendAlign]={w:0,l:0};t.result==='Won'?trendMap[t.trendAlign].w++:trendMap[t.trendAlign].l++;});
+  const trendMap={};trades.forEach(t=>{if(!t.trendAlign)return;if(!trendMap[t.trendAlign])trendMap[t.trendAlign]={w:0,l:0,pnl:0};t.result==='Won'?trendMap[t.trendAlign].w++:trendMap[t.trendAlign].l++;trendMap[t.trendAlign].pnl+=parseFloat(t.pnl)||0;});
   $('trend-b').innerHTML=bars(trendMap);
-  const rangeMap={};trades.forEach(t=>{if(!t.rangeLocation)return;if(!rangeMap[t.rangeLocation])rangeMap[t.rangeLocation]={w:0,l:0};t.result==='Won'?rangeMap[t.rangeLocation].w++:rangeMap[t.rangeLocation].l++;});
+
+  const rangeMap={};trades.forEach(t=>{if(!t.rangeLocation)return;if(!rangeMap[t.rangeLocation])rangeMap[t.rangeLocation]={w:0,l:0,pnl:0};t.result==='Won'?rangeMap[t.rangeLocation].w++:rangeMap[t.rangeLocation].l++;rangeMap[t.rangeLocation].pnl+=parseFloat(t.pnl)||0;});
   $('range-b').innerHTML=bars(rangeMap);
-  $('lt-b').innerHTML=bars(ltMap2);
-  const dirMap={Long:{w:0,l:0},Short:{w:0,l:0}};trades.forEach(t=>{if(t.direction&&dirMap[t.direction])t.result==='Won'?dirMap[t.direction].w++:dirMap[t.direction].l++;});
+
+  // Line type with P&L
+  const ltMapFull={};trades.forEach(t=>{if(!t.type)return;if(!ltMapFull[t.type])ltMapFull[t.type]={n:0,pnl:0,wins:0};ltMapFull[t.type].n++;ltMapFull[t.type].pnl+=parseFloat(t.pnl)||0;if(t.result==='Won')ltMapFull[t.type].wins++;});
+  $('lt-b').innerHTML=barsWithPnl(ltMapFull);
+
+  const dirMap={Long:{w:0,l:0,pnl:0},Short:{w:0,l:0,pnl:0}};trades.forEach(t=>{if(t.direction&&dirMap[t.direction]){t.result==='Won'?dirMap[t.direction].w++:dirMap[t.direction].l++;dirMap[t.direction].pnl+=parseFloat(t.pnl)||0;}});
   $('dir-b').innerHTML=bars(dirMap);
-  const tfMap={};trades.forEach(t=>{if(!t.tf)return;if(!tfMap[t.tf])tfMap[t.tf]={w:0,l:0};t.result==='Won'?tfMap[t.tf].w++:tfMap[t.tf].l++;});
+
+  const tfMap={};trades.forEach(t=>{if(!t.tf)return;if(!tfMap[t.tf])tfMap[t.tf]={w:0,l:0,pnl:0};t.result==='Won'?tfMap[t.tf].w++:tfMap[t.tf].l++;tfMap[t.tf].pnl+=parseFloat(t.pnl)||0;});
   $('tf-b').innerHTML=bars(tfMap);
 
-  // Process score bars
-  const procMap=Array.from({length:5},(_,i)=>({l:i+1,w:0,lo:0}));
-  trades.forEach(t=>{const c=parseInt(t.processScore)-1;if(c>=0&&c<5&&t.result)t.result==='Won'?procMap[c].w++:procMap[c].lo++;});
-  $('proc-b').innerHTML=procMap.map((d,i)=>{const tot=d.w+d.lo;if(!tot)return`<div class="br"><span class="bl">Score ${i+1}</span><div class="bt"><div class="bf b" style="width:0%"></div></div><span class="bm">0</span></div>`;const wr2=Math.round(d.w/tot*100);return`<div class="br"><span class="bl">Score ${i+1}</span><div class="bt"><div class="bf ${wr2>=50?'g':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('');
+  // Reactive state bar
+  const reactMap={};trades.forEach(t=>{if(!t.reactiveState)return;if(!reactMap[t.reactiveState])reactMap[t.reactiveState]={w:0,l:0,pnl:0};t.result==='Won'?reactMap[t.reactiveState].w++:reactMap[t.reactiveState].l++;reactMap[t.reactiveState].pnl+=parseFloat(t.pnl)||0;});
+  $('react-b').innerHTML=bars(reactMap)||'<div class="nodata">Fill in Reactive? column on trades</div>';
 
-  const planMap={};trades.forEach(t=>{if(!t.followedPlan)return;if(!planMap[t.followedPlan])planMap[t.followedPlan]={w:0,l:0};t.result==='Won'?planMap[t.followedPlan].w++:planMap[t.followedPlan].l++;});
-  $('plan-b').innerHTML=bars(planMap);
+  // Confluence analysis
+  const confMap={};trades.forEach(t=>{if(!t.confluence)return;if(!confMap[t.confluence])confMap[t.confluence]={w:0,l:0,pnl:0};t.result==='Won'?confMap[t.confluence].w++:confMap[t.confluence].l++;confMap[t.confluence].pnl+=parseFloat(t.pnl)||0;});
+  $('conf-b').innerHTML=bars(confMap)||'<div class="nodata">Fill in Confluence? column on trades</div>';
 
-  // MAE / MFE simple summaries
-  const maes=trades.map(t=>parseFloat(t.mae)).filter(v=>!isNaN(v));
-  const mfes=trades.map(t=>parseFloat(t.mfe)).filter(v=>!isNaN(v));
-  $('mae-chart').innerHTML=maes.length?`<div style="font-size:13px;color:var(--text2);line-height:2"><div>Avg MAE: <strong>${(maes.reduce((a,b)=>a+b,0)/maes.length).toFixed(1)}pt</strong></div><div>Max MAE: <strong>${Math.max(...maes).toFixed(1)}pt</strong></div><div style="font-size:11px;color:var(--muted);margin-top:6px">How far against you before trades resolved</div></div>`:'<div class="nodata">Log MAE on trades to see data</div>';
-  $('mfe-chart').innerHTML=mfes.length?`<div style="font-size:13px;color:var(--text2);line-height:2"><div>Avg MFE: <strong>${(mfes.reduce((a,b)=>a+b,0)/mfes.length).toFixed(1)}pt</strong></div><div>Max MFE: <strong>${Math.max(...mfes).toFixed(1)}pt</strong></div><div style="font-size:11px;color:var(--muted);margin-top:6px">How far price moved in your favor — captures left-on-table</div></div>`:'<div class="nodata">Log MFE on trades to see data</div>';
+  // Duration analysis
+  const durs=trades.map(t=>{const e=parseMins(t.time),x=parseMins(t.timeExit);if(e===null||x===null)return null;const d=x>=e?x-e:x+1440-e;return{dur:d,won:t.result==='Won',pnl:parseFloat(t.pnl)||0};}).filter(v=>v!==null);
+  const durBuckets={'<10m':{w:0,l:0},'10-30m':{w:0,l:0},'30-60m':{w:0,l:0},'1-2h':{w:0,l:0},'>2h':{w:0,l:0}};
+  durs.forEach(({dur,won})=>{const k=dur<10?'<10m':dur<30?'10-30m':dur<60?'30-60m':dur<120?'1-2h':'>2h';durBuckets[k][won?'w':'l']++;});
+  $('dur-b').innerHTML=Object.entries(durBuckets).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No duration data</div>';
+
+  // Day of week analysis
+  const dowMap={Mon:{w:0,l:0,pnl:0},Tue:{w:0,l:0,pnl:0},Wed:{w:0,l:0,pnl:0},Thu:{w:0,l:0,pnl:0},Fri:{w:0,l:0,pnl:0}};
+  trades.forEach(t=>{if(!t.date)return;const dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(t.date+'T12:00:00').getDay()];if(dowMap[dow]){t.result==='Won'?dowMap[dow].w++:dowMap[dow].l++;dowMap[dow].pnl+=parseFloat(t.pnl)||0;}});
+  $('dow-b').innerHTML=Object.entries(dowMap).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+
+  // Time of day analysis (hour buckets)
+  const hourMap={};trades.forEach(t=>{if(!t.time)return;const h=parseInt(t.time.split(':')[0]);const bucket=`${h<10?'0'+h:h}:00`;if(!hourMap[bucket])hourMap[bucket]={w:0,l:0,pnl:0};t.result==='Won'?hourMap[bucket].w++:hourMap[bucket].l++;hourMap[bucket].pnl+=parseFloat(t.pnl)||0;});
+  $('hour-b').innerHTML=Object.entries(hourMap).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 }
 
 // ── NOTES ──
@@ -1185,13 +1319,24 @@ function renderNotes(){
   if(empty)empty.style.display='none';
   notes.forEach((n,i)=>{
     const tr=document.createElement('tr');
-    const numTd=document.createElement('td'); numTd.style.cssText='color:var(--muted2);font-size:11px;text-align:center;width:36px'; numTd.textContent=i+1; tr.appendChild(numTd);
-    const dateTd=document.createElement('td'); dateTd.dataset.nid=n.id; dateTd.dataset.nf='date'; dateTd.style.cssText='cursor:text;width:100px;color:var(--muted)'; dateTd.textContent=n.date||'—'; dateTd.onclick=()=>activateNoteCell(dateTd); tr.appendChild(dateTd);
-    const ltTd=document.createElement('td'); ltTd.dataset.nid=n.id; ltTd.dataset.nf='lineType'; ltTd.style.cssText='cursor:pointer;width:150px';
-    if(n.lineType){ const pill=document.createElement('span'); pill.style.cssText='display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:500;background:var(--accent-l);color:var(--accent)'; pill.textContent=n.lineType; ltTd.appendChild(pill); } else { ltTd.style.color='var(--muted2)'; ltTd.textContent='—'; }
-    ltTd.onclick=()=>activateNoteCell(ltTd); tr.appendChild(ltTd);
-    const textTd=document.createElement('td'); textTd.dataset.nid=n.id; textTd.dataset.nf='text'; textTd.contentEditable='false'; textTd.style.cssText='cursor:text;line-height:1.7;white-space:pre-wrap;word-break:break-word;min-height:36px;vertical-align:middle;width:100%'; textTd.textContent=n.text||''; if(!n.text){textTd.style.color='var(--muted2)';textTd.style.fontStyle='italic';textTd.textContent='Click to write...';} textTd.onclick=()=>{ if(!n.text)textTd.textContent=''; textTd.style.color=''; textTd.style.fontStyle=''; activateNoteCell(textTd); }; tr.appendChild(textTd);
-    const delTd=document.createElement('td'); delTd.style.cssText='width:36px;text-align:center'; const delBtn=document.createElement('button'); delBtn.innerHTML='✕'; delBtn.style.cssText='background:transparent;border:1px solid var(--border);color:var(--muted);width:22px;height:22px;border-radius:4px;cursor:pointer;font-size:10px;opacity:0;transition:opacity .15s'; delBtn.onclick=e=>{e.stopPropagation();deleteNote(n.id);}; delTd.appendChild(delBtn); tr.appendChild(delTd);
+    // # col
+    const numTd=document.createElement('td'); numTd.style.cssText='color:var(--muted2);font-size:11px;text-align:center;width:36px;vertical-align:top;padding-top:13px'; numTd.textContent=i+1; tr.appendChild(numTd);
+    // Text col — contenteditable
+    const textTd=document.createElement('td'); textTd.dataset.nid=n.id; textTd.dataset.nf='text';
+    textTd.contentEditable='false';
+    textTd.style.cssText='cursor:text;line-height:1.75;white-space:pre-wrap;word-break:break-word;min-height:36px;vertical-align:middle;width:100%;font-size:13px;padding:8px 14px';
+    if(n.text){ textTd.textContent=n.text; textTd.style.color=''; textTd.style.fontStyle=''; }
+    else{ textTd.textContent='Click to write...'; textTd.style.color='var(--muted2)'; textTd.style.fontStyle='italic'; }
+    textTd.onclick=()=>{
+      if(!n.text){ textTd.textContent=''; textTd.style.color=''; textTd.style.fontStyle=''; }
+      activateNoteCell(textTd);
+    };
+    tr.appendChild(textTd);
+    // Delete col
+    const delTd=document.createElement('td'); delTd.style.cssText='width:36px;text-align:center;vertical-align:top;padding-top:10px';
+    const delBtn=document.createElement('button'); delBtn.innerHTML='✕';
+    delBtn.style.cssText='background:transparent;border:1px solid var(--border);color:var(--muted);width:22px;height:22px;border-radius:4px;cursor:pointer;font-size:10px;opacity:0;transition:opacity .15s';
+    delBtn.onclick=e=>{e.stopPropagation();deleteNote(n.id);}; delTd.appendChild(delBtn); tr.appendChild(delTd);
     tr.addEventListener('mouseenter',()=>delBtn.style.opacity='1'); tr.addEventListener('mouseleave',()=>delBtn.style.opacity='0');
     tbody.appendChild(tr);
   });
@@ -1201,10 +1346,130 @@ function renderNotes(){
 function closeObs(){ $('obs-modal-bg').classList.remove('open'); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeObs(); });
 
+// ── DEEP INSIGHTS ──
+async function runDeepInsights(){
+  const btn=$('deep-run-btn');
+  if(!trades.length&&!notes.length)return alert('Log some trades and notes first.');
+  $('deep-empty').style.display='none';
+  $('deep-content').style.display='none';
+  $('deep-loading').style.display='block';
+  if(btn){btn.disabled=true;btn.textContent='Analysing...';}
+
+  // Build context from observations, takeaways and notes
+  const obsEntries=trades.filter(t=>t.observation||t.takeaway).map(t=>`[${t.date||''} ${t.type||''} ${t.direction||''} ${t.result||''}] Obs: ${t.observation||''} | Takeaway: ${t.takeaway||''}`).join('
+');
+  const noteEntries=notes.filter(n=>n.text&&n.text!=='Click to write...').map((n,i)=>`${i+1}. ${n.text}`).join('
+');
+  const statsBlock=`Total trades: ${trades.length}, Win rate: ${Math.round(trades.filter(t=>t.result==='Won').length/Math.max(trades.length,1)*100)}%, Net P&L: ${trades.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0).toFixed(0)}`;
+  const lineTypePnl={};
+  trades.forEach(t=>{if(!t.type)return;if(!lineTypePnl[t.type])lineTypePnl[t.type]={n:0,pnl:0,wins:0};lineTypePnl[t.type].n++;lineTypePnl[t.type].pnl+=parseFloat(t.pnl)||0;if(t.result==='Won')lineTypePnl[t.type].wins++;});
+  const ltStats=Object.entries(lineTypePnl).map(([k,v])=>`${k}: ${v.n} trades, ${Math.round(v.wins/v.n*100)}% win, $${v.pnl.toFixed(0)}`).join('; ');
+  const trendStats=`With Trend: ${trades.filter(t=>t.trendAlign==='With'&&t.result==='Won').length}W/${trades.filter(t=>t.trendAlign==='With').length}T | Counter: ${trades.filter(t=>t.trendAlign==='Counter'&&t.result==='Won').length}W/${trades.filter(t=>t.trendAlign==='Counter').length}T`;
+  const rangeStats=`Top: ${trades.filter(t=>t.rangeLocation==='Top'&&t.result==='Won').length}W/${trades.filter(t=>t.rangeLocation==='Top').length}T | Mid: ${trades.filter(t=>t.rangeLocation==='Mid'&&t.result==='Won').length}W/${trades.filter(t=>t.rangeLocation==='Mid').length}T | Bottom: ${trades.filter(t=>t.rangeLocation==='Bottom'&&t.result==='Won').length}W/${trades.filter(t=>t.rangeLocation==='Bottom').length}T`;
+
+  const prompt=`You are an elite trading coach analysing the journal of an NQ futures trader. Extract deep, specific, actionable insights.
+
+TRADING STATS:
+${statsBlock}
+Setup types: ${ltStats}
+Trend alignment: ${trendStats}
+Range location: ${rangeStats}
+
+TRADE OBSERVATIONS & TAKEAWAYS (from journal entries):
+${obsEntries||'None logged yet'}
+
+TRADER NOTES & LESSONS (from notes tab):
+${noteEntries||'None logged yet'}
+
+Provide a deep analysis in these exact sections. Be specific, reference actual patterns from their data. Do not be generic.
+
+1. EDGE PATTERNS (what is clearly working — be specific with setups and conditions)
+2. RISK PATTERNS (what is causing losses or bad trades — specific situations to avoid)
+3. PSYCHOLOGICAL PATTERNS (recurring mental patterns from their notes and observations)
+4. REGIME ALIGNMENT (how well are they following their own stated rules from the notes)
+5. BLIND SPOTS (things they may be missing or not tracking that matter)
+6. PRIORITY ACTIONS (3 most impactful things to work on, ranked)
+
+Format each section with clear labels. Use specific trade examples where possible.`;
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:2000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await resp.json();
+    const text=data.content?.[0]?.text||'No response received.';
+    renderDeepInsights(text);
+  }catch(err){
+    $('deep-loading').style.display='none';
+    $('deep-content').style.display='block';
+    $('deep-content').innerHTML=`<div class="deep-card"><div class="deep-card-title">⚠️ Error</div><div class="deep-body">${err.message}</div></div>`;
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Analyse Now';}
+  }
+}
+
+function renderDeepInsights(text){
+  $('deep-loading').style.display='none';
+
+  const icons={'EDGE PATTERNS':'🎯','RISK PATTERNS':'⚠️','PSYCHOLOGICAL PATTERNS':'🧠','REGIME ALIGNMENT':'📋','BLIND SPOTS':'🔍','PRIORITY ACTIONS':'🚀'};
+  const colors={'EDGE PATTERNS':'dp-g','RISK PATTERNS':'dp-r','PSYCHOLOGICAL PATTERNS':'dp-b','REGIME ALIGNMENT':'dp-b','BLIND SPOTS':'dp-w','PRIORITY ACTIONS':'dp-g'};
+
+  // Split by numbered sections
+  const sections=text.split(/
+(?=\d+\.\s+[A-Z])/);
+  let html2='<div style="margin-bottom:8px;font-size:11px;color:var(--muted);text-align:right">Last analysed: '+new Date().toLocaleString()+'</div>';
+
+  sections.forEach(sec=>{
+    sec=sec.trim(); if(!sec)return;
+    const titleMatch=sec.match(/^\d+\.\s+([A-Z\s&]+)/);
+    const title=titleMatch?titleMatch[1].trim():sec.slice(0,40);
+    const icon=icons[title]||'💡';
+    const colorClass=colors[title]||'dp-b';
+    const body=sec.replace(/^\d+\.\s+[A-Z\s&]+
+?/,'').trim();
+
+    // Parse bullet points or paragraphs
+    const paras=body.split(/
++/).filter(p=>p.trim());
+    const bodyHtml=paras.map(p=>{
+      p=p.trim();
+      const isBullet=p.match(/^[-•*]\s+/) || p.match(/^\d+[.)]\s+/);
+      const pClean=p.replace(/^[-•*]\s+/,'').replace(/^\d+[.)]\s+/,'').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+      if(isBullet)return`<div class="deep-pattern ${colorClass}"><span class="dp-icon">${icon}</span><span class="dp-text">${pClean}</span></div>`;
+      return`<p style="margin-bottom:8px;font-size:13px;color:var(--text2);line-height:1.7">${pClean}</p>`;
+    }).join('');
+
+    html2+=`<div class="deep-card">
+      <div class="deep-card-title">${icon} ${title}</div>
+      <div>${bodyHtml}</div>
+    </div>`;
+  });
+
+  $('deep-content').innerHTML=html2;
+  $('deep-content').style.display='block';
+}
+
+// ── EXPORT NOTES ──
+
+function exportNotes(){
+  if(!notes.length)return alert('No notes to export.');
+  const lines=notes.map((n,i)=>`${i+1}. ${n.text||''}`).join('
+');
+  const blob=new Blob([lines],{type:'text/plain'});
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:`nq-notes-${new Date().toISOString().slice(0,10)}.txt`}).click();
+}
+
 // ── EXPORT ──
+
 function exportCSV(){
   if(!trades.length)return alert('No trades to export.');
-  const k=['date','time','timeExit','grade','direction','trendAlign','type','tf','rangeLocation','entry','stop','target','exit','pnl','contracts','rr','mae','mfe','drawdown','result','exitType','targetReached','processScore','followedPlan','reactiveState','attrs','observation'];
+  const k=['date','time','timeExit','grade','direction','trendAlign','type','tf','rangeLocation','entry','stop','target','exit','pnl','contracts','rr','drawdown','result','exitType','targetReached','reactiveState','confluence','confluenceTypes','observation','takeaway','attrs'];
   const csv=[k.join(','),...trades.map(t=>k.map(key=>`"${(t[key]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
   Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:`nq-journal-${new Date().toISOString().slice(0,10)}.csv`}).click();
 }
