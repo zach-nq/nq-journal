@@ -353,8 +353,8 @@ tbody tr:hover .ra{opacity:1}
         <div style="font-size:12px;color:var(--muted);margin-top:2px">AI analysis of your trade observations and journal notes</div>
       </div>
       <button class="btn-p" onclick="runDeepInsights()" id="deep-run-btn">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v5M9.5 3.5A5 5 0 1 1 2.5 3.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Analyse Now
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 9h10M1 9l3-3M1 9l3 3M11 3H1M11 3l-3-3M11 3l-3 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Generate Prompt
       </button>
     </div>
     <div id="deep-empty" class="empty-state" style="padding:48px 0">
@@ -1463,36 +1463,31 @@ function closeObs(){ $('obs-modal-bg').classList.remove('open'); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeObs(); });
 
 // ── DEEP INSIGHTS ──
-async function runDeepInsights(){
+function runDeepInsights(){
   const btn=$('deep-run-btn');
   if(!trades.length&&!notes.length){
     $('deep-empty').style.display='none';
     $('deep-content').style.display='block';
-    $('deep-content').innerHTML='<div class="deep-card"><div class="deep-card-title">No Data Yet</div><div class="deep-body">Log some trades and notes first, then click Analyse Now.</div></div>';
+    $('deep-content').innerHTML='<div class="deep-card"><div class="deep-card-title">No Data Yet</div><div class="deep-body">Log some trades and notes first, then click Generate Prompt.</div></div>';
     return;
   }
-  $('deep-empty').style.display='none';
-  $('deep-content').style.display='none';
-  $('deep-loading').style.display='block';
-  if(btn){btn.disabled=true;btn.textContent='Analysing...';}
+  if(btn){btn.disabled=true;btn.textContent='Building...';}
 
   // Build observations from trades
   var obsLines=[];
   trades.forEach(function(t){
     if(t.observation||t.takeaway){
       var line='['+[t.date,t.type,t.direction,t.result].filter(Boolean).join(' ')+']';
-      if(t.observation)line+=' Observation: '+t.observation;
+      if(t.observation)line+=' Obs: '+t.observation;
       if(t.takeaway)line+=' Takeaway: '+t.takeaway;
       obsLines.push(line);
     }
   });
   var obsText=obsLines.length?obsLines.join('\n'):'No observations logged yet.';
 
-  // Build notes
   var noteLines=notes.filter(function(n){return n.text&&n.text.trim()&&n.text!=='Click to write...';}).map(function(n,i){return (i+1)+'. '+n.text;});
   var notesText=noteLines.length?noteLines.join('\n'):'No notes logged yet.';
 
-  // Stats
   var totalT=trades.length;
   var winCount=trades.filter(function(t){return t.result==='Won';}).length;
   var winPct=Math.round(winCount/Math.max(totalT,1)*100);
@@ -1507,17 +1502,17 @@ async function runDeepInsights(){
   });
   var ltSummary=Object.keys(ltStats).map(function(k){
     var v=ltStats[k];return k+': '+v.n+' trades, '+Math.round(v.wins/v.n*100)+'% win, $'+v.pnl.toFixed(0);
-  }).join(' | ');
+  }).join('\n');
 
   var withW=trades.filter(function(t){return t.trendAlign==='With'&&t.result==='Won';}).length;
-  var withT=trades.filter(function(t){return t.trendAlign==='With';}).length;
+  var withT2=trades.filter(function(t){return t.trendAlign==='With';}).length;
   var ctrW=trades.filter(function(t){return t.trendAlign==='Counter'&&t.result==='Won';}).length;
   var ctrT=trades.filter(function(t){return t.trendAlign==='Counter';}).length;
 
   var rangeStats=['Top','Mid','Bottom'].map(function(r){
     var rt=trades.filter(function(t){return t.rangeLocation===r;});
     var rw=rt.filter(function(t){return t.result==='Won';}).length;
-    return r+': '+rw+'/'+rt.length;
+    return r+': '+rw+'/'+rt.length+' ('+Math.round(rw/Math.max(rt.length,1)*100)+'% win)';
   }).join(', ');
 
   var gradeStats=['A+','A','B','C'].map(function(g){
@@ -1527,13 +1522,16 @@ async function runDeepInsights(){
     return g+': '+gw+'/'+gt.length+' ('+Math.round(gw/gt.length*100)+'%)';
   }).filter(Boolean).join(', ');
 
-  var promptParts=[
-    'You are an elite NQ futures trading coach. Analyse this trader journal deeply and specifically.',
+  var prompt=[
+    'You are an elite NQ futures trading coach. Analyse this trader's journal deeply and specifically. Reference actual setups, patterns and their own words from the notes.',
     '',
     '=== TRADING STATISTICS ===',
     'Total trades: '+totalT+' | Win rate: '+winPct+'% | Net P&L: $'+netPnl.toFixed(0),
-    'By setup type: '+ltSummary,
-    'Trend alignment - With: '+withW+'/'+withT+' | Counter: '+ctrW+'/'+ctrT,
+    '',
+    'By setup type:',
+    ltSummary,
+    '',
+    'Trend alignment — With Trend: '+withW+'/'+withT2+' | Counter Trend: '+ctrW+'/'+ctrT,
     'Range location: '+rangeStats,
     'Setup grades: '+gradeStats,
     '',
@@ -1543,57 +1541,59 @@ async function runDeepInsights(){
     '=== TRADER JOURNAL NOTES & LESSONS ===',
     notesText,
     '',
-    '=== INSTRUCTIONS ===',
-    'Provide a deep, specific analysis using ONLY the data above. Reference actual setups, dates, patterns.',
-    'Use these exact section headings:',
+    '=== YOUR TASK ===',
+    'Provide a deep, specific analysis. Use these exact section headings. Under each use bullet points. Quote their actual notes and observations where relevant.',
     '',
-    '1. EDGE PATTERNS',
-    '2. RISK PATTERNS',
-    '3. PSYCHOLOGICAL PATTERNS',
-    '4. REGIME ALIGNMENT',
-    '5. BLIND SPOTS',
-    '6. PRIORITY ACTIONS',
-    '',
-    'Under each section use bullet points. Be specific - name actual setups, quote actual notes.'
-  ];
-  var prompt=promptParts.join('\n');
+    '1. EDGE PATTERNS — what is clearly working, be specific with setups and conditions',
+    '2. RISK PATTERNS — what causes losses, specific situations to avoid',
+    '3. PSYCHOLOGICAL PATTERNS — recurring mental patterns from their notes and observations',
+    '4. REGIME ALIGNMENT — how well are they following their own stated rules',
+    '5. BLIND SPOTS — things they may be missing or not tracking that matter',
+    '6. PRIORITY ACTIONS — top 3 most impactful things to work on right now, ranked'
+  ].join('\n');
 
-  try{
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:2500,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    var data=await resp.json();
-    if(data.error){
-      throw new Error(data.error.message||'API error: '+resp.status);
-    }
-    var text=(data.content&&data.content[0]&&data.content[0].text)||'No response received.';
-    renderDeepInsights(text);
-  }catch(err){
-    $('deep-loading').style.display='none';
+  // Copy to clipboard
+  navigator.clipboard.writeText(prompt).then(function(){
+    $('deep-empty').style.display='none';
     $('deep-content').style.display='block';
-    var errMsg=err.message||'Unknown error';
-    var isAuth=errMsg.indexOf('401')>-1||errMsg.indexOf('auth')>-1||errMsg.indexOf('API key')>-1;
-    $('deep-content').innerHTML='<div class="deep-card" style="border-color:var(--loss-l)">'+
-      '<div class="deep-card-title">⚠️ '+(isAuth?'API Authentication Required':'Connection Error')+'</div>'+
-      '<div class="deep-body" style="margin-top:8px">'+
-        (isAuth
-          ? 'The Deep Insights feature requires the Claude API. This works when viewing via <strong>Claude.ai artifacts</strong>. If you are hosting this on GitHub Pages, the API call will be blocked.<br><br>Your data is safe — all trade data and notes are stored in your browser.'
-          : 'Error: '+errMsg)+
+    $('deep-content').innerHTML=
+      '<div class="deep-card" style="border-color:rgba(52,199,89,.3);background:var(--win-l)">'+
+        '<div class="deep-card-title" style="color:var(--win)">✓ Prompt Copied to Clipboard</div>'+
+        '<div style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7">'+
+          '<strong>Next steps:</strong><br>'+
+          '1. Open <a href="https://claude.ai" target="_blank" style="color:var(--accent)">claude.ai</a> in a new tab<br>'+
+          '2. Start a new conversation<br>'+
+          '3. Press <strong>Ctrl+V</strong> to paste and send<br>'+
+          '4. Copy the analysis back here or save it in your Notes tab'+
+        '</div>'+
+        '<div style="margin-top:14px;padding:12px;background:rgba(255,255,255,0.6);border-radius:var(--rs);font-size:11px;color:var(--muted)">'+
+          'Prompt includes: '+totalT+' trades · '+obsLines.length+' observations · '+noteLines.length+' notes · all stats'+
+        '</div>'+
       '</div>'+
-      '<div style="margin-top:14px;padding:12px;background:var(--s2);border-radius:var(--rs);font-size:12px;color:var(--text2)">'+
-        '<strong>Data prepared for analysis:</strong><br>'+
-        totalT+' trades · '+obsLines.length+' observations · '+noteLines.length+' notes'+
-      '</div>'+
-    '</div>';
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent='Analyse Now';}
-  }
+      '<div class="deep-card" style="margin-top:12px">'+
+        '<div class="deep-card-title">📋 Prompt Preview</div>'+
+        '<div style="margin-top:8px;font-size:11px;color:var(--muted);background:var(--s2);padding:12px;border-radius:var(--rs);max-height:200px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;line-height:1.5">'+
+          prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').slice(0,800)+'...'+
+        '</div>'+
+      '</div>';
+    if(btn){btn.disabled=false;btn.textContent='Generate Prompt';}
+  }).catch(function(){
+    // Fallback: show prompt in textarea for manual copy
+    $('deep-empty').style.display='none';
+    $('deep-content').style.display='block';
+    $('deep-content').innerHTML=
+      '<div class="deep-card">'+
+        '<div class="deep-card-title">📋 Copy This Prompt</div>'+
+        '<div style="font-size:12px;color:var(--muted);margin-bottom:8px">Clipboard access denied — select all and copy manually (Ctrl+A, Ctrl+C)</div>'+
+        '<textarea style="width:100%;height:300px;font-size:11px;font-family:monospace;padding:10px;border:1px solid var(--border);border-radius:var(--rs);resize:vertical;color:var(--text2);background:var(--s2)">'+
+          prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+
+        '</textarea>'+
+        '<div style="margin-top:10px;font-size:12px;color:var(--text2)">'+
+          'Paste into <a href="https://claude.ai" target="_blank" style="color:var(--accent)">claude.ai</a> for your analysis'+
+        '</div>'+
+      '</div>';
+    if(btn){btn.disabled=false;btn.textContent='Generate Prompt';}
+  });
 }
 
 
