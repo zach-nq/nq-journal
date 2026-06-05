@@ -87,26 +87,21 @@ thead th:nth-child(4){width:90px}   /* Entry $ */
 thead th:nth-child(5){width:72px}   /* Exit Time */
 thead th:nth-child(6){width:90px}   /* Exit $ */
 thead th:nth-child(7){width:68px}   /* Dir */
-thead th:nth-child(8){width:80px}   /* Trend */
-thead th:nth-child(9){width:130px}  /* Line Type */
-thead th:nth-child(10){width:60px}  /* TF */
-thead th:nth-child(11){width:64px}  /* Range */
-thead th:nth-child(12){width:100px} /* Stop */
-thead th:nth-child(13){width:100px} /* Target */
-thead th:nth-child(14){width:96px}  /* P&L */
-thead th:nth-child(15){width:68px}  /* Points */
-thead th:nth-child(16){width:54px}  /* R:R */
-thead th:nth-child(17){width:72px}  /* Drawdown */
-thead th:nth-child(18){width:68px}  /* Result */
-thead th:nth-child(19){width:76px}  /* Exit Type */
-thead th:nth-child(20){width:56px}  /* Tgt? */
-thead th:nth-child(21){width:68px}  /* Duration */
-thead th:nth-child(22){width:64px}  /* Reactive? */
-thead th:nth-child(23){width:80px}  /* Confluence? */
-thead th:nth-child(24){width:180px} /* Confluence Type */
-thead th:nth-child(25){width:220px} /* Observation */
-thead th:nth-child(26){width:220px} /* Takeaway */
-thead th:nth-child(27){width:44px}  /* Actions */ /* Actions */
+thead th:nth-child(8){width:150px}  /* Line Type */
+thead th:nth-child(9){width:90px}   /* Stop */
+thead th:nth-child(10){width:96px}  /* P&L */
+thead th:nth-child(11){width:68px}  /* Points */
+thead th:nth-child(12){width:54px}  /* R:R */
+thead th:nth-child(13){width:72px}  /* Drawdown */
+thead th:nth-child(14){width:68px}  /* Result */
+thead th:nth-child(15){width:56px}  /* Tgt? */
+thead th:nth-child(16){width:68px}  /* Duration */
+thead th:nth-child(17){width:64px}  /* Reactive? */
+thead th:nth-child(18){width:80px}  /* Confluence? */
+thead th:nth-child(19){width:200px} /* Confluence Type */
+thead th:nth-child(20){width:220px} /* Observation */
+thead th:nth-child(21){width:220px} /* Takeaway */
+thead th:nth-child(22){width:44px}  /* Actions */  /* Actions */ /* Actions */
 
 /* ── ENTRY ROW ── */
 .entry-row td{padding:4px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top}
@@ -322,12 +317,12 @@ tbody tr:hover .ra{opacity:1}
             <th>Date</th>
             <th>Entry Time</th><th>Entry $</th>
             <th>Exit Time</th><th>Exit $</th>
-            <th>Dir</th><th>Trend</th>
-            <th>Line Type</th><th>TF</th><th>Range</th>
-            <th>Stop</th><th>Target</th>
+            <th>Dir</th>
+            <th>Line Type</th>
+            <th>Stop</th>
             <th>P&amp;L ($)</th><th>Points</th><th>R:R</th>
             <th>Drawdown</th>
-            <th>Result</th><th>Exit Type</th><th>Tgt?</th>
+            <th>Result</th><th>Tgt?</th>
             <th>Duration</th><th>Reactive?</th>
             <th>Confluence?</th><th>Confluence Type</th>
             <th>Observation</th><th>Takeaway</th><th></th>
@@ -380,55 +375,37 @@ tbody tr:hover .ra{opacity:1}
     </div>
     <div id="ins-content" style="display:none">
       <div class="kpi-row" id="kpis"></div>
-      <div class="irow ir2">
-        <div class="cc"><div class="ct">P&amp;L Per Trade</div><div class="cs">Win/loss across recent trades</div><div class="pnl-tl" id="pnl-tl"></div></div>
-        <div class="cc"><div class="ct">Key Insights</div><div class="cs">Patterns detected from your data</div><div id="callouts"></div></div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">P&amp;L Per Trade</div><div class="cs">Last 20 trades waterfall</div><div class="pnl-tl" id="pnl-tl"></div></div>
+        <div class="cc"><div class="ct">🔍 Key Insights</div><div class="cs">Auto-detected patterns</div><div id="callouts"></div></div>
       </div>
-      <!-- Row 1: Grade + Trend + Range -->
-      <div class="irow ir3">
+      <div class="irow ir1" style="margin-bottom:14px">
         <div class="cc">
-          <div class="ct">Setup Grade</div>
-          <div class="cs">Win rate &amp; P&L by grade — does your pre-trade assessment predict outcome?</div>
-          <div class="bch" id="grade-b"></div>
-          <div id="grade-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
-        </div>
-        <div class="cc">
-          <div class="ct">Trend Alignment</div>
-          <div class="cs">With Trend vs Counter Trend — your regime says trade with trend</div>
-          <div class="bch" id="trend-b"></div>
-          <div id="trend-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
-        </div>
-        <div class="cc">
-          <div class="ct">Range Location</div>
-          <div class="cs">Top / Mid / Bottom — your regime says avoid midrange</div>
-          <div class="bch" id="range-b"></div>
-          <div id="range-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
-        </div>
-      </div>
-      <!-- Row 2: Line Type (full width) -->
-      <div class="irow ir1">
-        <div class="cc">
-          <div class="ct">Line Type Performance</div>
-          <div class="cs">Win rate, trade count and total P&L by setup — sorted by most traded</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3px"><div class="ct">Setup Type Performance</div><div style="font-size:10px;color:var(--muted)">Win% · Count · P&amp;L</div></div>
+          <div class="cs">All setups ranked by total earnings</div>
           <div class="bch" id="lt-b"></div>
         </div>
       </div>
-      <!-- Row 3: Direction + TF + Duration -->
-      <div class="irow ir3">
-        <div class="cc"><div class="ct">Direction</div><div class="cs">Long vs Short outcomes</div><div class="bch" id="dir-b"></div></div>
-        <div class="cc"><div class="ct">Timeframe</div><div class="cs">Performance by line timeframe</div><div class="bch" id="tf-b"></div></div>
+      <div class="irow ir3" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">Setup Grade</div><div class="cs">Does your pre-trade grade predict outcome?</div><div class="bch" id="grade-b"></div><div id="grade-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div></div>
+        <div class="cc"><div class="ct">Direction</div><div class="cs">Long vs Short win rate and P&amp;L</div><div class="bch" id="dir-b"></div></div>
         <div class="cc"><div class="ct">Trade Duration</div><div class="cs">Win rate by how long you held</div><div class="bch" id="dur-b"></div></div>
       </div>
-      <!-- Row 4: Day + Hour + Reactive -->
-      <div class="irow ir3">
-        <div class="cc"><div class="ct">Day of Week</div><div class="cs">Best and worst days to trade</div><div class="bch" id="dow-b"></div></div>
-        <div class="cc"><div class="ct">Time of Day</div><div class="cs">Best entry hours</div><div class="bch" id="hour-b"></div></div>
-        <div class="cc"><div class="ct">Reactive State</div><div class="cs">When you flagged yourself as reactive</div><div class="bch" id="react-b"></div></div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">Day of Week</div><div class="cs">Best and worst trading days</div><div class="bch" id="dow-b"></div></div>
+        <div class="cc"><div class="ct">Time of Day</div><div class="cs">Win rate and P&amp;L by entry hour</div><div class="bch" id="hour-b"></div></div>
       </div>
-      <!-- Row 5: Confluence -->
-      <div class="irow ir2">
-        <div class="cc"><div class="ct">Confluence</div><div class="cs">Trades with vs without confluence markers</div><div class="bch" id="conf-b"></div></div>
-        <div class="cc"><div class="ct">Confluence Type</div><div class="cs">Which confluence types appear on winners</div><div class="bch" id="conf-type-b"></div></div>
+      <div class="irow ir3" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">Confluence Impact</div><div class="cs">With vs without confluence</div><div class="bch" id="conf-b"></div></div>
+        <div class="cc"><div class="ct">Confluence Type</div><div class="cs">Which types appear on biggest winners</div><div class="bch" id="conf-type-b"></div></div>
+        <div class="cc"><div class="ct">Reactive State</div><div class="cs">Performance when flagged as reactive</div><div class="bch" id="react-b"></div></div>
+      </div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">R:R Distribution</div><div class="cs">How your risk-reward is distributed</div><div class="bch" id="rr-dist-b"></div></div>
+        <div class="cc"><div class="ct">Points Captured per Trade</div><div class="cs">Distribution — are you leaving money on the table?</div><div class="bch" id="pts-dist-b"></div></div>
+      </div>
+      <div class="irow ir1" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">Rolling Win Rate (last 10 trades)</div><div class="cs">Is your edge stable or drifting over time?</div><div class="bch" id="rolling-b"></div></div>
       </div>
     </div>
   </div>
@@ -807,18 +784,18 @@ function addRow(tradeToEdit){
   tr.appendChild(cell('Exit Time',timeExitInp));
   tr.appendChild(cell('Exit $',exitInp));
   tr.appendChild(cell('Dir',dirPills));
-  tr.appendChild(cell('Trend',trendPills));
+
   tr.appendChild(cell('Line Type',ltSel));
-  tr.appendChild(cell('TF',tfPills));
-  tr.appendChild(cell('Range',rangePills));
+
+
   tr.appendChild(cell('Stop',stopWrap));
-  tr.appendChild(cell('Target',targetWrap));
+
   tr.appendChild(pnlCell);
   tr.appendChild(ptsTd);
   tr.appendChild(rrTd);
   tr.appendChild(cell('DD (pts)',ddInp));
   tr.appendChild(cell('Result',resultPills));
-  tr.appendChild(cell('Exit Type',exitTypePills));
+
   tr.appendChild(cell('Tgt Hit?',tgtReachedPills));
   tr.appendChild(durTd);
   tr.appendChild(cell('Reactive?',reactivePills));
@@ -1093,20 +1070,19 @@ function render(){
     tr.appendChild(mkTd('timeExit',`<span style="color:var(--muted)">${d(t.timeExit)}</span>`));
     tr.appendChild(mkTd('exit',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.exit)}</span>`));
     const dirTd=document.createElement('td'); dirTd.dataset.field='direction'; dirTd.dataset.tid=t.id; dirTd.style.cursor='pointer'; dirTd.innerHTML=dirBadge; tr.appendChild(dirTd);
-    tr.appendChild(selTd('trendAlign',trendBadge));
+
     const ltTd=document.createElement('td'); ltTd.style.cursor='pointer'; ltTd.dataset.field='type'; ltTd.dataset.tid=t.id;
     ltTd.innerHTML=t.type?`<span class="badge b-type" style="font-size:10.5px">${t.type}</span>`:'<span class="dash">—</span>'; tr.appendChild(ltTd);
-    const tfTd=document.createElement('td'); tfTd.style.cursor='pointer'; tfTd.dataset.field='tf'; tfTd.dataset.tid=t.id;
-    tfTd.innerHTML=t.tf?`<span style="font-size:11px;font-weight:600;color:var(--accent)">${t.tf}</span>`:'<span class="dash">—</span>'; tr.appendChild(tfTd);
-    tr.appendChild(selTd('rangeLocation',rangeBadge));
+
+
     tr.appendChild(mkTd('stop',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.stop)}</span>`));
-    tr.appendChild(mkTd('target',`<span style="font-variant-numeric:tabular-nums">${fmtP(t.target)}</span>`));
+
     tr.appendChild(mkTd('pnl',pnlStr));
     const ptsTd=document.createElement('td'); ptsTd.innerHTML=pts!==null?`<span style="font-weight:500;color:${pts>0?'var(--win)':pts<0?'var(--loss)':'var(--muted2)'}">${pts>0?'+':''}${pts}pt</span>`:'<span class="dash">—</span>'; tr.appendChild(ptsTd);
     tr.appendChild(mkTd('rr',`<span style="font-weight:600;color:${rrColor}">${d(t.rr)}</span>`));
     tr.appendChild(mkTd('drawdown',t.drawdown?`<span style="color:var(--warn)">${t.drawdown}pt</span>`:'<span class="dash">—</span>'));
     tr.appendChild(selTd('result',resBadge));
-    tr.appendChild(selTd('exitType',`<span style="font-size:11px;color:var(--muted)">${d(t.exitType)}</span>`));
+
     tr.appendChild(selTd('targetReached',tgtBadge));
     const durTd=document.createElement('td'); durTd.innerHTML=`<span style="color:var(--muted);font-size:11px">${d(dur)}</span>`; tr.appendChild(durTd);
     tr.appendChild(selTd('reactiveState',reactiveBadge));
@@ -1251,143 +1227,93 @@ function renderInsights(){
   const wr=Math.round(won.length/n*100);
   const avgW=won.length?won.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)/won.length:0;
   const avgL=lost.length?lost.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)/lost.length:0;
+  const avgPts=trades.filter(t=>t.rr).map(t=>parseFloat(t.rr)||0).filter(v=>v>0);
+  const avgRR=avgPts.length?(avgPts.reduce((a,b)=>a+b,0)/avgPts.length).toFixed(2):'—';
 
+  // KPIs
   function kpi(l,v,s,cls=''){return`<div class="kpi"><div class="kpi-l">${l}</div><div class="kpi-v ${cls}">${v}</div><div class="kpi-s">${s}</div></div>`;}
   $('kpis').innerHTML=
-    kpi('Total Trades',n,`${won.length}W · ${lost.length}L`)+
-    kpi('Win Rate',wr+'%',`${won.length} winning trades`,wr>=60?'g':wr>=50?'':'r')+
+    kpi('Trades',n,`${won.length}W · ${lost.length}L`)+
+    kpi('Win Rate',wr+'%',`${won.length} wins`,wr>=90?'g':wr>=75?'':'r')+
     kpi('Net P&L',(netPnl>=0?'+$':'-$')+Math.abs(netPnl).toLocaleString(),'',netPnl>=0?'g':'r')+
-    kpi('Avg Winner','$'+Math.abs(avgW).toFixed(0),`vs Avg Loser $${Math.abs(avgL).toFixed(0)}`,avgW>Math.abs(avgL)?'g':'r')+
-    kpi('Avg Duration',fmtDur(avgDurList(trades)),'per trade');
+    kpi('Avg Winner','$'+Math.abs(avgW).toFixed(0),`Avg Loser: $${Math.abs(avgL).toFixed(0)}`,avgW>0?'g':'')+
+    kpi('Avg R:R',avgRR,'per trade',parseFloat(avgRR)>=2?'g':parseFloat(avgRR)>=1?'':'r');
 
   // P&L timeline
   const tlT=trades.filter(t=>t.pnl).slice(-20);
   const maxA=Math.max(...tlT.map(t=>Math.abs(parseFloat(t.pnl)||0)),1);
   $('pnl-tl').innerHTML=tlT.map(t=>{const v=parseFloat(t.pnl),pct=Math.min(100,Math.abs(v)/maxA*100)*0.46;return`<div class="ptr"><span class="pd">${t.date?t.date.slice(5):''}</span><div class="pw"><div class="pc"></div><div class="pb ${v>=0?'pp':'pn'}" style="width:${pct}%"></div></div><span class="pa ${v>=0?'pp':'pn'}">${v>=0?'+':'-'}$${Math.abs(v).toLocaleString()}</span></div>`;}).join('');
 
-  // Callouts — deeper pattern detection
+  // Key callouts — deeper
   const calls=[];
-  const ltMap2={};trades.forEach(t=>{if(!t.type)return;if(!ltMap2[t.type])ltMap2[t.type]={w:0,l:0,pnl:0};t.result==='Won'?ltMap2[t.type].w++:ltMap2[t.type].l++;ltMap2[t.type].pnl+=parseFloat(t.pnl)||0;});
-  const sArr=Object.entries(ltMap2).filter(([,v])=>v.w+v.l>=2).map(([k,v])=>({k,wr:v.w/(v.w+v.l),n:v.w+v.l,pnl:v.pnl})).sort((a,b)=>b.pnl-a.pnl);
-  if(sArr.length){calls.push({t:'g',i:'🎯',m:`Best earning setup: <strong>${sArr[0].k}</strong> — $${Math.abs(sArr[0].pnl).toLocaleString()} P&L, ${Math.round(sArr[0].wr*100)}% win rate.`});}
-  if(sArr.length>1&&sArr[sArr.length-1].wr<0.4){calls.push({t:'b',i:'⚠️',m:`<strong>${sArr[sArr.length-1].k}</strong> has the lowest win rate at <strong>${Math.round(sArr[sArr.length-1].wr*100)}%</strong>. Consider standing aside on this setup.`});}
-  const midT=trades.filter(t=>t.rangeLocation==='Mid'&&t.result);
-  if(midT.length>=2){const mwr=Math.round(midT.filter(t=>t.result==='Won').length/midT.length*100);if(mwr<60)calls.push({t:'b',i:'📍',m:`Midrange trades win <strong>${mwr}%</strong> — your regime says avoid midrange. ${midT.length} trades logged there.`});}
-  const topT=trades.filter(t=>t.rangeLocation==='Top'&&t.result);
-  const botT=trades.filter(t=>t.rangeLocation==='Bottom'&&t.result);
-  if(topT.length+botT.length>=3){const edgeWr=Math.round([...topT,...botT].filter(t=>t.result==='Won').length/(topT.length+botT.length)*100);calls.push({t:edgeWr>=60?'g':'w',i:'🏔️',m:`Outer edge trades (Top+Bottom): <strong>${edgeWr}%</strong> win rate over ${topT.length+botT.length} trades.`});}
-  const withT=trades.filter(t=>t.trendAlign==='With'&&t.result);
-  const ctrT=trades.filter(t=>t.trendAlign==='Counter'&&t.result);
-  if(withT.length>=2&&ctrT.length>=2){const wwr=Math.round(withT.filter(t=>t.result==='Won').length/withT.length*100),cwr=Math.round(ctrT.filter(t=>t.result==='Won').length/ctrT.length*100);calls.push({t:wwr>cwr?'g':'w',i:'📈',m:`With Trend: <strong>${wwr}%</strong> win · Counter Trend: <strong>${cwr}%</strong> win. ${wwr>cwr?'Trend alignment is paying off.':'Counter trend performing surprisingly well.'}`});}
-  const apTrades=trades.filter(t=>t.grade==='A+'&&t.result);
-  const cTrades=trades.filter(t=>t.grade==='C'&&t.result);
-  if(apTrades.length>=2){const awr=Math.round(apTrades.filter(t=>t.result==='Won').length/apTrades.length*100);calls.push({t:awr>=70?'g':'w',i:'⭐',m:`A+ setups: <strong>${awr}%</strong> win rate — ${apTrades.length} trades. ${awr>=70?'Your grading is accurate.':'Review what qualifies as A+.'}`});}
-  if(cTrades.length>=2){const cwr2=Math.round(cTrades.filter(t=>t.result==='Won').length/cTrades.length*100);calls.push({t:cwr2<50?'b':'w',i:'🚫',m:`C-grade trades: <strong>${cwr2}%</strong> win rate. ${cwr2<50?'Eliminating C trades could significantly improve performance.':''}`});}
-  const reactT=trades.filter(t=>t.reactiveState==='Yes'&&t.result);
-  if(reactT.length>=2){const rwr=Math.round(reactT.filter(t=>t.result==='Won').length/reactT.length*100);calls.push({t:rwr<60?'b':'w',i:'😤',m:`Reactive state trades: <strong>${rwr}%</strong> win rate over ${reactT.length} entries. ${rwr<60?'Emotional state is costing you.':''}`});}
-  if(!calls.length)calls.push({t:'',i:'📈',m:'Log more trades with all fields filled to unlock deeper pattern insights.'});
+  const ltMap={};trades.forEach(t=>{if(!t.type)return;if(!ltMap[t.type])ltMap[t.type]={w:0,l:0,pnl:0,n:0};ltMap[t.type].n++;t.result==='Won'?ltMap[t.type].w++:ltMap[t.type].l++;ltMap[t.type].pnl+=parseFloat(t.pnl)||0;});
+  const sArr=Object.entries(ltMap).sort((a,b)=>b[1].pnl-a[1].pnl);
+  if(sArr.length)calls.push({t:'g',i:'🎯',m:`<strong>${sArr[0][0]}</strong> is your top earner — $${Math.abs(sArr[0][1].pnl).toLocaleString()} total, ${Math.round(sArr[0][1].w/sArr[0][1].n*100)}% win rate over ${sArr[0][1].n} trades.`});
+  const confT=trades.filter(t=>t.confluence==='Yes'&&t.result),noConfT=trades.filter(t=>t.confluence==='No'&&t.result);
+  if(confT.length>=3&&noConfT.length>=3){const cwr=Math.round(confT.filter(t=>t.result==='Won').length/confT.length*100),ncwr=Math.round(noConfT.filter(t=>t.result==='Won').length/noConfT.length*100);calls.push({t:cwr>ncwr?'g':'w',i:'🔗',m:`Trades <strong>with confluence</strong> win ${cwr}% vs without ${ncwr}%. ${cwr>ncwr?'Confluence is paying — prioritise it.':'Interesting — review your confluence criteria.'}`});}
+  const apT=trades.filter(t=>t.grade==='A+'&&t.result);if(apT.length>=3){const awr=Math.round(apT.filter(t=>t.result==='Won').length/apT.length*100);calls.push({t:awr>=85?'g':'w',i:'⭐',m:`A+ setups win <strong>${awr}%</strong> over ${apT.length} trades. ${awr>=85?'Your grading is accurate.':'Review your A+ criteria.'}`});}
+  const reactT=trades.filter(t=>t.reactiveState==='Yes'&&t.result);if(reactT.length>=2){const rwr=Math.round(reactT.filter(t=>t.result==='Won').length/reactT.length*100);calls.push({t:rwr<80?'b':'w',i:'⚡',m:`When flagged <strong>Reactive</strong>: ${rwr}% win rate over ${reactT.length} trades. ${rwr<80?'Emotional state is costing you.':'Reactive state not affecting results yet.'}`});}
+  const rrVals=trades.filter(t=>t.rr&&parseFloat(t.rr)>0).map(t=>parseFloat(t.rr));if(rrVals.length>=5){const avg=(rrVals.reduce((a,b)=>a+b,0)/rrVals.length).toFixed(2);const over2=rrVals.filter(v=>v>=2).length;calls.push({t:parseFloat(avg)>=2?'g':'w',i:'📐',m:`Average R:R is <strong>${avg}</strong>. ${over2}/${rrVals.length} trades hit 2R or better. ${parseFloat(avg)>=2?'Excellent risk management.':'Push for measured moves — your edge can support higher R:R.'}`});}
+  // Hour best/worst
+  const hourMap={};trades.forEach(t=>{if(!t.time)return;const h=parseInt(t.time.split(':')[0]);if(!hourMap[h])hourMap[h]={w:0,l:0,pnl:0};t.result==='Won'?hourMap[h].w++:hourMap[h].l++;hourMap[h].pnl+=parseFloat(t.pnl)||0;});
+  const hourArr=Object.entries(hourMap).filter(([,v])=>v.w+v.l>=3).sort((a,b)=>b[1].pnl-a[1].pnl);
+  if(hourArr.length>=2){const best=hourArr[0],worst=hourArr[hourArr.length-1];const bwr=Math.round(best[1].w/(best[1].w+best[1].l)*100);calls.push({t:'g',i:'⏰',m:`Best hour: <strong>${best[0]}:00</strong> — ${bwr}% win, $${best[1].pnl.toLocaleString()} earned. Plan to be at your desk and ready.`});}
+  if(!calls.length)calls.push({t:'',i:'📈',m:'Log more trades with all fields filled to unlock pattern insights.'});
   $('callouts').innerHTML=calls.map(c=>`<div class="cal cal-${c.t==='w'?'w':c.t==='g'?'g':c.t==='b'?'b':'d'}"><span class="ci">${c.i}</span><span class="ct2">${c.m}</span></div>`).join('');
 
-  function bars(map,sortByWr=false){
-    let entries=Object.entries(map).filter(([,v])=>v.w+v.l>0);
-    if(sortByWr)entries.sort((a,b)=>(b[1].w/(b[1].w+b[1].l))-(a[1].w/(a[1].w+a[1].l)));
-    else entries.sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l));
-    return entries.map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100),pnl=v.pnl||0;return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm" title="P&L: ${fmtC(pnl)}">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
-  }
-  function barsWithPnl(map){
-    return Object.entries(map).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>{
-      const wr2=v.n>0?Math.round(v.wins/v.n*100):0;
-      const pnlColor=v.pnl>=0?'var(--win)':'var(--loss)';
-      return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%</span><span style="font-size:10px;color:${pnlColor};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;
-    }).join('')||'<div class="nodata">No data</div>';
-  }
+  // Bar helpers
+  function bars(map){return Object.entries(map).filter(([,v])=>v.w+v.l>0).sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);const pnlStr=v.pnl!==undefined?`<span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span>`:'';return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span>${pnlStr}</div>`;}).join('')||'<div class="nodata">No data</div>';}
 
-  // Grade bars
+  // Setup Type — sorted by P&L
+  const ltFull={};trades.forEach(t=>{if(!t.type)return;if(!ltFull[t.type])ltFull[t.type]={w:0,l:0,pnl:0};t.result==='Won'?ltFull[t.type].w++:ltFull[t.type].l++;ltFull[t.type].pnl+=parseFloat(t.pnl)||0;});
+  $('lt-b').innerHTML=Object.entries(ltFull).sort((a,b)=>b[1].pnl-a[1].pnl).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+
+  // Grade
   const gradeMap={};trades.forEach(t=>{if(!t.grade)return;if(!gradeMap[t.grade])gradeMap[t.grade]={w:0,l:0,pnl:0};t.result==='Won'?gradeMap[t.grade].w++:gradeMap[t.grade].l++;gradeMap[t.grade].pnl+=parseFloat(t.pnl)||0;});
-  const gradePnl=grade=>gradeMap[grade]?fmtC(gradeMap[grade].pnl):'';
-  $('grade-b').innerHTML=['A+','A','B','C'].filter(g=>gradeMap[g]).map(g=>{const v=gradeMap[g],tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${g}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  $('grade-b').innerHTML=['A+','A','B','C'].filter(g=>gradeMap[g]).map(g=>{const v=gradeMap[g],tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${g}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  const gi=$('grade-insight');if(gi){const ap=gradeMap['A+'],c=gradeMap['C'];const p=[];if(ap){const w=Math.round(ap.w/(ap.w+ap.l)*100);p.push(`A+ wins ${w}% — ${w>=85?'grading is accurate':'tighten A+ criteria'}`);}if(c){const w=Math.round(c.w/(c.w+c.l)*100);p.push(`C trades win ${w}% — eliminating them improves your rate`);}gi.textContent=p.join(' · ');}
 
-  const trendMap={};trades.forEach(t=>{if(!t.trendAlign)return;if(!trendMap[t.trendAlign])trendMap[t.trendAlign]={w:0,l:0,pnl:0};t.result==='Won'?trendMap[t.trendAlign].w++:trendMap[t.trendAlign].l++;trendMap[t.trendAlign].pnl+=parseFloat(t.pnl)||0;});
-  $('trend-b').innerHTML=bars(trendMap);
-
-  const rangeMap={};trades.forEach(t=>{if(!t.rangeLocation)return;if(!rangeMap[t.rangeLocation])rangeMap[t.rangeLocation]={w:0,l:0,pnl:0};t.result==='Won'?rangeMap[t.rangeLocation].w++:rangeMap[t.rangeLocation].l++;rangeMap[t.rangeLocation].pnl+=parseFloat(t.pnl)||0;});
-  $('range-b').innerHTML=bars(rangeMap);
-
-  // Line type with P&L
-  const ltMapFull={};trades.forEach(t=>{if(!t.type)return;if(!ltMapFull[t.type])ltMapFull[t.type]={n:0,pnl:0,wins:0};ltMapFull[t.type].n++;ltMapFull[t.type].pnl+=parseFloat(t.pnl)||0;if(t.result==='Won')ltMapFull[t.type].wins++;});
-  $('lt-b').innerHTML=barsWithPnl(ltMapFull);
-
+  // Direction
   const dirMap={Long:{w:0,l:0,pnl:0},Short:{w:0,l:0,pnl:0}};trades.forEach(t=>{if(t.direction&&dirMap[t.direction]){t.result==='Won'?dirMap[t.direction].w++:dirMap[t.direction].l++;dirMap[t.direction].pnl+=parseFloat(t.pnl)||0;}});
   $('dir-b').innerHTML=bars(dirMap);
 
-  const tfMap={};trades.forEach(t=>{if(!t.tf)return;if(!tfMap[t.tf])tfMap[t.tf]={w:0,l:0,pnl:0};t.result==='Won'?tfMap[t.tf].w++:tfMap[t.tf].l++;tfMap[t.tf].pnl+=parseFloat(t.pnl)||0;});
-  $('tf-b').innerHTML=bars(tfMap);
+  // Duration buckets
+  const durBuckets={'<10m':{w:0,l:0},'10-30m':{w:0,l:0},'30m-1h':{w:0,l:0},'1-3h':{w:0,l:0},'3h+':{w:0,l:0}};
+  trades.forEach(t=>{const e=parseMins(t.time),x=parseMins(t.timeExit);if(e===null||x===null)return;const d=x>=e?x-e:x+1440-e;const k=d<10?'<10m':d<30?'10-30m':d<60?'30m-1h':d<180?'1-3h':'3h+';durBuckets[k][t.result==='Won'?'w':'l']++;});
+  $('dur-b').innerHTML=Object.entries(durBuckets).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 
-  // Reactive state bar
-  const reactMap={};trades.forEach(t=>{if(!t.reactiveState)return;if(!reactMap[t.reactiveState])reactMap[t.reactiveState]={w:0,l:0,pnl:0};t.result==='Won'?reactMap[t.reactiveState].w++:reactMap[t.reactiveState].l++;reactMap[t.reactiveState].pnl+=parseFloat(t.pnl)||0;});
-  $('react-b').innerHTML=bars(reactMap)||'<div class="nodata">Fill in Reactive? column on trades</div>';
-
-  // Confluence analysis
-  const confMap={};trades.forEach(t=>{if(!t.confluence)return;if(!confMap[t.confluence])confMap[t.confluence]={w:0,l:0,pnl:0};t.result==='Won'?confMap[t.confluence].w++:confMap[t.confluence].l++;confMap[t.confluence].pnl+=parseFloat(t.pnl)||0;});
-  $('conf-b').innerHTML=bars(confMap)||'<div class="nodata">Fill in Confluence? column on trades</div>';
-
-  // Confluence Type breakdown — which types appear on winners vs all
-  const confTypeMap={};
-  trades.forEach(function(t){
-    if(!t.confluenceTypes)return;
-    t.confluenceTypes.split(',').forEach(function(ct){
-      ct=ct.trim(); if(!ct)return;
-      if(!confTypeMap[ct])confTypeMap[ct]={n:0,wins:0,pnl:0};
-      confTypeMap[ct].n++;
-      if(t.result==='Won')confTypeMap[ct].wins++;
-      confTypeMap[ct].pnl+=parseFloat(t.pnl)||0;
-    });
-  });
-  const ctEl=$('conf-type-b');
-  if(ctEl){
-    const ctEntries=Object.entries(confTypeMap).sort(function(a,b){return b[1].n-a[1].n;});
-    ctEl.innerHTML=ctEntries.length?ctEntries.map(function(e){
-      const k=e[0],v=e[1],wr2=Math.round(v.wins/v.n*100);
-      return'<div class="br"><span class="bl" title="'+k+'">'+k+'</span><div class="bt"><div class="bf '+(wr2>=60?'g':wr2>=50?'b':'r')+'" style="width:'+wr2+'%"></div></div><span class="bm">'+wr2+'%·'+v.n+'</span><span style="font-size:10px;color:'+(v.pnl>=0?'var(--win)':'var(--loss)')+';width:72px;text-align:right;flex-shrink:0">'+fmtC(v.pnl)+'</span></div>';
-    }).join(''):'<div class="nodata">Log confluence types on trades to see data</div>';
-  }
-
-  // Inline insights under grade/trend/range cards
-  const gradeInsEl=$('grade-insight');
-  if(gradeInsEl&&Object.keys(gradeMap).length){
-    const apG=gradeMap['A+'],cG=gradeMap['C'];
-    const parts=[];
-    if(apG){const wr2=Math.round(apG.w/(apG.w+apG.l)*100);parts.push('A+ wins '+wr2+'% — '+(wr2>=70?'your grading is accurate':'consider tightening A+ criteria'));}
-    if(cG){const wr2=Math.round(cG.w/(cG.w+cG.l)*100);parts.push('C trades win only '+wr2+'% — eliminating them would improve overall rate');}
-    gradeInsEl.textContent=parts.join(' · ');
-  }
-  const trendInsEl=$('trend-insight');
-  if(trendInsEl&&(trendMap['With']||trendMap['Counter'])){
-    const w=trendMap['With'],c=trendMap['Counter'];
-    const wwr=w?Math.round(w.w/(w.w+w.l)*100):0;
-    const cwr=c?Math.round(c.w/(c.w+c.l)*100):0;
-    trendInsEl.textContent=wwr>cwr?'With Trend outperforms Counter by '+(wwr-cwr)+'pp — keep trading with trend.':'Counter Trend matches With Trend — interesting edge to study.';
-  }
-  const rangeInsEl=$('range-insight');
-  if(rangeInsEl&&rangeMap['Mid']){
-    const midWr=Math.round(rangeMap['Mid'].w/(rangeMap['Mid'].w+rangeMap['Mid'].l)*100);
-    rangeInsEl.textContent='Midrange win rate: '+midWr+'% — '+(midWr<60?'your regime is right to avoid midrange.':'midrange performing well for you.');
-  }
-
-  // Duration analysis
-  const durs=trades.map(t=>{const e=parseMins(t.time),x=parseMins(t.timeExit);if(e===null||x===null)return null;const d=x>=e?x-e:x+1440-e;return{dur:d,won:t.result==='Won',pnl:parseFloat(t.pnl)||0};}).filter(v=>v!==null);
-  const durBuckets={'<10m':{w:0,l:0},'10-30m':{w:0,l:0},'30-60m':{w:0,l:0},'1-2h':{w:0,l:0},'>2h':{w:0,l:0}};
-  durs.forEach(({dur,won})=>{const k=dur<10?'<10m':dur<30?'10-30m':dur<60?'30-60m':dur<120?'1-2h':'>2h';durBuckets[k][won?'w':'l']++;});
-  $('dur-b').innerHTML=Object.entries(durBuckets).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No duration data</div>';
-
-  // Day of week analysis
+  // Day of week
   const dowMap={Mon:{w:0,l:0,pnl:0},Tue:{w:0,l:0,pnl:0},Wed:{w:0,l:0,pnl:0},Thu:{w:0,l:0,pnl:0},Fri:{w:0,l:0,pnl:0}};
   trades.forEach(t=>{if(!t.date)return;const dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(t.date+'T12:00:00').getDay()];if(dowMap[dow]){t.result==='Won'?dowMap[dow].w++:dowMap[dow].l++;dowMap[dow].pnl+=parseFloat(t.pnl)||0;}});
-  $('dow-b').innerHTML=Object.entries(dowMap).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  $('dow-b').innerHTML=Object.entries(dowMap).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 
-  // Time of day analysis (hour buckets)
-  const hourMap={};trades.forEach(t=>{if(!t.time)return;const h=parseInt(t.time.split(':')[0]);const bucket=`${h<10?'0'+h:h}:00`;if(!hourMap[bucket])hourMap[bucket]={w:0,l:0,pnl:0};t.result==='Won'?hourMap[bucket].w++:hourMap[bucket].l++;hourMap[bucket].pnl+=parseFloat(t.pnl)||0;});
-  $('hour-b').innerHTML=Object.entries(hourMap).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=60?'g':wr2>=50?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  // Hour of day
+  $('hour-b').innerHTML=Object.entries(hourMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([h,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${h}:00</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+
+  // Confluence
+  const confMap={};trades.forEach(t=>{if(!t.confluence)return;if(!confMap[t.confluence])confMap[t.confluence]={w:0,l:0,pnl:0};t.result==='Won'?confMap[t.confluence].w++:confMap[t.confluence].l++;confMap[t.confluence].pnl+=parseFloat(t.pnl)||0;});
+  $('conf-b').innerHTML=bars(confMap)||'<div class="nodata">Fill Confluence? on trades</div>';
+
+  // Confluence type
+  const ctMap={};trades.forEach(t=>{if(!t.confluenceTypes)return;t.confluenceTypes.split(',').forEach(ct=>{ct=ct.trim();if(!ct)return;if(!ctMap[ct])ctMap[ct]={w:0,l:0,pnl:0};t.result==='Won'?ctMap[ct].w++:ctMap[ct].l++;ctMap[ct].pnl+=parseFloat(t.pnl)||0;});});
+  $('conf-type-b').innerHTML=bars(ctMap)||'<div class="nodata">Log confluence types on trades</div>';
+
+  // Reactive
+  const reactMap={};trades.forEach(t=>{if(!t.reactiveState)return;if(!reactMap[t.reactiveState])reactMap[t.reactiveState]={w:0,l:0,pnl:0};t.result==='Won'?reactMap[t.reactiveState].w++:reactMap[t.reactiveState].l++;reactMap[t.reactiveState].pnl+=parseFloat(t.pnl)||0;});
+  $('react-b').innerHTML=bars(reactMap)||'<div class="nodata">Fill Reactive? on trades</div>';
+
+  // R:R Distribution
+  const rrBuckets={'<1':{w:0,l:0},'1-2':{w:0,l:0},'2-3':{w:0,l:0},'3-5':{w:0,l:0},'5-10':{w:0,l:0},'10+':{w:0,l:0}};
+  trades.forEach(t=>{const r=parseFloat(t.rr);if(isNaN(r)||r<=0)return;const k=r<1?'<1':r<2?'1-2':r<3?'2-3':r<5?'3-5':r<10?'5-10':'10+';rrBuckets[k][t.result==='Won'?'w':'l']++;});
+  $('rr-dist-b').innerHTML=Object.entries(rrBuckets).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">R:R ${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">Log R:R on trades</div>';
+
+  // Points Distribution
+  const ptsBuckets={'<50pt':{n:0,pnl:0},'50-100pt':{n:0,pnl:0},'100-200pt':{n:0,pnl:0},'200-400pt':{n:0,pnl:0},'400pt+':{n:0,pnl:0}};
+  trades.forEach(t=>{const eN=parseFloat(t.entry),xN=parseFloat(t.exit);if(isNaN(eN)||isNaN(xN))return;const sign=t.direction==='Short'?-1:1;const pts=Math.abs((xN-eN)*sign);const k=pts<50?'<50pt':pts<100?'50-100pt':pts<200?'100-200pt':pts<400?'200-400pt':'400pt+';ptsBuckets[k].n++;ptsBuckets[k].pnl+=parseFloat(t.pnl)||0;});
+  $('pts-dist-b').innerHTML=Object.entries(ptsBuckets).filter(([,v])=>v.n>0).map(([k,v])=>{const maxN=Math.max(...Object.values(ptsBuckets).map(x=>x.n),1);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf b" style="width:${Math.round(v.n/maxN*100)}%"></div></div><span class="bm">${v.n} trades</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">Log entry and exit prices</div>';
+
+  // Rolling win rate — last 10 trades windows
+  const rollingEl=$('rolling-b');if(rollingEl&&trades.length>=10){const sorted=[...trades].sort((a,b)=>{const da=(a.date||'')+(a.time||''),db=(b.date||'')+(b.time||'');return da.localeCompare(db);});const windows=[];for(let i=9;i<sorted.length;i++){const slice=sorted.slice(i-9,i+1);const w=slice.filter(t=>t.result==='Won').length;windows.push({label:sorted[i].date?sorted[i].date.slice(5):'#'+(i+1),wr:Math.round(w/10*100),pnl:slice.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)});}rollingEl.innerHTML=windows.slice(-15).map(w=>{return`<div class="br"><span class="bl">${w.label}</span><div class="bt"><div class="bf ${w.wr>=90?'g':w.wr>=75?'b':'r'}" style="width:${w.wr}%"></div></div><span class="bm">${w.wr}%</span><span style="font-size:10px;color:${w.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(w.pnl)}</span></div>`;}).join('');}
 }
 
 // ── NOTES ──
@@ -1655,6 +1581,129 @@ function exportCSV(){
 function clearAll(){ if(!confirm('Clear all trade entries? This cannot be undone.'))return; trades=[]; persist(); }
 
 // ── INIT ──
+// Seed the 98% manifesto as a pinned note if not already present
+(function seedNotes(){
+  // Regime notes from Excel
+  var regimeNotes=[
+    {id:"regime-note-0",date:"",lineType:"",text:'I never trade without a line — no line, no trade'},
+    {id:"regime-note-1",date:"",lineType:"",text:'I never modify my order after putting on the trade'},
+    {id:"regime-note-2",date:"",lineType:"",text:'I do not move my stop'},
+    {id:"regime-note-3",date:"",lineType:"",text:'I do not cut my winners — cutting early is a lack of faith'},
+    {id:"regime-note-4",date:"",lineType:"",text:'I always stop out at original stop'},
+    {id:"regime-note-5",date:"",lineType:"",text:'I never get shaken out of a great trade by market noise'},
+    {id:"regime-note-6",date:"",lineType:"",text:'I always hold trades to target — you will never be profitable if you cant hold trade to target'},
+    {id:"regime-note-7",date:"",lineType:"",text:'If you hesitate — it is the right trade. Hesitation is a signal, not a reason to stay out'},
+    {id:"regime-note-8",date:"",lineType:"",text:'Only enter on lines — never enter on signal, never enter on stop'},
+    {id:"regime-note-9",date:"",lineType:"",text:"Front run A+ trades by 5 points in strong trend — don't miss it over 5 points"},
+    {id:"regime-note-10",date:"",lineType:"",text:'A trade that left without me is not my trade — if price left, place order at original entry spot'},
+    {id:"regime-note-11",date:"",lineType:"",text:'If confused, order at previous high or low'},
+    {id:"regime-note-12",date:"",lineType:"",text:'Stop is the length of the narrow channel'},
+    {id:"regime-note-13",date:"",lineType:"",text:'Move stop behind first consolidation and let it run to target for full measured move'},
+    {id:"regime-note-14",date:"",lineType:"",text:'Trail 7 min candle on A+ trades — trail 5 min on regular exits'},
+    {id:"regime-note-15",date:"",lineType:"",text:'ALWAYS HOLD OUTER RANGE TRADE TO MIDPOINT OF RANGE'},
+    {id:"regime-note-16",date:"",lineType:"",text:'ALWAYS HOLD 3 DAY OUTER RANGE TRADE TO MINIMUM HALF TARGET'},
+    {id:"regime-note-17",date:"",lineType:"",text:'First hit retrace half impending leg — second hit go 2X to 3X'},
+    {id:"regime-note-18",date:"",lineType:"",text:'It is always a measured move — if you want to make real money go for the measured move'},
+    {id:"regime-note-19",date:"",lineType:"",text:'Retest should pay minimum half of the charge — breakout should pay half of the charge'},
+    {id:"regime-note-20",date:"",lineType:"",text:'30 minute candle closing below range on its low is a market order for measured move'},
+    {id:"regime-note-21",date:"",lineType:"",text:'Gold for retest: price must spend at least 30 minutes outside of support resistance after breaking through'},
+    {id:"regime-note-22",date:"",lineType:"",text:'We need a candle close below and two candle confirmation to confirm the break'},
+    {id:"regime-note-23",date:"",lineType:"",text:'If the bounces are getting weaker from support it is a sign of weakness'},
+    {id:"regime-note-24",date:"",lineType:"",text:'2nd close under 20 EMA is where institutions unload'},
+    {id:"regime-note-25",date:"",lineType:"",text:'Watch for price not retracing to support trend — that is bullish sign'},
+    {id:"regime-note-26",date:"",lineType:"",text:'If price is making higher high after breaking trend, it is trend continuation — get in on second higher low'},
+    {id:"regime-note-27",date:"",lineType:"",text:'A pullback does not make it to the highest high reached'},
+    {id:"regime-note-28",date:"",lineType:"",text:'Three pushes up below highest high is a bear flag — if already had three pushes, 4th is no good'},
+    {id:"regime-note-29",date:"",lineType:"",text:'Consolidation at your entry is a good sign — price can consolidate at entry for 30 minutes'},
+    {id:"regime-note-30",date:"",lineType:"",text:"Reversal usually starts off slow for first few candles then accelerates — don't get out before it accelerates"},
+    {id:"regime-note-31",date:"",lineType:"",text:'If the pushes are not getting stronger, it may be building strength for reversal'},
+    {id:"regime-note-32",date:"",lineType:"",text:'We are OK and hopeful when in drawdown — we are nervous when in profit. This is backwards. Fix it.'},
+    {id:"regime-note-33",date:"",lineType:"",text:'Anytime you are overexcited about a trade, it is a bad trade — you are missing something'},
+    {id:"regime-note-34",date:"",lineType:"",text:'Good trade feels scary. Great trade feels uncertain. That is the signal.'},
+    {id:"regime-note-35",date:"",lineType:"",text:'Drawdown is the waiting room for abundance'},
+    {id:"regime-note-36",date:"",lineType:"",text:'It is irresponsible to not put on risk when the setup is present'},
+    {id:"regime-note-37",date:"",lineType:"",text:'A+ trades are not negotiable — you are not going to talk yourself out of the trade'},
+    {id:"regime-note-38",date:"",lineType:"",text:'Most damaging thing is not getting picked up for great A+ trades'},
+    {id:"regime-note-39",date:"",lineType:"",text:'There are 3-5 A+ trades in a day — find those spots and trade only them'},
+    {id:"regime-note-40",date:"",lineType:"",text:'The patterns from the morning will be the patterns for the day — trade the observation all week long'},
+    {id:"regime-note-41",date:"",lineType:"",text:'Ask every day: is the market flowy or interlapping? Interlapping market bounces every line on demand'},
+    {id:"regime-note-42",date:"",lineType:"",text:'The most recent premarket trend break determines direction — not previous day high or overnight lows'},
+    {id:"regime-note-43",date:"",lineType:"",text:'NQ and MNQ lines aligned = VIP A+ trade — trade the asset where lines are aligned'},
+    {id:"regime-note-44",date:"",lineType:"",text:'DO NOT MISS YOUR WEDGES — trade every ascending and descending wedge momentum'},
+    {id:"regime-note-45",date:"",lineType:"",text:'ALWAYS IN THIRD HIT — third hit is the key trade, always take it, even in the news'},
+    {id:"regime-note-46",date:"",lineType:"",text:'A wedge has 3 touch points — third wedge touch is reversal — third wedge pays same or double as second'},
+    {id:"regime-note-47",date:"",lineType:"",text:'How much we popped above third touch first time is how much we will pop the next time'},
+    {id:"regime-note-48",date:"",lineType:"",text:'2 swing lows predict the channel — always project channel opposite from 3 touch point hit'},
+    {id:"regime-note-49",date:"",lineType:"",text:'Price is always in a symmetrical parallel channel'},
+    {id:"regime-note-50",date:"",lineType:"",text:'A wide channel breakout may revisit the bottom of the channel for retest'},
+    {id:"regime-note-51",date:"",lineType:"",text:'Double Confluence = VERY BIG TRADE — size up on double confluence'},
+    {id:"regime-note-52",date:"",lineType:"",text:'We must size up when volatility is down, size down when volatility is up'},
+    {id:"regime-note-53",date:"",lineType:"",text:'Never over leverage — overleveraging is the main account destroyer'},
+    {id:"regime-note-54",date:"",lineType:"",text:'I am OK with the market stepping on my toes — I always accept the risk before entering'},
+    {id:"regime-note-55",date:"",lineType:"",text:'If I get stopped out twice in the same direction within 15 minutes, I am trading the wrong way'},
+    {id:"regime-note-56",date:"",lineType:"",text:'Before taking the trade, ask yourself what happens if you are proven wrong'},
+    {id:"regime-note-57",date:"",lineType:"",text:'Fear is my internal alert for a great trade — I always understand that fear signals opportunity'},
+    {id:"regime-note-58",date:"",lineType:"",text:'Energy in equals energy out — calculate the total charge and where price may have double energy'},
+    {id:"regime-note-59",date:"",lineType:"",text:'Watch for price to spend 30 minutes above resistance before taking the retest — that confirms intent'},
+    {id:"regime-note-60",date:"",lineType:"",text:'I always re-evaluate and zoom out after a loss to understand the movement'}
+  ];
+  // Manifesto
+  var manifestoText=[
+    "THE 98% — DO THE OPPOSITE",
+    "",
+    "98% of traders don't trade a system — they react.",
+    "• Chase price after it already moved",
+    "• Buy the top, short too early",
+    "• Trade with emotion, not levels",
+    "• Sit in the middle instead of at edges",
+    "• Take trades out of boredom",
+    "• Overreact to news and noise",
+    "",
+    "They confuse moments with skill:",
+    "• One win = I'm good",
+    "• Profit = edge",
+    "• More trades = more money",
+    "",
+    "They follow the crowd:",
+    "• Wait for confirmation from others",
+    "• Enter the obvious breakout everyone sees",
+    "• Chase alerts instead of understanding context",
+    "",
+    "They mismanage risk:",
+    "• Panic out before the move works",
+    "• Hold losers hoping",
+    "• Size up after losses and wins",
+    "• Let one trade ruin the day",
+    "",
+    "They ignore what actually matters:",
+    "• Focus on PnL over price behavior",
+    "• Overcomplicate indicators, ignore structure",
+    "• Care more about entry than management",
+    "",
+    "At the core: They hate waiting more than losing.",
+    "",
+    "THAT IS THE EDGE. DO THE OPPOSITE."
+  ].join('\n');
+  var manifesto={id:"pinned-98pct",date:"",lineType:"",text:manifestoText};
+
+  var marker98='98pct-manifesto-v1';
+  var markerRegime='regime-notes-v2';
+  var changed=false;
+
+  if(!localStorage.getItem(marker98)){
+    notes.push(manifesto);
+    localStorage.setItem(marker98,'1');
+    changed=true;
+  }
+  if(!localStorage.getItem(markerRegime)){
+    regimeNotes.forEach(function(n){notes.push(n);});
+    localStorage.setItem(markerRegime,'1');
+    changed=true;
+  }
+  if(changed){
+    localStorage.setItem('nq-notes-v1',JSON.stringify(notes));
+  }
+})();
 render(); updateStats(); renderNotes();
 </script>
 </body>
