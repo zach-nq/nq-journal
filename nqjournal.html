@@ -765,16 +765,18 @@ function addRow(tradeToEdit){
   const attrsTd=document.createElement('td'); attrsTd.style.cssText='padding:4px 5px;background:#f0f6ff;border-bottom:2px solid var(--accent)!important;vertical-align:top;position:relative'; attrsTd.setAttribute('colspan','1'); attrsTd.appendChild(attrsWrap);
 
   // ── Confluence type multiselect ──
-  const confTypeWrap=document.createElement('div'); confTypeWrap.style.cssText='display:flex;flex-wrap:wrap;gap:3px;max-width:170px';
+  const confTypeWrap=document.createElement('div'); confTypeWrap.style.cssText='position:relative;min-height:24px;width:170px';
+  const confTypeInner=document.createElement('div'); confTypeInner.style.cssText='display:flex;flex-wrap:wrap;gap:3px';
+  confTypeWrap.appendChild(confTypeInner);
   const savedConf=(t.confluenceTypes||'').split(',').map(x=>x.trim()).filter(Boolean);
   CONFLUENCE_TYPES.forEach(ct=>{
     const b=document.createElement('button'); b.type='button'; b.className='ep'; b.textContent=ct;
     b.style.cssText='padding:2px 7px;font-size:10px';
     if(savedConf.includes(ct))b.classList.add('a');
     b.onclick=()=>b.classList.toggle('a');
-    confTypeWrap.appendChild(b);
+    confTypeInner.appendChild(b);
   });
-  confTypeWrap._getVal=()=>[...confTypeWrap.querySelectorAll('.ep.a')].map(b=>b.textContent).join(', ');
+  confTypeWrap._getVal=()=>[...confTypeInner.querySelectorAll('.ep.a')].map(b=>b.textContent).join(', ');
 
   // ── Takeaway textarea ──
   const takeawayInp=document.createElement('textarea'); takeawayInp.id='er-takeaway'; takeawayInp.className='ei';
@@ -1119,8 +1121,11 @@ function render(){
       confTd.dataset.active='1';
       const saved=(t.confluenceTypes||'').split(',').map(x=>x.trim()).filter(Boolean);
       confTd.innerHTML='';
+      // Position picker as fixed overlay so it never pushes columns
+      const tdRect=confTd.getBoundingClientRect();
       const wrap=document.createElement('div');
-      wrap.style.cssText='display:flex;flex-wrap:wrap;gap:4px;padding:6px;background:var(--surface);border:2px solid var(--accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.4);min-width:160px;max-width:200px;z-index:9999;position:relative';
+      wrap.style.cssText='position:fixed;left:'+tdRect.left+'px;top:'+(tdRect.bottom+2)+'px;display:flex;flex-wrap:wrap;gap:4px;padding:6px;background:var(--surface);border:2px solid var(--accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.5);min-width:160px;max-width:200px;z-index:99999';
+      document.body.appendChild(wrap);
       CONFLUENCE_TYPES.forEach(function(ct){
         const b=document.createElement('button');
         b.type='button'; b.textContent=ct;
@@ -1146,6 +1151,7 @@ function render(){
         const idx2=trades.findIndex(function(x){return x.id===t.id;});
         if(idx2>=0){trades[idx2].confluenceTypes=selected.join(', '); t.confluenceTypes=selected.join(', ');}
         delete confTd.dataset.active;
+        if(wrap.parentNode)wrap.parentNode.removeChild(wrap);
         renderConfPills();
         persist();
         document.removeEventListener('click',outsideClick);
@@ -1159,7 +1165,7 @@ function render(){
         saveAndClose();
       };
       wrap.appendChild(doneBtn);
-      confTd.appendChild(wrap);
+      // wrap already appended to body above
     };
     tr.appendChild(confTd);
     // Observation
