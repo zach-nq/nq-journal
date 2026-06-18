@@ -173,28 +173,99 @@ tbody tr:hover .ra{opacity:1}
 .empty-state h3{font-size:15px;font-weight:600;margin-bottom:5px}
 .empty-state p{font-size:13px;color:var(--muted);line-height:1.7}
 
-/* ── INSIGHTS ── */
-.ins-wrap{flex:1;overflow-y:auto;padding:20px 24px 40px}
+/* ── INSIGHTS (Apple-grade redesign) ── */
+.ins-wrap{flex:1;overflow-y:auto;padding:24px 28px 60px;background:linear-gradient(180deg,#fafbfc 0%,#f5f6f8 100%)}
 .ins-wrap::-webkit-scrollbar{width:5px}
 .ins-wrap::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
-.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
-.kpi{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:16px 18px}
-.kpi-l{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
-.kpi-v{font-size:26px;font-weight:700;letter-spacing:-0.04em;line-height:1}
-.kpi-v.g{color:var(--win)}.kpi-v.r{color:var(--loss)}
-.kpi-s{font-size:11px;color:var(--muted);margin-top:4px}
-.irow{display:grid;gap:12px;margin-bottom:12px}
-.ir2{grid-template-columns:1fr 1fr}.ir3{grid-template-columns:1fr 1fr 1fr}.ir1{grid-template-columns:1fr}
-.cc{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:18px 20px}
-.ct{font-size:13px;font-weight:600;letter-spacing:-0.01em;margin-bottom:3px}
-.cs{font-size:11px;color:var(--muted);margin-bottom:14px}
-.bch{display:flex;flex-direction:column;gap:8px}
-.br{display:flex;align-items:center;gap:9px}
-.bl{font-size:11px;color:var(--text2);width:140px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bt{flex:1;height:6px;background:var(--s2);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
-.bf{height:100%;border-radius:10px;transition:width .5s}
-.bf.g{background:var(--win)}.bf.b{background:var(--accent)}.bf.r{background:var(--loss)}.bf.w{background:var(--warn)}
-.bm{font-size:11px;color:var(--muted);width:62px;text-align:right;flex-shrink:0}
+
+/* HEADLINE KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:var(--surface);border-radius:14px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 16px rgba(0,0,0,0.03);padding:18px 20px;transition:transform .15s,box-shadow .15s}
+.kpi:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.05)}
+.kpi-l{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.kpi-v{font-size:28px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:var(--text)}
+.kpi-v.g{color:var(--win)}.kpi-v.r{color:var(--loss)}.kpi-v.b{color:var(--accent)}
+.kpi-s{font-size:11px;color:var(--muted);margin-top:6px;font-weight:500}
+
+/* SECTION HEADER */
+.sec-h{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:24px 4px 12px;display:flex;align-items:center;gap:8px}
+.sec-h::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%);margin-left:8px}
+
+/* CARD GRID */
+.irow{display:grid;gap:14px;margin-bottom:14px}
+.ir2{grid-template-columns:1fr 1fr}
+.ir3{grid-template-columns:1fr 1fr 1fr}
+.ir4{grid-template-columns:1fr 1fr 1fr 1fr}
+.ir1{grid-template-columns:1fr}
+.ir-2-1{grid-template-columns:2fr 1fr}
+
+.cc{background:var(--surface);border-radius:14px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 16px rgba(0,0,0,0.03);padding:20px 22px;transition:box-shadow .15s}
+.cc:hover{box-shadow:0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.05)}
+.ct{font-size:14px;font-weight:600;letter-spacing:-0.01em;margin-bottom:2px;color:var(--text)}
+.cs{font-size:11px;color:var(--muted);margin-bottom:16px;font-weight:500}
+
+/* BAR CHART */
+.bch{display:flex;flex-direction:column;gap:10px}
+.br{display:flex;align-items:center;gap:10px}
+.bl{font-size:11.5px;color:var(--text2);width:130px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.bt{flex:1;height:7px;background:var(--s2);border-radius:10px;overflow:hidden}
+.bf{height:100%;border-radius:10px;transition:width .6s cubic-bezier(0.4,0,0.2,1)}
+.bf.g{background:linear-gradient(90deg,#34c759,#30b452)}
+.bf.b{background:linear-gradient(90deg,#0071e3,#0058b3)}
+.bf.r{background:linear-gradient(90deg,#ff3b30,#cc2f26)}
+.bf.w{background:linear-gradient(90deg,#ff9500,#cc7700)}
+.bm{font-size:11px;color:var(--muted);width:64px;text-align:right;flex-shrink:0;font-weight:500;font-variant-numeric:tabular-nums}
+
+/* STAT ROW (Apple Health style) */
+.statbox{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--s2);border-radius:10px;overflow:hidden;margin-top:14px}
+.statcell{background:var(--surface);padding:14px 16px}
+.statcell .sl{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.statcell .sv{font-size:18px;font-weight:700;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.statcell .sv.g{color:var(--win)}
+.statcell .sv.r{color:var(--loss)}
+.statcell .sv.b{color:var(--accent)}
+.statcell .ss{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* VERSUS COMPARISON */
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.vs-card{background:linear-gradient(135deg,rgba(0,113,227,0.04),rgba(0,113,227,0.01));border:1px solid rgba(0,113,227,0.08);border-radius:12px;padding:16px 18px}
+.vs-card.short{background:linear-gradient(135deg,rgba(255,59,48,0.04),rgba(255,59,48,0.01));border-color:rgba(255,59,48,0.08)}
+.vs-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.vs-name{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-0.01em}
+.vs-name.long{color:var(--accent)}
+.vs-name.short{color:var(--loss)}
+.vs-pct{font-size:11px;font-weight:600;color:var(--muted);background:var(--s2);padding:3px 8px;border-radius:6px}
+.vs-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:11.5px}
+.vs-row:last-child{border-bottom:0}
+.vs-row .vl{color:var(--muted);font-weight:500}
+.vs-row .vv{font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+
+/* TIMELINE */
+.pnl-tl{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;padding-right:4px}
+.pnl-tl::-webkit-scrollbar{width:4px}
+.pnl-tl::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:10px}
+.ptr{display:flex;align-items:center;gap:10px;font-size:11.5px;padding:4px 0}
+.pd{color:var(--muted);width:64px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.pw{flex:1;display:flex;align-items:center;height:18px;position:relative}
+.pb{height:8px;border-radius:4px;position:absolute}
+.pb.pp{background:linear-gradient(90deg,#34c759,#28a745);left:50%}
+.pb.pn{background:linear-gradient(90deg,#ff3b30,#dc3545);right:50%}
+.pc{position:absolute;left:50%;width:1px;height:16px;background:var(--border-s);top:1px}
+.pa{width:78px;text-align:right;font-weight:600;flex-shrink:0;font-variant-numeric:tabular-nums}
+.pa.pp{color:var(--win)}.pa.pn{color:var(--loss)}
+
+/* CALLOUTS */
+.cal{display:flex;align-items:flex-start;gap:11px;padding:13px 15px;border-radius:10px;margin-bottom:9px}
+.cal:last-child{margin-bottom:0}
+.cal-d{background:var(--accent-l);border:1px solid rgba(0,113,227,.15)}
+.cal-w{background:var(--warn-l);border:1px solid rgba(255,149,0,.2)}
+.cal-g{background:var(--win-l);border:1px solid rgba(52,199,89,.2)}
+.cal-b{background:var(--loss-l);border:1px solid rgba(255,59,48,.2)}
+.ci{font-size:15px;flex-shrink:0;line-height:1.4}
+.ct2{font-size:12.5px;color:var(--text2);line-height:1.6}
+.ct2 strong{color:var(--text);font-weight:600}
+
+.nodata{text-align:center;padding:28px 0;color:var(--muted);font-size:12px;font-style:italic}
 .pnl-tl{display:flex;flex-direction:column;gap:6px}
 .ptr{display:flex;align-items:center;gap:9px;font-size:12px}
 .pd{color:var(--muted);width:72px;flex-shrink:0}
@@ -378,39 +449,135 @@ tbody tr:hover .ra{opacity:1}
       <p>Log at least one trade to unlock insights.</p>
     </div>
     <div id="ins-content" style="display:none">
+      
+      <!-- HEADLINE KPIs -->
       <div class="kpi-row" id="kpis"></div>
-      <div class="irow ir2" style="margin-bottom:14px">
-        <div class="cc"><div class="ct">P&amp;L Per Trade</div><div class="cs">Last 20 trades waterfall</div><div class="pnl-tl" id="pnl-tl"></div></div>
-        <div class="cc"><div class="ct">🔍 Key Insights</div><div class="cs">Auto-detected patterns</div><div id="callouts"></div></div>
+      
+      <!-- ROW 1: P&L Timeline + Key Insights -->
+      <div class="irow ir-2-1" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="ct">P&amp;L Per Trade</div>
+          <div class="cs">Last 20 trades waterfall</div>
+          <div class="pnl-tl" id="pnl-tl"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">🔍 Key Insights</div>
+          <div class="cs">Auto-detected patterns</div>
+          <div id="callouts"></div>
+        </div>
       </div>
+
+      <!-- ============ LONG vs SHORT DEEP DIVE ============ -->
+      <div class="sec-h">Long vs Short Deep Dive</div>
       <div class="irow ir1" style="margin-bottom:14px">
         <div class="cc">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3px"><div class="ct">Setup Type Performance</div><div style="font-size:10px;color:var(--muted)">Win% · Count · P&amp;L</div></div>
-          <div class="cs">All setups ranked by total earnings</div>
+          <div class="ct">Long vs Short Performance</div>
+          <div class="cs">Trades, profit, efficiency and duration side by side</div>
+          <div id="ls-vs"></div>
+        </div>
+      </div>
+
+      <!-- ============ PER DAY ANALYTICS ============ -->
+      <div class="sec-h">Daily Performance</div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="ct">Profit per Day</div>
+          <div class="cs">Long, Short and total P&amp;L by trading day</div>
+          <div class="bch" id="daily-pnl-b"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">Points per Day</div>
+          <div class="cs">Total NQ points captured each day</div>
+          <div class="bch" id="daily-pts-b"></div>
+        </div>
+      </div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="ct">Trades per Day</div>
+          <div class="cs">Activity level — when you go big</div>
+          <div class="bch" id="daily-n-b"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">Day of Week Performance</div>
+          <div class="cs">Which weekdays are your strongest</div>
+          <div class="bch" id="dow-b"></div>
+        </div>
+      </div>
+
+      <!-- ============ TIME OF DAY ============ -->
+      <div class="sec-h">Time of Day</div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="ct">P&amp;L by Hour</div>
+          <div class="cs">When you make the most money</div>
+          <div class="bch" id="hour-pnl-b"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">Win Rate by Hour</div>
+          <div class="cs">When your edge is sharpest (3+ trades only)</div>
+          <div class="bch" id="hour-wr-b"></div>
+        </div>
+      </div>
+
+      <!-- ============ SETUP TYPE ============ -->
+      <div class="sec-h">Setup Performance</div>
+      <div class="irow ir1" style="margin-bottom:14px">
+        <div class="cc">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3px">
+            <div class="ct">Setup Type — Ranked by P&amp;L</div>
+            <div style="font-size:10px;color:var(--muted);font-weight:500">Win% · Count · P&amp;L · Avg/Trade</div>
+          </div>
+          <div class="cs">Your highest-earning setups across all trades</div>
           <div class="bch" id="lt-b"></div>
         </div>
       </div>
       <div class="irow ir3" style="margin-bottom:14px">
         <div class="cc"><div class="ct">Setup Grade</div><div class="cs">Does your pre-trade grade predict outcome?</div><div class="bch" id="grade-b"></div><div id="grade-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div></div>
-        <div class="cc"><div class="ct">Direction</div><div class="cs">Long vs Short win rate and P&amp;L</div><div class="bch" id="dir-b"></div></div>
-        <div class="cc"><div class="ct">Trade Duration</div><div class="cs">Win rate by how long you held</div><div class="bch" id="dur-b"></div></div>
+        <div class="cc"><div class="ct">Trend Alignment</div><div class="cs">With vs counter trend trades</div><div class="bch" id="trend-b"></div></div>
+        <div class="cc"><div class="ct">Range Location</div><div class="cs">Top / Mid / Bottom of range</div><div class="bch" id="range-b"></div></div>
       </div>
+
+      <!-- ============ DURATION ANALYTICS ============ -->
+      <div class="sec-h">Duration Analytics</div>
       <div class="irow ir2" style="margin-bottom:14px">
-        <div class="cc"><div class="ct">Day of Week</div><div class="cs">Best and worst trading days</div><div class="bch" id="dow-b"></div></div>
-        <div class="cc"><div class="ct">Time of Day</div><div class="cs">Win rate and P&amp;L by entry hour</div><div class="bch" id="hour-b"></div></div>
+        <div class="cc">
+          <div class="ct">Duration Buckets</div>
+          <div class="cs">How long you hold and what it pays</div>
+          <div class="bch" id="dur-b"></div>
+          <div id="dur-insight" style="margin-top:10px;font-size:11px;color:var(--muted);font-style:italic"></div>
+        </div>
+        <div class="cc">
+          <div class="ct">Long vs Short Hold Times</div>
+          <div class="cs">Average and median duration by direction</div>
+          <div id="dur-vs"></div>
+        </div>
       </div>
-      <div class="irow ir3" style="margin-bottom:14px">
-        <div class="cc"><div class="ct">Confluence Impact</div><div class="cs">With vs without confluence</div><div class="bch" id="conf-b"></div></div>
-        <div class="cc"><div class="ct">Confluence Type</div><div class="cs">Which types appear on biggest winners</div><div class="bch" id="conf-type-b"></div></div>
-        <div class="cc"><div class="ct">Reactive State</div><div class="cs">Performance when flagged as reactive</div><div class="bch" id="react-b"></div></div>
-      </div>
-      <div class="irow ir2" style="margin-bottom:14px">
-        <div class="cc"><div class="ct">R:R Distribution</div><div class="cs">How your risk-reward is distributed</div><div class="bch" id="rr-dist-b"></div></div>
-        <div class="cc"><div class="ct">Points Captured per Trade</div><div class="cs">Distribution — are you leaving money on the table?</div><div class="bch" id="pts-dist-b"></div></div>
-      </div>
+
+      <!-- ============ POINTS DISTRIBUTION ============ -->
+      <div class="sec-h">Points Captured Distribution</div>
       <div class="irow ir1" style="margin-bottom:14px">
-        <div class="cc"><div class="ct">Rolling Win Rate (last 10 trades)</div><div class="cs">Is your edge stable or drifting over time?</div><div class="bch" id="rolling-b"></div></div>
+        <div class="cc">
+          <div class="ct">Points per Trade — Where You're Catching the Moves</div>
+          <div class="cs">Distribution across point ranges (50, 100, 200, 400+)</div>
+          <div class="bch" id="pts-dist-b"></div>
+        </div>
       </div>
+
+      <!-- ============ R:R + CONFLUENCE ============ -->
+      <div class="sec-h">Risk-Reward &amp; Confluence</div>
+      <div class="irow ir3" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">R:R Distribution</div><div class="cs">Risk-reward across trades</div><div class="bch" id="rr-dist-b"></div></div>
+        <div class="cc"><div class="ct">Confluence Impact</div><div class="cs">With vs without confluence</div><div class="bch" id="conf-b"></div></div>
+        <div class="cc"><div class="ct">Confluence Types</div><div class="cs">Which types appear most</div><div class="bch" id="conf-type-b"></div></div>
+      </div>
+
+      <!-- ============ PSYCHOLOGY + STABILITY ============ -->
+      <div class="sec-h">Psychology &amp; Stability</div>
+      <div class="irow ir2" style="margin-bottom:14px">
+        <div class="cc"><div class="ct">Reactive State</div><div class="cs">Performance when flagged as reactive</div><div class="bch" id="react-b"></div></div>
+        <div class="cc"><div class="ct">Rolling Win Rate (last 10)</div><div class="cs">Is your edge stable or drifting?</div><div class="bch" id="rolling-b"></div></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1251,99 +1418,249 @@ function renderInsights(){
   if(!n){$('ins-empty').style.display='block';$('ins-content').style.display='none';return;}
   $('ins-empty').style.display='none';$('ins-content').style.display='block';
 
+  // Helpers
+  function pMins(t){if(!t)return null;const p=t.trim().split(':');if(p.length!==2)return null;const h=parseInt(p[0]),m=parseInt(p[1]);return isNaN(h)||isNaN(m)?null:h*60+m;}
+  function dur(t){const e=pMins(t.time),x=pMins(t.timeExit);if(e===null||x===null)return null;return x>=e?x-e:x+1440-e;}
+  function pts(t){const e=parseFloat(t.entry),x=parseFloat(t.exit);if(isNaN(e)||isNaN(x))return null;const s=t.direction==='Short'?-1:1;return (x-e)*s;}
+  function median(arr){if(!arr.length)return 0;const s=[...arr].sort((a,b)=>a-b);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+  function mean(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
+  function fmtN(v,d=0){return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  function fmtMoney(v){return (v>=0?'+$':'-$')+fmtN(Math.abs(v));}
+  function fmtPts(v){return (v>=0?'+':'')+fmtN(v,0)+'pt';}
+  function fmtDur(m){if(!m)return '—';if(m<60)return Math.round(m)+'m';return (m/60).toFixed(1)+'h';}
+
   const won=trades.filter(t=>t.result==='Won'),lost=trades.filter(t=>t.result==='Lost');
-  const pArr=trades.map(t=>parseFloat(t.pnl)).filter(v=>!isNaN(v));
-  const netPnl=pArr.reduce((a,b)=>a+b,0);
+  const netPnl=trades.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0);
   const wr=Math.round(won.length/n*100);
   const avgW=won.length?won.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)/won.length:0;
-  const avgL=lost.length?lost.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)/lost.length:0;
-  const avgPts=trades.filter(t=>t.rr).map(t=>parseFloat(t.rr)||0).filter(v=>v>0);
-  const avgRR=avgPts.length?(avgPts.reduce((a,b)=>a+b,0)/avgPts.length).toFixed(2):'—';
+  const allPnls=trades.map(t=>parseFloat(t.pnl)||0);
+  const avgTrade=mean(allPnls);
+  const medTrade=median(allPnls);
 
-  // KPIs
-  function kpi(l,v,s,cls=''){return`<div class="kpi"><div class="kpi-l">${l}</div><div class="kpi-v ${cls}">${v}</div><div class="kpi-s">${s}</div></div>`;}
+  // ═══════════════════════ KPIs ═══════════════════════
+  function kpi(l,v,s,cls){return`<div class="kpi"><div class="kpi-l">${l}</div><div class="kpi-v ${cls||''}">${v}</div><div class="kpi-s">${s||''}</div></div>`;}
   $('kpis').innerHTML=
-    kpi('Trades',n,`${won.length}W · ${lost.length}L`)+
-    kpi('Win Rate',wr+'%',`${won.length} wins`,wr>=90?'g':wr>=75?'':'r')+
-    kpi('Net P&L',(netPnl>=0?'+$':'-$')+Math.abs(netPnl).toLocaleString(),'',netPnl>=0?'g':'r')+
-    kpi('Avg Winner','$'+Math.abs(avgW).toFixed(0),`Avg Loser: $${Math.abs(avgL).toFixed(0)}`,avgW>0?'g':'')+
-    kpi('Avg R:R',avgRR,'per trade',parseFloat(avgRR)>=2?'g':parseFloat(avgRR)>=1?'':'r');
+    kpi('Total Trades',n,won.length+'W · '+lost.length+'L')+
+    kpi('Win Rate',wr+'%',won.length+' wins',wr>=90?'g':wr>=75?'b':'r')+
+    kpi('Net P&L',fmtMoney(netPnl),'',netPnl>=0?'g':'r')+
+    kpi('Avg / Trade','$'+fmtN(avgTrade),'Median $'+fmtN(medTrade),avgTrade>0?'g':'r')+
+    kpi('Avg Winner','$'+fmtN(Math.abs(avgW)),'per winning trade','g');
 
-  // P&L timeline
+  // ═══════════════════════ P&L TIMELINE ═══════════════════════
   const tlT=trades.filter(t=>t.pnl).slice(-20);
   const maxA=Math.max(...tlT.map(t=>Math.abs(parseFloat(t.pnl)||0)),1);
-  $('pnl-tl').innerHTML=tlT.map(t=>{const v=parseFloat(t.pnl),pct=Math.min(100,Math.abs(v)/maxA*100)*0.46;return`<div class="ptr"><span class="pd">${t.date?t.date.slice(5):''}</span><div class="pw"><div class="pc"></div><div class="pb ${v>=0?'pp':'pn'}" style="width:${pct}%"></div></div><span class="pa ${v>=0?'pp':'pn'}">${v>=0?'+':'-'}$${Math.abs(v).toLocaleString()}</span></div>`;}).join('');
+  $('pnl-tl').innerHTML=tlT.map(t=>{const v=parseFloat(t.pnl),pct=Math.min(100,Math.abs(v)/maxA*100)*0.46;return`<div class="ptr"><span class="pd">${t.date?t.date.slice(5):''}</span><div class="pw"><div class="pc"></div><div class="pb ${v>=0?'pp':'pn'}" style="width:${pct}%"></div></div><span class="pa ${v>=0?'pp':'pn'}">${fmtMoney(v)}</span></div>`;}).join('');
 
-  // Key callouts — deeper
+  // ═══════════════════════ KEY CALLOUTS ═══════════════════════
   const calls=[];
   const ltMap={};trades.forEach(t=>{if(!t.type)return;if(!ltMap[t.type])ltMap[t.type]={w:0,l:0,pnl:0,n:0};ltMap[t.type].n++;t.result==='Won'?ltMap[t.type].w++:ltMap[t.type].l++;ltMap[t.type].pnl+=parseFloat(t.pnl)||0;});
   const sArr=Object.entries(ltMap).sort((a,b)=>b[1].pnl-a[1].pnl);
-  if(sArr.length)calls.push({t:'g',i:'🎯',m:`<strong>${sArr[0][0]}</strong> is your top earner — $${Math.abs(sArr[0][1].pnl).toLocaleString()} total, ${Math.round(sArr[0][1].w/sArr[0][1].n*100)}% win rate over ${sArr[0][1].n} trades.`});
-  const confT=trades.filter(t=>t.confluence==='Yes'&&t.result),noConfT=trades.filter(t=>t.confluence==='No'&&t.result);
-  if(confT.length>=3&&noConfT.length>=3){const cwr=Math.round(confT.filter(t=>t.result==='Won').length/confT.length*100),ncwr=Math.round(noConfT.filter(t=>t.result==='Won').length/noConfT.length*100);calls.push({t:cwr>ncwr?'g':'w',i:'🔗',m:`Trades <strong>with confluence</strong> win ${cwr}% vs without ${ncwr}%. ${cwr>ncwr?'Confluence is paying — prioritise it.':'Interesting — review your confluence criteria.'}`});}
-  const apT=trades.filter(t=>t.grade==='A+'&&t.result);if(apT.length>=3){const awr=Math.round(apT.filter(t=>t.result==='Won').length/apT.length*100);calls.push({t:awr>=85?'g':'w',i:'⭐',m:`A+ setups win <strong>${awr}%</strong> over ${apT.length} trades. ${awr>=85?'Your grading is accurate.':'Review your A+ criteria.'}`});}
-  const reactT=trades.filter(t=>t.reactiveState==='Yes'&&t.result);if(reactT.length>=2){const rwr=Math.round(reactT.filter(t=>t.result==='Won').length/reactT.length*100);calls.push({t:rwr<80?'b':'w',i:'⚡',m:`When flagged <strong>Reactive</strong>: ${rwr}% win rate over ${reactT.length} trades. ${rwr<80?'Emotional state is costing you.':'Reactive state not affecting results yet.'}`});}
-  const rrVals=trades.filter(t=>t.rr&&parseFloat(t.rr)>0).map(t=>parseFloat(t.rr));if(rrVals.length>=5){const avg=(rrVals.reduce((a,b)=>a+b,0)/rrVals.length).toFixed(2);const over2=rrVals.filter(v=>v>=2).length;calls.push({t:parseFloat(avg)>=2?'g':'w',i:'📐',m:`Average R:R is <strong>${avg}</strong>. ${over2}/${rrVals.length} trades hit 2R or better. ${parseFloat(avg)>=2?'Excellent risk management.':'Push for measured moves — your edge can support higher R:R.'}`});}
-  // Hour best/worst
+  if(sArr.length)calls.push({t:'g',i:'🎯',m:`<strong>${sArr[0][0]}</strong> is your top earner — $${fmtN(Math.abs(sArr[0][1].pnl))} total, ${Math.round(sArr[0][1].w/sArr[0][1].n*100)}% win over ${sArr[0][1].n} trades.`});
+  // Best avg/trade setup
+  const avgArr=sArr.filter(x=>x[1].n>=2).sort((a,b)=>(b[1].pnl/b[1].n)-(a[1].pnl/a[1].n));
+  if(avgArr.length>=2&&avgArr[0][0]!==sArr[0][0])calls.push({t:'g',i:'⭐',m:`Best avg/trade: <strong>${avgArr[0][0]}</strong> at $${fmtN(avgArr[0][1].pnl/avgArr[0][1].n)} per trade (${avgArr[0][1].n} trades).`});
+  // Long vs Short efficiency
+  const longs=trades.filter(t=>t.direction==='Long');const shorts=trades.filter(t=>t.direction==='Short');
+  if(longs.length>=3&&shorts.length>=3){
+    const lpnl=longs.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0);
+    const spnl=shorts.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0);
+    const lwr=Math.round(longs.filter(t=>t.result==='Won').length/longs.length*100);
+    const swr=Math.round(shorts.filter(t=>t.result==='Won').length/shorts.length*100);
+    calls.push({t:'g',i:'⚖️',m:`<strong>Longs:</strong> ${longs.length} trades, ${lwr}% win, ${fmtMoney(lpnl)} · <strong>Shorts:</strong> ${shorts.length} trades, ${swr}% win, ${fmtMoney(spnl)}`});
+  }
+  // Hour best
   const hourMap={};trades.forEach(t=>{if(!t.time)return;const h=parseInt(t.time.split(':')[0]);if(!hourMap[h])hourMap[h]={w:0,l:0,pnl:0};t.result==='Won'?hourMap[h].w++:hourMap[h].l++;hourMap[h].pnl+=parseFloat(t.pnl)||0;});
   const hourArr=Object.entries(hourMap).filter(([,v])=>v.w+v.l>=3).sort((a,b)=>b[1].pnl-a[1].pnl);
-  if(hourArr.length>=2){const best=hourArr[0],worst=hourArr[hourArr.length-1];const bwr=Math.round(best[1].w/(best[1].w+best[1].l)*100);calls.push({t:'g',i:'⏰',m:`Best hour: <strong>${best[0]}:00</strong> — ${bwr}% win, $${best[1].pnl.toLocaleString()} earned. Plan to be at your desk and ready.`});}
+  if(hourArr.length>=2){const best=hourArr[0];const bwr=Math.round(best[1].w/(best[1].w+best[1].l)*100);calls.push({t:'g',i:'⏰',m:`Best hour: <strong>${best[0]}:00</strong> — ${bwr}% win, ${fmtMoney(best[1].pnl)} earned over ${best[1].w+best[1].l} trades.`});}
+  // Duration insight
+  const durs=trades.map(t=>({d:dur(t),pnl:parseFloat(t.pnl)||0})).filter(x=>x.d!==null);
+  if(durs.length>=10){
+    const long=durs.filter(x=>x.d>=120);const short=durs.filter(x=>x.d<30);
+    if(long.length&&short.length){
+      const la=mean(long.map(x=>x.pnl)),sa=mean(short.map(x=>x.pnl));
+      if(la>sa*1.5)calls.push({t:'w',i:'⏱️',m:`Trades held 2h+ pay <strong>$${fmtN(la)}</strong> avg vs <strong>$${fmtN(sa)}</strong> for <30min trades — ${(la/sa).toFixed(1)}x.`});
+    }
+  }
   if(!calls.length)calls.push({t:'',i:'📈',m:'Log more trades with all fields filled to unlock pattern insights.'});
   $('callouts').innerHTML=calls.map(c=>`<div class="cal cal-${c.t==='w'?'w':c.t==='g'?'g':c.t==='b'?'b':'d'}"><span class="ci">${c.i}</span><span class="ct2">${c.m}</span></div>`).join('');
 
-  // Bar helpers
-  function bars(map){return Object.entries(map).filter(([,v])=>v.w+v.l>0).sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);const pnlStr=v.pnl!==undefined?`<span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span>`:'';return`<div class="br"><span class="bl" title="${k}">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span>${pnlStr}</div>`;}).join('')||'<div class="nodata">No data</div>';}
+  // ═══════════════════════ LONG vs SHORT VS COMPARISON ═══════════════════════
+  function dirStats(arr){
+    const pnls=arr.map(t=>parseFloat(t.pnl)||0);
+    const ptsL=arr.map(t=>pts(t)).filter(v=>v!==null);
+    const durL=arr.map(t=>dur(t)).filter(v=>v!==null);
+    const wins=arr.filter(t=>t.result==='Won').length;
+    const totalP=pnls.reduce((a,b)=>a+b,0);
+    const totalPts=ptsL.reduce((a,b)=>a+b,0);
+    const totalDur=durL.reduce((a,b)=>a+b,0);
+    return {n:arr.length,wins,wr:arr.length?Math.round(wins/arr.length*100):0,totalP,totalPts,
+      avgP:mean(pnls),medP:median(pnls),avgPts:mean(ptsL),medPts:median(ptsL),
+      avgDur:mean(durL),medDur:median(durL),totalDur,
+      ppm:totalDur?totalPts/totalDur:0,dpm:totalDur?totalP/totalDur:0};
+  }
+  const lS=dirStats(longs),sS=dirStats(shorts);
+  function vsCard(name,cls,s){
+    return `<div class="vs-card ${cls}">
+      <div class="vs-h"><div class="vs-name ${cls}">${name}</div><div class="vs-pct">${s.n} trades · ${s.wr}% win</div></div>
+      <div class="vs-row"><span class="vl">Total P&amp;L</span><span class="vv" style="color:${s.totalP>=0?'var(--win)':'var(--loss)'}">${fmtMoney(s.totalP)}</span></div>
+      <div class="vs-row"><span class="vl">Total Points</span><span class="vv">${fmtPts(s.totalPts)}</span></div>
+      <div class="vs-row"><span class="vl">Avg / Trade</span><span class="vv">${fmtMoney(s.avgP)}</span></div>
+      <div class="vs-row"><span class="vl">Median / Trade</span><span class="vv">${fmtMoney(s.medP)}</span></div>
+      <div class="vs-row"><span class="vl">Avg Points</span><span class="vv">${fmtN(s.avgPts,0)}pt</span></div>
+      <div class="vs-row"><span class="vl">Median Points</span><span class="vv">${fmtN(s.medPts,0)}pt</span></div>
+      <div class="vs-row"><span class="vl">Avg Duration</span><span class="vv">${fmtDur(s.avgDur)}</span></div>
+      <div class="vs-row"><span class="vl">Median Duration</span><span class="vv">${fmtDur(s.medDur)}</span></div>
+      <div class="vs-row"><span class="vl">Points / Minute</span><span class="vv">${s.ppm.toFixed(2)}pt/min</span></div>
+      <div class="vs-row"><span class="vl">Dollars / Minute</span><span class="vv">$${fmtN(s.dpm,2)}/min</span></div>
+    </div>`;
+  }
+  $('ls-vs').innerHTML=`<div class="vs-grid">${vsCard('LONG','long',lS)}${vsCard('SHORT','short',sS)}</div>`;
 
-  // Setup Type — sorted by P&L
-  const ltFull={};trades.forEach(t=>{if(!t.type)return;if(!ltFull[t.type])ltFull[t.type]={w:0,l:0,pnl:0};t.result==='Won'?ltFull[t.type].w++:ltFull[t.type].l++;ltFull[t.type].pnl+=parseFloat(t.pnl)||0;});
-  $('lt-b').innerHTML=Object.entries(ltFull).sort((a,b)=>b[1].pnl-a[1].pnl).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  // ═══════════════════════ DAILY METRICS ═══════════════════════
+  const daily={};trades.forEach(t=>{
+    if(!t.date)return;
+    if(!daily[t.date])daily[t.date]={pnl:0,lpnl:0,spnl:0,pts:0,lpts:0,spts:0,n:0,wins:0,longs:0,shorts:0};
+    const p=parseFloat(t.pnl)||0,pt=pts(t)||0;
+    daily[t.date].pnl+=p;
+    daily[t.date].pts+=pt;
+    daily[t.date].n++;
+    if(t.result==='Won')daily[t.date].wins++;
+    if(t.direction==='Long'){daily[t.date].lpnl+=p;daily[t.date].lpts+=pt;daily[t.date].longs++;}
+    else if(t.direction==='Short'){daily[t.date].spnl+=p;daily[t.date].spts+=pt;daily[t.date].shorts++;}
+  });
+  const dailyArr=Object.entries(daily).sort((a,b)=>a[0].localeCompare(b[0]));
+  const maxPnl=Math.max(...dailyArr.map(([,v])=>Math.abs(v.pnl)),1);
+  const maxPts=Math.max(...dailyArr.map(([,v])=>Math.abs(v.pts)),1);
+  const maxN=Math.max(...dailyArr.map(([,v])=>v.n),1);
+  
+  // Profit per Day with L/S breakdown
+  $('daily-pnl-b').innerHTML=dailyArr.slice(-30).map(([d,v])=>{
+    const pct=Math.abs(v.pnl)/maxPnl*100;
+    const cls=v.pnl>=0?'g':'r';
+    return `<div class="br"><span class="bl">${d.slice(5)}</span><div class="bt"><div class="bf ${cls}" style="width:${pct}%"></div></div><span class="bm" style="color:${v.pnl>=0?'var(--win)':'var(--loss)'}">${fmtMoney(v.pnl)}</span></div>`;
+  }).join('');
+
+  // Points per Day
+  $('daily-pts-b').innerHTML=dailyArr.slice(-30).map(([d,v])=>{
+    const pct=Math.abs(v.pts)/maxPts*100;
+    return `<div class="br"><span class="bl">${d.slice(5)}</span><div class="bt"><div class="bf b" style="width:${pct}%"></div></div><span class="bm">${fmtN(v.pts,0)}pt</span></div>`;
+  }).join('');
+
+  // Trades per Day
+  $('daily-n-b').innerHTML=dailyArr.slice(-30).map(([d,v])=>{
+    const pct=v.n/maxN*100;
+    return `<div class="br"><span class="bl">${d.slice(5)}</span><div class="bt"><div class="bf b" style="width:${pct}%"></div></div><span class="bm">${v.n} · ${v.longs}L/${v.shorts}S</span></div>`;
+  }).join('');
+
+  // Day of Week
+  const dowMap={Mon:{pnl:0,n:0,w:0},Tue:{pnl:0,n:0,w:0},Wed:{pnl:0,n:0,w:0},Thu:{pnl:0,n:0,w:0},Fri:{pnl:0,n:0,w:0},Sat:{pnl:0,n:0,w:0},Sun:{pnl:0,n:0,w:0}};
+  trades.forEach(t=>{if(!t.date)return;const dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(t.date+'T12:00:00').getDay()];if(dowMap[dow]){dowMap[dow].pnl+=parseFloat(t.pnl)||0;dowMap[dow].n++;if(t.result==='Won')dowMap[dow].w++;}});
+  const maxDow=Math.max(...Object.values(dowMap).map(v=>Math.abs(v.pnl)),1);
+  $('dow-b').innerHTML=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].filter(d=>dowMap[d].n>0).map(d=>{
+    const v=dowMap[d];const pct=Math.abs(v.pnl)/maxDow*100;const wrD=Math.round(v.w/v.n*100);
+    return `<div class="br"><span class="bl">${d}</span><div class="bt"><div class="bf ${v.pnl>=0?'g':'r'}" style="width:${pct}%"></div></div><span class="bm">${wrD}% · ${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;
+  }).join('');
+
+  // ═══════════════════════ TIME OF DAY ═══════════════════════
+  const hMap={};trades.forEach(t=>{if(!t.time)return;const h=parseInt(t.time.split(':')[0]);if(!hMap[h])hMap[h]={pnl:0,n:0,w:0,longs:0,shorts:0};hMap[h].pnl+=parseFloat(t.pnl)||0;hMap[h].n++;if(t.result==='Won')hMap[h].w++;if(t.direction==='Long')hMap[h].longs++;else if(t.direction==='Short')hMap[h].shorts++;});
+  const hSorted=Object.entries(hMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
+  const maxH=Math.max(...Object.values(hMap).map(v=>Math.abs(v.pnl)),1);
+  $('hour-pnl-b').innerHTML=hSorted.map(([h,v])=>{
+    const pct=Math.abs(v.pnl)/maxH*100;
+    return `<div class="br"><span class="bl">${h.padStart(2,'0')}:00</span><div class="bt"><div class="bf ${v.pnl>=0?'g':'r'}" style="width:${pct}%"></div></div><span class="bm">${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;
+  }).join('');
+  $('hour-wr-b').innerHTML=hSorted.filter(([,v])=>v.n>=3).map(([h,v])=>{
+    const w=Math.round(v.w/v.n*100);
+    return `<div class="br"><span class="bl">${h.padStart(2,'0')}:00</span><div class="bt"><div class="bf ${w>=90?'g':w>=75?'b':'r'}" style="width:${w}%"></div></div><span class="bm">${w}% · ${v.n}t</span></div>`;
+  }).join('')||'<div class="nodata">Need 3+ trades per hour</div>';
+
+  // ═══════════════════════ SETUP TYPE ═══════════════════════
+  $('lt-b').innerHTML=sArr.map(([k,v])=>{
+    const wr2=Math.round(v.w/v.n*100);
+    const avgT=v.pnl/v.n;
+    return `<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=85?'g':wr2>=70?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}% · ${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:90px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span><span style="font-size:10px;color:var(--muted);width:78px;text-align:right">$${fmtN(avgT)}/t</span></div>`;
+  }).join('')||'<div class="nodata">No data</div>';
 
   // Grade
   const gradeMap={};trades.forEach(t=>{if(!t.grade)return;if(!gradeMap[t.grade])gradeMap[t.grade]={w:0,l:0,pnl:0};t.result==='Won'?gradeMap[t.grade].w++:gradeMap[t.grade].l++;gradeMap[t.grade].pnl+=parseFloat(t.pnl)||0;});
-  $('grade-b').innerHTML=['A+','A','B','C'].filter(g=>gradeMap[g]).map(g=>{const v=gradeMap[g],tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${g}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
-  const gi=$('grade-insight');if(gi){const ap=gradeMap['A+'],c=gradeMap['C'];const p=[];if(ap){const w=Math.round(ap.w/(ap.w+ap.l)*100);p.push(`A+ wins ${w}% — ${w>=85?'grading is accurate':'tighten A+ criteria'}`);}if(c){const w=Math.round(c.w/(c.w+c.l)*100);p.push(`C trades win ${w}% — eliminating them improves your rate`);}gi.textContent=p.join(' · ');}
+  $('grade-b').innerHTML=['A+','A','B','C'].filter(g=>gradeMap[g]).map(g=>{const v=gradeMap[g],tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${g}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}% · ${tot}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  const gi=$('grade-insight');if(gi){const ap=gradeMap['A+'],c=gradeMap['C'];const p=[];if(ap){const w=Math.round(ap.w/(ap.w+ap.l)*100);p.push(`A+ wins ${w}% — ${w>=85?'grading accurate':'tighten A+ criteria'}`);}if(c){const w=Math.round(c.w/(c.w+c.l)*100);p.push(`C trades win ${w}%`);}gi.textContent=p.join(' · ');}
 
-  // Direction
-  const dirMap={Long:{w:0,l:0,pnl:0},Short:{w:0,l:0,pnl:0}};trades.forEach(t=>{if(t.direction&&dirMap[t.direction]){t.result==='Won'?dirMap[t.direction].w++:dirMap[t.direction].l++;dirMap[t.direction].pnl+=parseFloat(t.pnl)||0;}});
-  $('dir-b').innerHTML=bars(dirMap);
+  // Trend Alignment
+  const trendMap={'With':{w:0,n:0,pnl:0},'Counter':{w:0,n:0,pnl:0}};
+  trades.forEach(t=>{if(!t.trendAlign||!trendMap[t.trendAlign])return;trendMap[t.trendAlign].n++;if(t.result==='Won')trendMap[t.trendAlign].w++;trendMap[t.trendAlign].pnl+=parseFloat(t.pnl)||0;});
+  $('trend-b').innerHTML=Object.entries(trendMap).filter(([,v])=>v.n>0).map(([k,v])=>{const wr2=Math.round(v.w/v.n*100);return`<div class="br"><span class="bl">${k} Trend</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}% · ${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 
-  // Duration buckets
-  const durBuckets={'<10m':{w:0,l:0},'10-30m':{w:0,l:0},'30m-1h':{w:0,l:0},'1-3h':{w:0,l:0},'3h+':{w:0,l:0}};
-  trades.forEach(t=>{const e=parseMins(t.time),x=parseMins(t.timeExit);if(e===null||x===null)return;const d=x>=e?x-e:x+1440-e;const k=d<10?'<10m':d<30?'10-30m':d<60?'30m-1h':d<180?'1-3h':'3h+';durBuckets[k][t.result==='Won'?'w':'l']++;});
-  $('dur-b').innerHTML=Object.entries(durBuckets).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  // Range Location
+  const rangeMap={};trades.forEach(t=>{if(!t.rangeLocation)return;if(!rangeMap[t.rangeLocation])rangeMap[t.rangeLocation]={w:0,n:0,pnl:0};rangeMap[t.rangeLocation].n++;if(t.result==='Won')rangeMap[t.rangeLocation].w++;rangeMap[t.rangeLocation].pnl+=parseFloat(t.pnl)||0;});
+  $('range-b').innerHTML=['Top','Mid','Bottom'].filter(r=>rangeMap[r]).map(r=>{const v=rangeMap[r];const wr2=Math.round(v.w/v.n*100);return`<div class="br"><span class="bl">${r}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}% · ${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 
-  // Day of week
-  const dowMap={Mon:{w:0,l:0,pnl:0},Tue:{w:0,l:0,pnl:0},Wed:{w:0,l:0,pnl:0},Thu:{w:0,l:0,pnl:0},Fri:{w:0,l:0,pnl:0}};
-  trades.forEach(t=>{if(!t.date)return;const dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(t.date+'T12:00:00').getDay()];if(dowMap[dow]){t.result==='Won'?dowMap[dow].w++:dowMap[dow].l++;dowMap[dow].pnl+=parseFloat(t.pnl)||0;}});
-  $('dow-b').innerHTML=Object.entries(dowMap).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  // ═══════════════════════ DURATION ═══════════════════════
+  const durBuckets={'<10m':{n:0,pnl:0,pts:0},'10-30m':{n:0,pnl:0,pts:0},'30m-1h':{n:0,pnl:0,pts:0},'1-2h':{n:0,pnl:0,pts:0},'2-4h':{n:0,pnl:0,pts:0},'4-8h':{n:0,pnl:0,pts:0},'8h+':{n:0,pnl:0,pts:0}};
+  trades.forEach(t=>{const d=dur(t);if(d===null)return;const k=d<10?'<10m':d<30?'10-30m':d<60?'30m-1h':d<120?'1-2h':d<240?'2-4h':d<480?'4-8h':'8h+';durBuckets[k].n++;durBuckets[k].pnl+=parseFloat(t.pnl)||0;durBuckets[k].pts+=pts(t)||0;});
+  const maxDurN=Math.max(...Object.values(durBuckets).map(v=>v.n),1);
+  $('dur-b').innerHTML=Object.entries(durBuckets).filter(([,v])=>v.n>0).map(([k,v])=>{
+    const pct=v.n/maxDurN*100;const avg=v.pnl/v.n;
+    return `<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf b" style="width:${pct}%"></div></div><span class="bm">${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span><span style="font-size:10px;color:var(--muted);width:78px;text-align:right">$${fmtN(avg)}/t</span></div>`;
+  }).join('')||'<div class="nodata">Add entry/exit times</div>';
+  // Duration insight
+  const durIns=$('dur-insight');
+  if(durIns){const buckets=Object.entries(durBuckets).filter(([,v])=>v.n>=2);if(buckets.length>=2){const best=buckets.sort((a,b)=>(b[1].pnl/b[1].n)-(a[1].pnl/a[1].n))[0];durIns.textContent=`Best avg/trade: ${best[0]} at $${fmtN(best[1].pnl/best[1].n)} over ${best[1].n} trades`;}}
 
-  // Hour of day
-  $('hour-b').innerHTML=Object.entries(hourMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([h,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">${h}:00</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
+  // Long vs Short duration vs card
+  function durVsCard(name,cls,arr){
+    const durL=arr.map(t=>dur(t)).filter(v=>v!==null);
+    return `<div class="vs-card ${cls}" style="padding:14px 16px">
+      <div class="vs-h"><div class="vs-name ${cls}">${name}</div><div class="vs-pct">${durL.length} timed</div></div>
+      <div class="vs-row"><span class="vl">Average Duration</span><span class="vv">${fmtDur(mean(durL))}</span></div>
+      <div class="vs-row"><span class="vl">Median Duration</span><span class="vv">${fmtDur(median(durL))}</span></div>
+      <div class="vs-row"><span class="vl">Shortest</span><span class="vv">${durL.length?fmtDur(Math.min(...durL)):'—'}</span></div>
+      <div class="vs-row"><span class="vl">Longest</span><span class="vv">${durL.length?fmtDur(Math.max(...durL)):'—'}</span></div>
+    </div>`;
+  }
+  $('dur-vs').innerHTML=`<div class="vs-grid" style="margin-top:0">${durVsCard('LONG','long',longs)}${durVsCard('SHORT','short',shorts)}</div>`;
 
-  // Confluence
-  const confMap={};trades.forEach(t=>{if(!t.confluence)return;if(!confMap[t.confluence])confMap[t.confluence]={w:0,l:0,pnl:0};t.result==='Won'?confMap[t.confluence].w++:confMap[t.confluence].l++;confMap[t.confluence].pnl+=parseFloat(t.pnl)||0;});
-  $('conf-b').innerHTML=bars(confMap)||'<div class="nodata">Fill Confluence? on trades</div>';
+  // ═══════════════════════ POINTS DISTRIBUTION ═══════════════════════
+  const ptsBuckets={'<50pt':{n:0,pnl:0},'50-100pt':{n:0,pnl:0},'100-200pt':{n:0,pnl:0},'200-400pt':{n:0,pnl:0},'400-800pt':{n:0,pnl:0},'800pt+':{n:0,pnl:0}};
+  trades.forEach(t=>{const p=pts(t);if(p===null)return;const a=Math.abs(p);const k=a<50?'<50pt':a<100?'50-100pt':a<200?'100-200pt':a<400?'200-400pt':a<800?'400-800pt':'800pt+';ptsBuckets[k].n++;ptsBuckets[k].pnl+=parseFloat(t.pnl)||0;});
+  const maxPtN=Math.max(...Object.values(ptsBuckets).map(v=>v.n),1);
+  $('pts-dist-b').innerHTML=Object.entries(ptsBuckets).filter(([,v])=>v.n>0).map(([k,v])=>{
+    const pct=v.n/maxPtN*100;const avg=v.pnl/v.n;
+    return `<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf b" style="width:${pct}%"></div></div><span class="bm">${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span><span style="font-size:10px;color:var(--muted);width:78px;text-align:right">$${fmtN(avg)}/t</span></div>`;
+  }).join('')||'<div class="nodata">Log entry and exit prices</div>';
+
+  // ═══════════════════════ R:R DISTRIBUTION ═══════════════════════
+  const rrBuckets={'<1':{n:0},'1-2':{n:0},'2-3':{n:0},'3-5':{n:0},'5+':{n:0}};
+  trades.forEach(t=>{const r=parseFloat(t.rr);if(isNaN(r)||r<=0)return;const k=r<1?'<1':r<2?'1-2':r<3?'2-3':r<5?'3-5':'5+';rrBuckets[k].n++;});
+  const maxRR=Math.max(...Object.values(rrBuckets).map(v=>v.n),1);
+  $('rr-dist-b').innerHTML=Object.entries(rrBuckets).filter(([,v])=>v.n>0).map(([k,v])=>{
+    const pct=v.n/maxRR*100;
+    return `<div class="br"><span class="bl">${k} R</span><div class="bt"><div class="bf b" style="width:${pct}%"></div></div><span class="bm">${v.n} trades</span></div>`;
+  }).join('')||'<div class="nodata">Log R:R values</div>';
+
+  // ═══════════════════════ CONFLUENCE ═══════════════════════
+  const confMap={Yes:{w:0,n:0,pnl:0},No:{w:0,n:0,pnl:0}};
+  trades.forEach(t=>{if(!t.confluence||!confMap[t.confluence])return;confMap[t.confluence].n++;if(t.result==='Won')confMap[t.confluence].w++;confMap[t.confluence].pnl+=parseFloat(t.pnl)||0;});
+  $('conf-b').innerHTML=Object.entries(confMap).filter(([,v])=>v.n>0).map(([k,v])=>{const wr2=Math.round(v.w/v.n*100);return`<div class="br"><span class="bl">${k==='Yes'?'With Confluence':'No Confluence'}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}% · ${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No data</div>';
 
   // Confluence type
-  const ctMap={};trades.forEach(t=>{if(!t.confluenceTypes)return;t.confluenceTypes.split(',').forEach(ct=>{ct=ct.trim();if(!ct)return;if(!ctMap[ct])ctMap[ct]={w:0,l:0,pnl:0};t.result==='Won'?ctMap[ct].w++:ctMap[ct].l++;ctMap[ct].pnl+=parseFloat(t.pnl)||0;});});
-  $('conf-type-b').innerHTML=bars(ctMap)||'<div class="nodata">Log confluence types on trades</div>';
+  const ctMap={};trades.forEach(t=>{if(!t.confluenceTypes)return;t.confluenceTypes.split(/[,;]/).map(s=>s.trim()).filter(Boolean).forEach(c=>{if(!ctMap[c])ctMap[c]={n:0,pnl:0};ctMap[c].n++;ctMap[c].pnl+=parseFloat(t.pnl)||0;});});
+  const ctMaxN=Math.max(...Object.values(ctMap).map(v=>v.n),1);
+  $('conf-type-b').innerHTML=Object.entries(ctMap).sort((a,b)=>b[1].pnl-a[1].pnl).map(([k,v])=>{const pct=v.n/ctMaxN*100;return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf b" style="width:${pct}%"></div></div><span class="bm">${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">Tag confluence types</div>';
 
-  // Reactive
-  const reactMap={};trades.forEach(t=>{if(!t.reactiveState)return;if(!reactMap[t.reactiveState])reactMap[t.reactiveState]={w:0,l:0,pnl:0};t.result==='Won'?reactMap[t.reactiveState].w++:reactMap[t.reactiveState].l++;reactMap[t.reactiveState].pnl+=parseFloat(t.pnl)||0;});
-  $('react-b').innerHTML=bars(reactMap)||'<div class="nodata">Fill Reactive? on trades</div>';
+  // ═══════════════════════ REACTIVE ═══════════════════════
+  const reactMap={Yes:{w:0,n:0,pnl:0},No:{w:0,n:0,pnl:0}};
+  trades.forEach(t=>{if(!t.reactiveState||!reactMap[t.reactiveState])return;reactMap[t.reactiveState].n++;if(t.result==='Won')reactMap[t.reactiveState].w++;reactMap[t.reactiveState].pnl+=parseFloat(t.pnl)||0;});
+  $('react-b').innerHTML=Object.entries(reactMap).filter(([,v])=>v.n>0).map(([k,v])=>{const wr2=Math.round(v.w/v.n*100);return`<div class="br"><span class="bl">${k==='Yes'?'Reactive':'Calm'}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}% · ${v.n}t</span><span style="font-size:11px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">No reactive flags</div>';
 
-  // R:R Distribution
-  const rrBuckets={'<1':{w:0,l:0},'1-2':{w:0,l:0},'2-3':{w:0,l:0},'3-5':{w:0,l:0},'5-10':{w:0,l:0},'10+':{w:0,l:0}};
-  trades.forEach(t=>{const r=parseFloat(t.rr);if(isNaN(r)||r<=0)return;const k=r<1?'<1':r<2?'1-2':r<3?'2-3':r<5?'3-5':r<10?'5-10':'10+';rrBuckets[k][t.result==='Won'?'w':'l']++;});
-  $('rr-dist-b').innerHTML=Object.entries(rrBuckets).filter(([,v])=>v.w+v.l>0).map(([k,v])=>{const tot=v.w+v.l,wr2=Math.round(v.w/tot*100);return`<div class="br"><span class="bl">R:R ${k}</span><div class="bt"><div class="bf ${wr2>=80?'g':wr2>=60?'b':'r'}" style="width:${wr2}%"></div></div><span class="bm">${wr2}%·${tot}</span></div>`;}).join('')||'<div class="nodata">Log R:R on trades</div>';
-
-  // Points Distribution
-  const ptsBuckets={'<50pt':{n:0,pnl:0},'50-100pt':{n:0,pnl:0},'100-200pt':{n:0,pnl:0},'200-400pt':{n:0,pnl:0},'400pt+':{n:0,pnl:0}};
-  trades.forEach(t=>{const eN=parseFloat(t.entry),xN=parseFloat(t.exit);if(isNaN(eN)||isNaN(xN))return;const sign=t.direction==='Short'?-1:1;const pts=Math.abs((xN-eN)*sign);const k=pts<50?'<50pt':pts<100?'50-100pt':pts<200?'100-200pt':pts<400?'200-400pt':'400pt+';ptsBuckets[k].n++;ptsBuckets[k].pnl+=parseFloat(t.pnl)||0;});
-  $('pts-dist-b').innerHTML=Object.entries(ptsBuckets).filter(([,v])=>v.n>0).map(([k,v])=>{const maxN=Math.max(...Object.values(ptsBuckets).map(x=>x.n),1);return`<div class="br"><span class="bl">${k}</span><div class="bt"><div class="bf b" style="width:${Math.round(v.n/maxN*100)}%"></div></div><span class="bm">${v.n} trades</span><span style="font-size:10px;color:${v.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(v.pnl)}</span></div>`;}).join('')||'<div class="nodata">Log entry and exit prices</div>';
-
-  // Rolling win rate — last 10 trades windows
-  const rollingEl=$('rolling-b');if(rollingEl&&trades.length>=10){const sorted=[...trades].sort((a,b)=>{const da=(a.date||'')+(a.time||''),db=(b.date||'')+(b.time||'');return da.localeCompare(db);});const windows=[];for(let i=9;i<sorted.length;i++){const slice=sorted.slice(i-9,i+1);const w=slice.filter(t=>t.result==='Won').length;windows.push({label:sorted[i].date?sorted[i].date.slice(5):'#'+(i+1),wr:Math.round(w/10*100),pnl:slice.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)});}rollingEl.innerHTML=windows.slice(-15).map(w=>{return`<div class="br"><span class="bl">${w.label}</span><div class="bt"><div class="bf ${w.wr>=90?'g':w.wr>=75?'b':'r'}" style="width:${w.wr}%"></div></div><span class="bm">${w.wr}%</span><span style="font-size:10px;color:${w.pnl>=0?'var(--win)':'var(--loss)'};width:72px;text-align:right;flex-shrink:0">${fmtC(w.pnl)}</span></div>`;}).join('');}
+  // ═══════════════════════ ROLLING WIN RATE ═══════════════════════
+  if(trades.length>=10){
+    const sorted=[...trades].sort((a,b)=>{const da=(a.date||'')+(a.time||''),db=(b.date||'')+(b.time||'');return da.localeCompare(db);});
+    const windows=[];for(let i=9;i<sorted.length;i++){const slice=sorted.slice(i-9,i+1);const w=slice.filter(t=>t.result==='Won').length;windows.push({label:sorted[i].date?sorted[i].date.slice(5):'#'+(i+1),wr:Math.round(w/10*100),pnl:slice.map(t=>parseFloat(t.pnl)||0).reduce((a,b)=>a+b,0)});}
+    $('rolling-b').innerHTML=windows.slice(-15).map(w=>`<div class="br"><span class="bl">${w.label}</span><div class="bt"><div class="bf ${w.wr>=90?'g':w.wr>=75?'b':'r'}" style="width:${w.wr}%"></div></div><span class="bm">${w.wr}%</span><span style="font-size:11px;color:${w.pnl>=0?'var(--win)':'var(--loss)'};width:80px;text-align:right;font-weight:600">${fmtMoney(w.pnl)}</span></div>`).join('');
+  } else {
+    $('rolling-b').innerHTML='<div class="nodata">Need 10+ trades</div>';
+  }
 }
 
 // ── NOTES ──
@@ -1447,6 +1764,21 @@ function runDeepInsights(){
   var totalT=trades.length;
   var winCount=trades.filter(function(t){return t.result==='Won';}).length;
   var winPct=Math.round(winCount/Math.max(totalT,1)*100);
+  
+  // Build structured CSV of every trade for deep analysis
+  function parseHM(s){if(!s)return null;var p=s.trim().split(':');if(p.length!==2)return null;var h=parseInt(p[0]),m=parseInt(p[1]);return isNaN(h)||isNaN(m)?null:h*60+m;}
+  function calcPts(t){var e=parseFloat(t.entry)||0;var x=parseFloat(t.exit)||0;if(!e||!x)return '';var s=t.direction==='Short'?-1:1;return ((x-e)*s).toFixed(1);}
+  function calcDur(t){var em=parseHM(t.time);var xm=parseHM(t.timeExit);if(em===null||xm===null)return '';var d=xm>=em?xm-em:xm+1440-em;return d;}
+  var csvLines=trades.map(function(t){
+    return [
+      t.date||'',t.time||'',t.timeExit||'',calcDur(t),
+      t.grade||'',t.direction||'',t.trendAlign||'',t.type||'',t.rangeLocation||'',
+      t.entry||'',t.stop||'',t.exit||'',t.pnl||'',calcPts(t),t.rr||'',t.drawdown||'',
+      t.result||'',t.targetReached||'',t.reactiveState||'',t.confluence||'',
+      (t.confluenceTypes||'').replace(/,/g,';'),t.dir2hr||'',t.leg||''
+    ].join(',');
+  });
+  var tradeDataCsv=csvLines.length?csvLines.join('\n'):'No trades logged.';
   var netPnl=trades.map(function(t){return parseFloat(t.pnl)||0;}).reduce(function(a,b){return a+b;},0);
 
   var ltStats={};
@@ -1491,6 +1823,10 @@ function runDeepInsights(){
     'Range location: '+rangeStats,
     'Setup grades: '+gradeStats,
     '',
+    '=== STRUCTURED TRADE DATA (CSV) ===',
+    'Format: date,time,timeExit,duration_min,grade,direction,trendAlign,type,rangeLocation,entry,stop,exit,pnl,points,rr,drawdown,result,targetReached,reactiveState,confluence,confluenceTypes,dir2hr,leg',
+    tradeDataCsv,
+    '',
     '=== TRADE OBSERVATIONS & TAKEAWAYS ===',
     obsText,
     '',
@@ -1523,7 +1859,7 @@ function runDeepInsights(){
           '4. Copy the analysis back here or save it in your Notes tab'+
         '</div>'+
         '<div style="margin-top:14px;padding:12px;background:rgba(255,255,255,0.6);border-radius:var(--rs);font-size:11px;color:var(--muted)">'+
-          'Prompt includes: '+totalT+' trades · '+obsLines.length+' observations · '+noteLines.length+' notes · all stats'+
+          'Prompt includes: '+totalT+' trades (full row data: entry/exit/times/P&L/points/duration) · '+obsLines.length+' observations · '+noteLines.length+' notes · all stats'+
         '</div>'+
       '</div>'+
       '<div class="deep-card" style="margin-top:12px">'+
